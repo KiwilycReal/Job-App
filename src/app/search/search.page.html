@@ -1,0 +1,188 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title style="text-align: center">什么招聘</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+<ion-content>
+  <div style="background-color: white; height: 100vh" >
+    <!-- Search Block -->
+    <div class="searchbox">
+        <!-- search input -->
+        <ion-input style="height: 6vh; background: white; border-bottom: 1px solid" placeholder="输入关键字" clearInput> 
+            <ion-icon name="search" style="zoom: 1.3; margin-left: 1vw"></ion-icon>
+        </ion-input>
+
+        <!-- search drop down -->
+        <ion-row style="background: white; text-align: center;">
+            <ion-col>
+              <div>
+                 <select style=" height: 4vh;  margin: auto; border: none" name="work_type">
+                    <option value=0>工作形式</option>
+                    <option value="1">op1</option>
+                    <option value="2">op2</option>
+                </select>
+              </div>
+            </ion-col>
+            <ion-col>
+              <div>
+                <select style="height: 4vh ; margin: auto; border: none" name="job_cat">
+                    <option value=0>职业种类</option>
+                    <option value="1">op1</option>
+                    <option value="2">op2</option> 
+                </select>
+              </div>
+                
+            </ion-col>
+            <ion-col>
+              <div>
+                <select style="height: 4vh;  margin: auto; border: none" name="salary">
+                    <option value=0>时薪</option>
+                    <option value="1">面议</option>
+                    <option value="2">10-15</option>
+                    <option value="2">15-25</option>
+                    <option value="2">25-35</option>
+                    <option value="2">35+</option>
+                </select>
+              </div>
+                
+            </ion-col>
+        </ion-row>
+
+    </div>
+
+
+    <ion-refresher #refresh (ionRefresh)="refreshCard($event)" slot="fixed">
+        <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+         </ion-refresher-content>
+     </ion-refresher>
+
+
+    <ion-card [(ngModel)]="jobs" ngDefaultControl style="background: white;" *ngFor="let j of jobs" [routerLink]="['./',j.ID]">
+      <ion-card-content>
+      
+      <ion-grid>
+
+      <ion-row>
+        <ion-col size="2.5" style=" height: 15vh; margin-left: 0vw;">
+          <ion-row>
+            <div style="margin-top: 15%;">
+              <ion-thumbnail>
+              <img style=" overflow:scroll;" [src] = "j.ImageUrl">
+              </ion-thumbnail> 
+            </div>
+          </ion-row>
+          
+          <br>
+
+          <ion-row>
+            <ion-icon style="zoom: 1.5;" name="heart-empty"></ion-icon>
+          </ion-row>
+          
+        </ion-col>
+
+    
+        <ion-col size="9" style="height: 15vh;">
+          <ion-row>
+              <ion-col>
+                  <p style="font-size: 4.5vw; text-align: left;"><b> {{ j.Title }} </b></p>
+              </ion-col>
+  
+              <ion-col style="text-align: right;">
+                  <p style="font-size: 4.5vw; color: orange">${{ j.Salary }}/h</p>
+              </ion-col>
+          </ion-row>
+          <ion-row>
+              <ion-col>
+              <p style="font-size: 3.5vw;">{{ j.IntoText }}</p>
+              </ion-col>
+          </ion-row>
+        </ion-col>
+
+      </ion-row>
+
+    </ion-grid>
+    
+    </ion-card-content>
+
+        
+      
+  </ion-card>
+      
+      
+     
+     
+     
+  </div>
+    
+
+
+</ion-content>
+
+<ion-footer no-shadow style="max-height: 12vh; margin: auto">
+    <ion-toolbar position="bottom">
+      <ion-row>
+  
+        <ion-col>
+            <div style="text-align: center;">
+                <button style="background: none;">
+                  <ion-icon src="../assets/icon/house.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/front-page']"></ion-icon>
+                  <br> 
+                  <label style="font-size: 4vw;">首页</label>
+                </button>
+              </div>         
+        </ion-col>
+          
+        <ion-col >
+            <div style="text-align: center;">
+                <button style="background: none;">
+                  <ion-icon src="../assets/icon/favor.svg" style="zoom: 1.8; font-size: 5vw;"></ion-icon>
+                  <br> 
+                  <label style="font-size: 4vw;">收藏</label>
+                </button>
+              </div>                    
+        </ion-col>
+  
+        <ion-col>
+          <div style="text-align: center;">
+           
+            <button ion-fab-button style="background: none;">
+              <ion-icon src="../assets/icon/search.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/search']"></ion-icon>
+              <br> 
+              <label style="font-size: 4vw;">探索</label>
+            </button>
+          
+          </div>                   
+        </ion-col>
+  
+        <ion-col>
+            <div style="text-align: center;">
+                <button style="background: none;">
+                  <ion-icon src="../assets/icon/chat.svg" style="zoom: 1.8; font-size: 5vw;"></ion-icon>
+                  <br> 
+                  <label style="font-size: 4vw;">消息</label>
+                </button>
+              </div>                    
+        </ion-col>
+        
+        <ion-col>
+            <div style="text-align: center;">
+                <button style="background: none;">
+                  <ion-icon src="../assets/icon/user.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/personal-info']"></ion-icon>
+                  <br> 
+                  <label style="font-size: 4vw;">个人</label>
+                </button>
+              </div>                    
+        </ion-col>
+        
+          
+      </ion-row> 
+           
+       
+  
+    </ion-toolbar>
+  </ion-footer>

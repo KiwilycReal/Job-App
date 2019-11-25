@@ -1,0 +1,178 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title style="text-align: center">什么招聘</ion-title>
+      <ion-buttons slot='end' style="position:absolute;right:0">
+          <ion-button [routerLink]="['/login']">
+              <ion-icon name="body"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+
+</ion-header>
+
+<ion-content>
+  
+  <ion-searchbar animated placeholder="try ANZ" clearInput></ion-searchbar>
+  
+  <ion-slides [options] = "Advslider" #adv pager="true" (ionSlidesDidLoad)="slidesDidLoad(adv)">
+      <ion-slide style="max-height: 20vh" *ngFor="let adv of advs" >
+          <ion-card> 
+            <img [src]="adv.ImageUrl">
+          </ion-card>
+      </ion-slide>
+  </ion-slides>
+
+  <br>
+  
+
+  <div style="margin-left: 5vw; margin-right: 5vw;">
+    <h3>这里是介绍</h3>
+    <p> 我们这个app好用的一批，有多j8 j8牛逼，还有很多大厂商大家快来用</p>
+    <ion-row>
+      <ion-col>
+        <ion-card style="height: 20vh;">
+            <img src="../assets/melbourne1.jpg">
+            <ion-card-content> 我是ANZ</ion-card-content>
+        </ion-card>
+      </ion-col>
+
+      <ion-col>
+          
+        <ion-card style="height: 20vh;">
+          <img src="../assets/melbourne2.jpg">
+          <ion-card-content> 我是CXK</ion-card-content>
+        </ion-card>
+         
+      </ion-col>
+
+    </ion-row>
+
+    <ion-row>
+        <ion-col>
+          <ion-card style="height: 20vh;">
+              <img src="../assets/melbourne3.jpg">
+              <ion-card-content> 我是ANZ</ion-card-content>
+          </ion-card>
+        </ion-col>
+  
+        <ion-col>
+            
+          <ion-card style="height: 20vh;">
+            <img src="../assets/melbourne1.jpg">
+            <ion-card-content> 我是CXK</ion-card-content>
+          </ion-card>
+           
+        </ion-col>
+  
+    </ion-row>
+
+  </div>
+
+  <div style="margin-left: 5vw; margin-right: 5vw;">
+      <h3>这里是活动介绍</h3>
+      <p> 现在nmd有很多公司在招聘，大家快来看看，nmsl</p>
+      <ion-row>
+        <ion-col>
+          <ion-card style="height: 20vh;">
+              <img src="../assets/melbourne1.jpg">
+              <ion-card-content> 我是ANZ</ion-card-content>
+          </ion-card>
+        </ion-col>
+  
+        <ion-col>
+            
+          <ion-card style="height: 20vh;">
+            <img src="../assets/melbourne2.jpg">
+            <ion-card-content> 我是CXK</ion-card-content>
+          </ion-card>
+           
+        </ion-col>
+  
+      </ion-row>
+  
+      <ion-row>
+          <ion-col>
+            <ion-card style="height: 20vh;">
+                <img src="../assets/melbourne3.jpg">
+                <ion-card-content> 我是ANZ</ion-card-content>
+            </ion-card>
+          </ion-col>
+    
+          <ion-col>
+              
+            <ion-card style="height: 20vh;">
+              <img src="../assets/melbourne1.jpg">
+              <ion-card-content> 我是CXK</ion-card-content>
+            </ion-card>
+             
+          </ion-col>
+    
+      </ion-row>
+  
+    </div>
+
+</ion-content>
+
+<ion-footer no-shadow style="max-height: 12vh; margin: auto">
+  <ion-toolbar position="bottom">
+    <ion-row>
+
+      <ion-col>
+          <div style="text-align: center;">
+              <button style="background: none;">
+                <ion-icon src="../assets/icon/house.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/front-page']"></ion-icon>
+                <br> 
+                <label style="font-size: 4vw;">首页</label>
+              </button>
+            </div>         
+      </ion-col>
+        
+      <ion-col >
+          <div style="text-align: center;">
+              <button style="background: none;">
+                <ion-icon src="../assets/icon/favor.svg" style="zoom: 1.8; font-size: 5vw;"></ion-icon>
+                <br> 
+                <label style="font-size: 4vw;">收藏</label>
+              </button>
+            </div>                    
+      </ion-col>
+
+      <ion-col>
+        <div style="text-align: center;">
+         
+          <button ion-fab-button style="background: none;">
+            <ion-icon src="../assets/icon/search.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/search']"></ion-icon>
+            <br> 
+            <label style="font-size: 4vw;">探索</label>
+          </button>
+        
+        </div>                   
+      </ion-col>
+
+      <ion-col>
+          <div style="text-align: center;">
+              <button style="background: none;">
+                <ion-icon src="../assets/icon/chat.svg" style="zoom: 1.8; font-size: 5vw;"></ion-icon>
+                <br> 
+                <label style="font-size: 4vw;">消息</label>
+              </button>
+            </div>                    
+      </ion-col>
+      
+      <ion-col>
+          <div style="text-align: center;">
+              <button style="background: none;">
+                <ion-icon src="../assets/icon/user.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/personal-info']"></ion-icon>
+                <br> 
+                <label style="font-size: 4vw;">个人</label>
+              </button>
+            </div>                    
+      </ion-col>
+      
+        
+    </ion-row> 
+         
+     
+
+  </ion-toolbar>
+</ion-footer>
