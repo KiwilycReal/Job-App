@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { JobInfo } from './job-card.module';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +15,7 @@ export class JobCardService {
     ImageUrl: '../assets/cxk.jpg',
     Title: "NMSL有限公司",
     Salary: 30,
-    IntoText: "大家好，我是练习时长两年半的个人练习生蔡徐坤",
+    IntroText: "大家好，我是练习时长两年半的个人练习生蔡徐坤",
     Details: null
   },
   {
@@ -20,7 +23,7 @@ export class JobCardService {
     ImageUrl: '../assets/cxk.jpg',
     Title: "NBSL有限公司",
     Salary: 30,
-    IntoText: "喜欢唱跳rap篮球，music",
+    IntroText: "喜欢唱跳rap篮球，music",
     Details: null
   }
 
@@ -29,6 +32,10 @@ export class JobCardService {
   get_jobinfo(){
     // console.log('HelloWorld');
     return [...this.jobinfos];
+  }
+
+  get_jobinfo_db(){
+    return this.fs.collection('Jobs').snapshotChanges();
   }
 
   get_jobInfo_byID(houseI: string) {
@@ -43,5 +50,10 @@ export class JobCardService {
     this.jobinfos.unshift(jobDetails);
   }
 
-  constructor() { }
+  filteredJobs(query): JobInfo[] {
+    
+    return undefined;
+  }
+
+  constructor(private fs: AngularFirestore) { }
 }

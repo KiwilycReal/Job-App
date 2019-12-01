@@ -16,9 +16,9 @@
               </ion-card-content> -->
               <ion-row>
                   <ion-col>
-                    <ion-item detail>
+                    <ion-item detail href="#" detailIcon="create">
                       <ion-avatar style="width: 66px; height: 66px; margin: 5px;">
-                          <img src="../../assets/cxk.jpg">
+                          <img src="../../assets/cxk.jpg" #userAvatar>
                       </ion-avatar>
                       <ion-label slot="end">
                           <div #displayName>Display Name</div>
@@ -35,7 +35,7 @@
                         <ion-avatar>
                             <img src="../../assets/wechat.png">
                         </ion-avatar>
-                        <ion-label>lyc1291822892</ion-label>
+                        <ion-label #wechatID>lyc1291822892</ion-label>
                     </ion-chip>
                   </ion-col> 
                 </ion-row>
@@ -43,7 +43,7 @@
                   <ion-col>
                     <ion-chip>
                         <ion-icon name="call"></ion-icon>
-                        <ion-label>+61 435765076</ion-label>
+                        <ion-label #phoneNum>+61 435765076</ion-label>
                     </ion-chip>
                   </ion-col>
                 </ion-row>
@@ -51,7 +51,7 @@
                   <ion-col>
                     <ion-chip>
                         <ion-icon name="mail"></ion-icon>
-                        <ion-label>kiwilyc9827@gmail.com</ion-label>
+                        <ion-label #emailAddr>kiwilyc9827@gmail.com</ion-label>
                     </ion-chip>
                   </ion-col>
                 </ion-row>
@@ -85,7 +85,7 @@
                 <ion-icon name="help" slot="start"></ion-icon>
                 <ion-label>FQA</ion-label>
               </ion-item>
-              <ion-item href="#">
+              <ion-item href="#" lines="none">
                 <ion-icon name="help-buoy" slot="start"></ion-icon>
                 <ion-label>客服中心</ion-label>
               </ion-item>

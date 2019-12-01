@@ -1,63 +1,72 @@
-<ion-header></ion-header>
+<ion-header>
+  <div class="searchbox">
+    <!-- search input -->
+    <!-- <ion-input style="height: 6vh; background: white; border-bottom: 1px solid" placeholder="输入关键字" clearInput> 
+        <ion-icon name="search" style="zoom: 1.3; margin-left: 1vw"></ion-icon>
+    </ion-input> -->
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="testSearch()" debounce=2000 showCancelButton="focus" animated placeholder="输入关键字"></ion-searchbar>
 
-<ion-content>
-  <div style="background-color: white; height: 100vh" >
-    <!-- Search Block -->
-    <div class="searchbox">
-        <!-- search input -->
-        <ion-input style="height: 6vh; background: white; border-bottom: 1px solid" placeholder="输入关键字" clearInput> 
-            <ion-icon name="search" style="zoom: 1.3; margin-left: 1vw"></ion-icon>
-        </ion-input>
+    <!-- search drop down -->
+    <ion-row style="background: white; text-align: center;">
+        <ion-col>
+          <div>
+              <!-- <select style=" height: 4vh;  margin: auto; border: none" name="work_type">
+                <option value=0>工作形式</option>
+                <option value="1">op1</option>
+                <option value="2">op2</option>
+            </select> -->
+            <ion-select placeholder="工作种类" name="work_type" interface="popover">
+                <ion-select-option value="0">不限</ion-select-option>
+                <ion-select-option value="1">Full Time</ion-select-option>
+                <ion-select-option value="2">Part Time</ion-select-option>
+            </ion-select>
+          </div>
+        </ion-col>
+        <ion-col>
+          <div>
+            <!-- <select style="height: 4vh ; margin: auto; border: none" name="job_cat">
+                <option value=0>职业种类</option>
+                <option value="1">op1</option>
+                <option value="2">op2</option> 
+            </select> -->
+            <ion-select placeholder="职业种类" name="job_cat" interface="popover" (ionChange)="selectChange($event)">
+                <ion-select-option value="0">不限</ion-select-option>
+                <ion-select-option value="1">合法工</ion-select-option>
+                <ion-select-option value="2">黑工</ion-select-option>
+            </ion-select>
+          </div>
+            
+        </ion-col>
+        <ion-col>
+          <div>
+            <!-- <select style="height: 4vh;  margin: auto; border: none" name="salary">
+                <option value=0>时薪</option>
+                <option value="1">面议</option>
+                <option value="2">10-15</option>
+                <option value="2">15-25</option>
+                <option value="2">25-35</option>
+                <option value="2">35+</option>
+            </select> -->
+            <ion-select placeholder="时薪" name="salary" interface="popover">
+                <ion-select-option value="0">不限</ion-select-option>
+                <ion-select-option value="1">面议</ion-select-option>
+                <ion-select-option value="2">10-15</ion-select-option>
+                <ion-select-option value="3">15-25</ion-select-option>
+                <ion-select-option value="4">25-35</ion-select-option>
+                <ion-select-option value="5">35+</ion-select-option>
+            </ion-select>
+          </div>
+            
+        </ion-col>
+    </ion-row>
+  </div>
+</ion-header>
 
-        <!-- search drop down -->
-        <ion-row style="background: white; text-align: center;">
-            <ion-col>
-              <div>
-                 <select style=" height: 4vh;  margin: auto; border: none" name="work_type">
-                    <option value=0>工作形式</option>
-                    <option value="1">op1</option>
-                    <option value="2">op2</option>
-                </select>
-              </div>
-            </ion-col>
-            <ion-col>
-              <div>
-                <select style="height: 4vh ; margin: auto; border: none" name="job_cat">
-                    <option value=0>职业种类</option>
-                    <option value="1">op1</option>
-                    <option value="2">op2</option> 
-                </select>
-              </div>
-                
-            </ion-col>
-            <ion-col>
-              <div>
-                <select style="height: 4vh;  margin: auto; border: none" name="salary">
-                    <option value=0>时薪</option>
-                    <option value="1">面议</option>
-                    <option value="2">10-15</option>
-                    <option value="2">15-25</option>
-                    <option value="2">25-35</option>
-                    <option value="2">35+</option>
-                </select>
-              </div>
-                
-            </ion-col>
-        </ion-row>
-
-    </div>
-
-
-    <ion-refresher #refresh (ionRefresh)="refreshCard($event)" slot="fixed">
-        <ion-refresher-content
-            pullingIcon="arrow-dropdown"
-            pullingText="Pull to refresh"
-            refreshingSpinner="circles"
-            refreshingText="Refreshing...">
-         </ion-refresher-content>
-     </ion-refresher>
-
-
+<ion-content> 
+  <ion-refresher #refresh (ionRefresh)="refreshCard($event)" slot="fixed" pullMin=120>
+      <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div style="background-color: white" >
     <ion-card [(ngModel)]="jobs" ngDefaultControl style="background: white;" *ngFor="let j of jobs" [routerLink]="['./',j.ID]">
       <ion-card-content>
       
@@ -94,7 +103,7 @@
           </ion-row>
           <ion-row>
               <ion-col>
-              <p style="font-size: 3.5vw;">{{ j.IntoText }}</p>
+              <p style="font-size: 3.5vw;">{{ j.IntroText }}</p>
               </ion-col>
           </ion-row>
         </ion-col>
@@ -108,15 +117,103 @@
         
       
   </ion-card>
+  <ion-card>
+    <!-- <ion-card-content> -->
+      <ion-grid>
+        <!-- Company name& avatar, plus post time -->
+        <ion-row class="ion-align-items-center ion-justify-content-center">
+          <ion-col size=2>
+            <ion-thumbnail>
+              <img src='../../assets/melbourne2.jpg'>
+            </ion-thumbnail> 
+          </ion-col>
+          <ion-col size=7 offset=0.5>
+            <!-- <ion-label><b>墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩尔有限公司尔有限公司</b></ion-label> -->
+            <ion-list>  
+              <ion-item>
+                <ion-label class="ion-text-wrap ion-text-center"><b>墨尔本摩尔有限公司</b></ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label class="ion-text-wrap ion-text-start">九九六九九六九九六九九六九九六</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          <ion-col size=2 offset=0.5>
+            <span style="color: rgb(142, 171, 224); font-size: 7; ">5min</span>
+          </ion-col>
+        </ion-row>
+        <!-- Job's description, start with a fav icon -->
+        <ion-row class="ion-align-items-center" style="border-bottom-style: dotted; border-bottom-color: darkgray; padding-bottom: 3px;">
+          <ion-label>好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟</ion-label>
+        </ion-row>
+        <!-- Job's characteristics -->
+        <ion-row>
+          <!-- <ion-chip *ngfor="let l for j.labels">{{ l }}</ion-chip> -->
+          <ion-chip>test</ion-chip>
+          <ion-chip>testtestest</ion-chip>
+        </ion-row>
+        <ion-button expand="block"><ion-icon name="heart-empty"></ion-icon></ion-button>
+
+      </ion-grid>
+    <!-- </ion-card-content> -->
+  </ion-card>
+  <ion-item-sliding>
+      <ion-item-options side="start">
+        <ion-item-option color="primary" expandable>
+          收藏
+        </ion-item-option>
+      </ion-item-options>
+  
+      <ion-item>
+          <ion-card>
+              <!-- <ion-card-content> -->
+                <ion-grid>
+                  <!-- Company name& avatar, plus post time -->
+                  <ion-row class="ion-align-items-center ion-justify-content-center">
+                    <ion-col size=2>
+                      <ion-thumbnail>
+                        <img src='../../assets/melbourne2.jpg'>
+                      </ion-thumbnail> 
+                    </ion-col>
+                    <ion-col size=7 offset=0.5>
+                      <!-- <ion-label><b>墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩尔有限公司尔有限公司</b></ion-label> -->
+                      <ion-item>
+          
+                      </ion-item>
+                    </ion-col>
+                    <ion-col size=2 offset=0.5>
+                      <span style="color: rgb(142, 171, 224); font-size: 7; ">5min</span>
+                    </ion-col>
+                  </ion-row>
+                  <!-- Job's description, start with a fav icon -->
+                  <ion-row class="ion-align-items-center" style="border-bottom-style: dotted; border-bottom-color: darkgray; padding-bottom: 3px;">
+                    <ion-label>好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟</ion-label>
+                  </ion-row>
+                  <!-- Job's characteristics -->
+                  <ion-row>
+                    <!-- <ion-chip *ngfor="let l for j.labels">{{ l }}</ion-chip> -->
+                    <ion-chip>test</ion-chip>
+                    <ion-chip>testtestest</ion-chip>
+                  </ion-row>
+                  <ion-button expand="block"><ion-icon name="heart-empty"></ion-icon></ion-button>
+          
+                </ion-grid>
+              <!-- </ion-card-content> -->
+            </ion-card>
+      </ion-item>
+  
+      <ion-item-options side="end">
+        <ion-item-option color="danger" expandable>
+          删除
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
       
       
      
      
      
   </div>
-    
-
-
 </ion-content>
 
 <ion-footer></ion-footer>

@@ -10,7 +10,7 @@ export interface JobInfo {
 
     Salary: number;
 
-    IntoText: string;
+    IntroText: string;
 
     Details: any;
 }
