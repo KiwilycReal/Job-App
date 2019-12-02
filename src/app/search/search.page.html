@@ -4,7 +4,7 @@
     <!-- <ion-input style="height: 6vh; background: white; border-bottom: 1px solid" placeholder="输入关键字" clearInput> 
         <ion-icon name="search" style="zoom: 1.3; margin-left: 1vw"></ion-icon>
     </ion-input> -->
-    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="testSearch()" debounce=2000 showCancelButton="focus" animated placeholder="输入关键字"></ion-searchbar>
+    <ion-searchbar [(ngModel)]="searchTerm" (ionChange)="testSearch($event)" (ionCancel)="cancelSearch()" (ionFocus)="initSearch()" debounce=2000 showCancelButton="focus" animated placeholder="输入关键字"></ion-searchbar>
 
     <!-- search drop down -->
     <ion-row style="background: white; text-align: center;">
@@ -59,6 +59,10 @@
             
         </ion-col>
     </ion-row>
+    <ion-range min="15" max="500" color="secondary" dual-knobs pin value=250>
+      <ion-icon slot="start" size="small" name="card"></ion-icon>
+      <ion-icon slot="end" name="card"></ion-icon>
+    </ion-range>
   </div>
 </ion-header>
 
@@ -214,6 +218,29 @@
      
      
   </div>
+  <form [formGroup]="this.jobser.jobForm">
+    <ion-label>ID</ion-label>
+    <ion-input placeholder="ID"
+            formControlName="ID"></ion-input><br/>
+    <ion-label>ImageUrl</ion-label>            
+    <ion-input placeholder="ImageUrl"
+            formControlName="ImageUrl"></ion-input><br/>
+    <ion-label>Title</ion-label>
+    <ion-input placeholder="Title"
+            formControlName="Title"></ion-input><br/>
+    <ion-label>Salary</ion-label>
+    <ion-input placeholder="Salary"
+            formControlName="Salary"
+            type="number"></ion-input><br/>
+    <ion-label>IntroText</ion-label>
+    <ion-textarea placeholder="IntroText"
+            formControlName="IntroText"></ion-textarea><br/>
+    <ion-label>Details</ion-label>
+    <ion-textarea placeholder="Details"
+            formControlName="Details"></ion-textarea><br/>
+    <ion-button type="submit" expand="block" (click)="addJob()"><ion-icon name="add"></ion-icon></ion-button>
+  </form>
+
 </ion-content>
 
 <ion-footer></ion-footer>

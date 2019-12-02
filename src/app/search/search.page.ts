@@ -13,6 +13,7 @@ export class SearchPage implements OnInit {
   public searchTerm: String = "";
   jobs: JobInfo[];
   testt: JobInfo[];
+  newJob: JobInfo;
   @Output() newjobs = new EventEmitter<JobInfo[]>();
 
   // testt: Observable<any>;
@@ -20,16 +21,15 @@ export class SearchPage implements OnInit {
 
   refreshCard(event){
     console.log('Start');
+    // console.dir(this.jobser.testdb());
     setTimeout(() => {
       this.jobs = this.jobser.get_jobinfo();
       this.jobser.get_jobinfo_db().subscribe(res => {
         this.testt = res.map(j => {
           return <JobInfo> j.payload.doc.data();
         });
-        // this.jobs.unshift(this.testt);
-        // let data: JobInfo = res[0].payload.doc.data();
-        // this.jobs.unshift(data);
-        this.jobs = this.testt.concat(this.jobs);
+        // this.jobs = this.testt.concat(this.jobs);
+        this.jobs = this.testt;
       });
       this.newjobs.emit(this.jobs);
       console.log('Async operation has ended');
@@ -41,8 +41,25 @@ export class SearchPage implements OnInit {
     console.dir(ev);
   }
 
-  testSearch(){
+  testSearch(ev){
+    console.dir(ev);
     console.dir(this.searchTerm);
+
+  }
+
+  initSearch(){
+    console.log("search focus");
+  }
+
+  addJob(){
+    let data = this.jobser.jobForm.value;
+    this.jobser.createJob(data)
+  }
+
+  cancelSearch(){
+    // console.dir(this.jobser.testdb());
+    this.jobs = this.jobser.get_jobinfo();
+    // this.newjobs.emit(this.jobs);
   }
 
 

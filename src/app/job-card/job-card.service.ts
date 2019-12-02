@@ -2,12 +2,24 @@ import { Injectable } from '@angular/core';
 import { JobInfo } from './job-card.module';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { FormGroup, FormControl } from '@angular/forms';
+import { resolve } from 'url';
+
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobCardService {
+
+  jobForm = new FormGroup({
+    ID: new FormControl(''),
+    ImageUrl: new FormControl(''),
+    Title: new FormControl(''),
+    Salary: new FormControl(''),
+    IntroText: new FormControl(''),
+    Details: new FormControl('')
+  });
 
   jobinfos: JobInfo[] = [
   {
@@ -29,13 +41,27 @@ export class JobCardService {
 
   ];
 
+  getJobsFromDb(searchTerm?: String, filterRules?){
+
+  }
+
   get_jobinfo(){
     // console.log('HelloWorld');
     return [...this.jobinfos];
   }
 
   get_jobinfo_db(){
-    return this.fs.collection('Jobs').snapshotChanges();
+    // return this.fs.collection('Jobs').snapshotChanges();
+    return this.fs.collection('Jobs', ref => {
+      return ref.where("Salary", ">", 100);
+    }).snapshotChanges();
+  }
+
+  testdb(){
+    return this.fs.collection('Jobs').snapshotChanges().subscribe(res => {
+      return res.map(j => {
+        return <JobInfo> j.payload.doc.data();
+      })})
   }
 
   get_jobInfo_byID(houseI: string) {
@@ -46,13 +72,15 @@ export class JobCardService {
    };
   }
 
-  set_jobInfo(jobDetails: JobInfo){
-    this.jobinfos.unshift(jobDetails);
+  createJob(data){
+    return new Promise<any>((resolve, reject) => {
+      this.fs.collection("Jobs").add(data).then(res => {},
+          err => reject(err));
+    })
   }
 
-  filteredJobs(query): JobInfo[] {
-    
-    return undefined;
+  set_jobInfo(jobDetails: JobInfo){
+    this.jobinfos.unshift(jobDetails);
   }
 
   constructor(private fs: AngularFirestore) { }

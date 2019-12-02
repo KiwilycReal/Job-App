@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
   async testLoading() {
     const loading = await this.loadingController.create({
       message: 'Wait for pi page...',
-      duration: 1000
+      duration: 2000
     });
     await loading.present();
 
