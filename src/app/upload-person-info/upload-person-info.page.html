@@ -1,0 +1,214 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>什么招聘</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content>
+  <div style="border-bottom: solid grey 2px; margin-top: 2vh;">
+    <ion-row style=" height: 18vh; ">
+      <ion-col size="2.5" style=" height: 18vh; margin-left: 2vw;">
+        <img src="../assets/cxk.jpg" style="height: 20vw; width: 20vw; object-fit: cover;">
+      </ion-col>
+
+      <ion-col size="8" style=" height: 18vh;">
+
+        <ion-row style=" height: 3vh;  margin: auto; margin-bottom: 0.5vh;">
+          <p style="margin-top: auto; font-size: large; "> <b>{{title}}. {{name}} </b></p>
+        </ion-row>
+
+        <ion-row style=" height: 3vh;  margin: auto; margin-bottom: 0.5vh;">
+            <ion-chip style="margin: auto; height: 3vh;" *ngFor="let a of abilities" > 
+                <ion-label>{{a}}</ion-label>
+            </ion-chip>
+        </ion-row>
+
+        <ion-row style=" height: 3vh; margin: auto; margin-bottom: 0.5vh;">
+          <p style="margin-top: auto; font-size: medium; "> 
+            <ion-icon src="../assets/icon/mail.svg"></ion-icon> 
+             &nbsp; {{email}}
+          </p>
+        </ion-row>
+
+        <ion-row style=" height: 3vh;  margin: auto; margin-bottom: 0.5vh;">
+          <p style="margin-top: auto; font-size: medium; "> 
+            <ion-icon src="../assets/icon/phone.svg"></ion-icon> 
+             &nbsp; {{phone}}
+          </p>
+        </ion-row>
+
+        <ion-row style=" height: 3vh; margin: auto; margin-bottom: 0.5vh;">
+          <p style="margin-top: auto; font-size: medium; "> 
+            <ion-icon src="../assets/icon/wechat.svg" ></ion-icon> 
+             &nbsp; {{phone}}
+          </p>
+        </ion-row>
+
+      </ion-col>
+
+      <ion-col>
+        <ion-icon src="../assets/icon/setting.svg"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </div>
+
+
+  <div style="width: 96vw; margin:auto; margin-top: 1vh;">
+    <b>资料完整度: &nbsp;&nbsp; {{valueP}}%</b>
+    <ion-progress-bar [value]="value" [color]="pcolor" style="height: 2vh; margin-bottom: 3vh; margin-top: 1vh;"></ion-progress-bar>
+  </div>
+
+
+  <div>
+    <ion-card style="border: solid 1px;  width: 98vw; margin: auto; margin-bottom: 1vh;"> 
+      <ion-row>
+        <ion-col size="10.5" >
+          <div>
+             <b style="vertical-align:middle; margin-left: 1vw;">技能</b>
+          </div>
+          
+          <div>
+            <ion-chip style="margin: auto; margin-left: 1vw;" *ngFor="let a of abilities" > 
+              <ion-label>{{a}}</ion-label>
+            </ion-chip>
+          </div>
+         
+        </ion-col>
+       
+
+        <ion-col style="margin:auto">
+          <ion-icon style="margin:auto; font-size: 5vw;" src="../assets/icon/add.svg"></ion-icon>
+        </ion-col>
+        
+      </ion-row>
+        
+
+ 
+    </ion-card>
+
+    <ion-card style="border: solid 1px;  width: 98vw; margin: auto; margin-bottom: 1.5vh;">
+        <ion-row>
+            <ion-col size="10.5" >
+              <div>
+                 <b style="vertical-align:middle; margin-left: 1vw;">工作经验</b>
+              </div>
+            </ion-col>
+           
+    
+            <ion-col style="margin:auto">
+              <ion-icon style="margin:auto; font-size: 5vw;" src="../assets/icon/add.svg"></ion-icon>
+            </ion-col>
+          </ion-row>
+    </ion-card>
+
+    <ion-card style="border: solid 1px;  width: 98vw; margin: auto; margin-bottom: 1.5vh;">
+        <ion-row>
+            <ion-col size="10.5" >
+              <div>
+                 <b style="vertical-align:middle; margin-left: 1vw;">教育经历</b>
+              </div>
+            </ion-col>
+           
+    
+            <ion-col style="margin:auto">
+              <ion-icon style="margin:auto; font-size: 5vw;" src="../assets/icon/add.svg"></ion-icon>
+            </ion-col>
+          </ion-row>
+    </ion-card>
+
+    <ion-card style="border: solid 1px;  width: 98vw; margin: auto; margin-bottom: 1.5vh;">
+        <ion-row>
+            <ion-col size="10.5" >
+              <div>
+                 <b style="vertical-align:middle; margin-left: 1vw;">项目经历</b>
+              </div>
+            </ion-col>
+           
+    
+            <ion-col style="margin:auto">
+              <ion-icon style="margin:auto; font-size: 5vw;" src="../assets/icon/add.svg"></ion-icon>
+            </ion-col>
+          </ion-row>
+    </ion-card>
+
+    <ion-card style="border: solid 1px;  width: 98vw; margin: auto; margin-bottom: 1.5vh;">
+        <ion-row>
+            <ion-col size="10.5" >
+              <div>
+                 <b style="vertical-align:middle; margin-left: 1vw;">个人荣誉</b>
+              </div>
+            </ion-col>
+           
+    
+            <ion-col style="margin:auto">
+              <ion-icon style="margin:auto; font-size: 5vw;" src="../assets/icon/add.svg"></ion-icon>
+            </ion-col>
+          </ion-row>
+    </ion-card>
+
+    <ion-card style="border: solid 1px;  width: 98vw; margin: auto; margin-bottom: 1.5vh;">
+        <ion-row>
+            <ion-col size="10.5" >
+              <div>
+                 <b style="vertical-align:middle; margin-left: 1vw;">附件</b>
+              </div>
+            </ion-col>
+           
+    
+            <ion-col style="margin:auto">
+              <ion-icon style="margin:auto; font-size: 5vw;" src="../assets/icon/add.svg"></ion-icon>
+            </ion-col>
+          </ion-row>
+    </ion-card>
+
+    <ion-card style="border: solid 1px;  width: 98vw; margin: auto; margin-bottom: 1.5vh;">
+        <ion-row>
+            <ion-col size="10.5" >
+              <div>
+                 <b style="vertical-align:middle; margin-left: 1vw;">个人简介</b>
+              </div>
+            </ion-col>
+           
+    
+            <ion-col style="margin:auto">
+              <ion-icon style="margin:auto; font-size: 5vw;" src="../assets/icon/add.svg"></ion-icon>
+            </ion-col>
+          </ion-row>
+    </ion-card>
+
+
+  </div>
+</ion-content>
+
+
+<ion-tabs>
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button>
+        <ion-icon src="../assets/icon/house.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/front-page']"></ion-icon>
+        <ion-label>首页</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button>
+        <ion-icon src="../assets/icon/favor.svg" style="zoom: 1.8; font-size: 5vw;"></ion-icon>
+        <ion-label>收藏</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button>
+        <ion-icon src="../assets/icon/search.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/search']"></ion-icon>
+        <ion-label>搜索</ion-label>
+      </ion-tab-button>
+  
+      <ion-tab-button>
+        <ion-icon src="../assets/icon/chat.svg" style="zoom: 1.8; font-size: 5vw;"></ion-icon>
+        <ion-label>消息</ion-label>
+        <ion-badge>6</ion-badge>
+      </ion-tab-button>
+
+      <ion-tab-button>
+        <ion-icon src="../assets/icon/user.svg" style="zoom: 1.8; font-size: 5vw;" [routerLink]="['/upload-person-info']" ></ion-icon>
+        <ion-label>个人</ion-label>
+      </ion-tab-button>
+
+    </ion-tab-bar>
+  </ion-tabs>

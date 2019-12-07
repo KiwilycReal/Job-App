@@ -7,7 +7,12 @@ const routes: Routes = [
   { path: 'search', loadChildren: './search/search.module#SearchPageModule' },
   { path: 'personal-info', loadChildren: './personal-info/personal-info.module#PersonalInfoModule' },
   { path: 'login', loadChildren: './login/login.module#LoginModule' },
-  { path: 'message', loadChildren: './message/message.module#MessagePageModule'}
+  { path: 'message', loadChildren: './message/message.module#MessagePageModule'},
+  { path: 'upload-personal-info', loadChildren: './upload-personal-info/upload-personal-info.module#UploadPersonInfoPageModule'},
+  {
+    path: 'upload-person-info',
+    loadChildren: () => import('./upload-person-info/upload-person-info.module').then( m => m.UploadPersonInfoPageModule)
+  }
 ];
 
 @NgModule({
