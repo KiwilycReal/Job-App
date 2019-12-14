@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: darkcyan;">Finish</ion-label> -->
+    <ion-title>{{title}}</ion-title>
+    <ion-label (click)="selfDismiss()" slot="end" style="padding-right: 10px; color: red;">Cancel</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- <ion-refresher (ionRefresh)="refreshPage($event)" slot="fixed" pullMin=120>
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher> -->
+  <ion-list>
+    <ion-item-sliding *ngFor="let item of list">
+      <ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-label>{{item.entityName}}</ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label>{{item.startDate}}</ion-label>
+            <ion-label>{{item.endDate}}</ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label>{{item.geolocation}}</ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label>{{item.position}}</ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-label>{{item.description}}</ion-label>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <ion-item-option color="danger" expandable (click)="deleteWorkExp(item.id)">
+          删除
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ion-card>
+    <form>
+
+    </form>
+    <ion-button expand="block" (click)="addWorkExp()"><ion-icon name="add"></ion-icon></ion-button>
+  </ion-card>
+</ion-content>

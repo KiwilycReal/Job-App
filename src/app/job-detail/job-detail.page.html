@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>什么招聘</ion-title>
+    <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: red;">
+      Back
+    </ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+<ion-slides [options] = "imgSliderOpts" pager="true">
+  <ion-slide style="max-height: 20vh" *ngFor="let img of images" >
+      <ion-card> 
+        <img [src]="img">
+      </ion-card>
+  </ion-slide>
+</ion-slides>
+
+<!-- <div style="height: 260px; padding-left: 16px;padding-right: 16px;"> -->
+  <agm-map style="height: 260px;" [latitude]="lat" [zoom]="zoom" [longitude]="lng" disableDefaultUI="true" clickableIcons="false">
+    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+  </agm-map>
+<!-- </div> -->
+
+<ion-card>
+  <ion-card-header>
+    <ion-card-subtitle>{{title}}</ion-card-subtitle>
+    <ion-card-title>{{position}}</ion-card-title>
+  </ion-card-header>
+  <ion-item-divider>
+      <ion-label slot="start">
+          <ion-icon name="pin"></ion-icon>{{geolocation}}
+      </ion-label>
+      <ion-label slot="end">
+          {{salary}}$/hr
+      </ion-label>
+  </ion-item-divider>
+  <ion-card-content>
+    {{introText}}
+  </ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-content>
+    <p [innerHTML]="details"></p>
+  </ion-card-content>
+</ion-card>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full">联系商家</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" color="danger">立即申请</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

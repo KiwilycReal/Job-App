@@ -1,30 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SearchPage } from './search.page';
-import { JobDetailPageModule } from '../job-detail/job-detail.module';
+import { RegisterPageRoutingModule } from './register-routing.module';
+
+import { RegisterPage } from './register.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: SearchPage
+    component: RegisterPage
   }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     FormsModule,
     IonicModule,
-    RouterModule.forChild(routes),
-    JobDetailPageModule
+    RegisterPageRoutingModule,
+    ReactiveFormsModule
   ],
-  declarations: [SearchPage]
+  declarations: [RegisterPage]
 })
-export class SearchPageModule {}
+export class RegisterPageModule {}

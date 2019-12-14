@@ -13,30 +13,40 @@ import { resolve } from 'url';
 export class JobCardService {
 
   jobForm = new FormGroup({
-    ID: new FormControl(''),
-    ImageUrl: new FormControl(''),
-    Title: new FormControl(''),
-    Salary: new FormControl(''),
-    IntroText: new FormControl(''),
-    Details: new FormControl('')
+    // jid: new FormControl(''),
+    imageUrl: new FormControl(''),
+    title: new FormControl(''),
+    salary: new FormControl(''),
+    introText: new FormControl(''),
+    details: new FormControl(''),
+    position: new FormControl(''),
+    publishDateTime: new FormControl(''),
+    lastEditDateTime: new FormControl(''),
+    geolocation: new FormControl('')
   });
 
   jobinfos: JobInfo[] = [
   {
-    ID:'j1',
-    ImageUrl: '../assets/cxk.jpg',
-    Title: "NMSL有限公司",
-    Salary: 30,
-    IntroText: "大家好，我是练习时长两年半的个人练习生蔡徐坤",
-    Details: null
+    imageUrl: '../assets/cxk.jpg',
+    title: "NMSL有限公司",
+    salary: 30,
+    introText: "大家好，我是练习时长两年半的个人练习生蔡徐坤",
+    details: "musicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusic",
+    position: "CEO",
+    tags: ["NM", "SL"],
+    publishDateTime: "2019-12-12",
+    lastEditDateTime: null
   },
   {
-    ID:'j2',
-    ImageUrl: '../assets/cxk.jpg',
-    Title: "NBSL有限公司",
-    Salary: 30,
-    IntroText: "喜欢唱跳rap篮球，music",
-    Details: null
+    imageUrl: '../assets/cxk.jpg',
+    title: "NBSL有限公司",
+    salary: 30,
+    introText: "喜欢唱跳rap篮球，music",
+    details: "musicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusicmusic",
+    position: "CFO",
+    tags: ["WS", "ND"],
+    publishDateTime: "2019-12-12",
+    lastEditDateTime: null
   }
 
   ];
@@ -52,9 +62,7 @@ export class JobCardService {
 
   get_jobinfo_db(){
     // return this.fs.collection('Jobs').snapshotChanges();
-    return this.fs.collection('Jobs', ref => {
-      return ref.where("Salary", ">", 100);
-    }).snapshotChanges();
+    return this.fs.collection('Jobs').get().toPromise();
   }
 
   testdb(){
@@ -64,17 +72,23 @@ export class JobCardService {
       })})
   }
 
-  get_jobInfo_byID(houseI: string) {
-    return {
-      ... this.jobinfos.find(hi => {
-      return hi.ID === houseI;
-    })
-   };
+  // get_jobInfo_byID(houseI: string) {
+  //   return {
+  //     ... this.jobinfos.find(hi => {
+  //     return hi.ID === houseI;
+  //   })
+  //  };
+  // }
+
+  ttt(){
+    return new Promise<any>((resolve, reject) => {
+      this.fs.collection("Jobs").doc("J9z6Qy3Jqtfk7LDBXviq").update({Yes:"no", No:{haha:"haha"}}).then(res=>{},err=>{reject(err)})
+    });
   }
 
   createJob(data){
     return new Promise<any>((resolve, reject) => {
-      this.fs.collection("Jobs").add(data).then(res => {},
+      this.fs.collection("Jobs").add(data).then(res => resolve(res),
           err => reject(err));
     })
   }

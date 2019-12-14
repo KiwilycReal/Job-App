@@ -1,0 +1,55 @@
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-align-items-center">
+          <form [formGroup]="this.userDetailForm">
+            <ion-label>Title</ion-label>
+            <!-- <ion-input placeholder="Email"
+                    formControlName="email"
+                    type="email"
+                    #registerEmail></ion-input> -->
+              <ion-select interface="popover"
+                          placeholder="Please select"
+                          formControlName="title">
+                <ion-select-option value="Mr.">Mr.</ion-select-option>
+                <ion-select-option value="Ms.">Ms.</ion-select-option>
+                <ion-select-option value="Miss.">Miss.</ion-select-option>
+                <ion-select-option value="Prof.">Prof.</ion-select-option>
+                <ion-select-option value="Dr.">Dr.</ion-select-option>
+              </ion-select><br>
+            <ion-label>First Name</ion-label>
+            <ion-input placeholder="First Name"
+                       formControlName="firstName"
+                       type="text"
+                       required></ion-input><br/>
+            <ion-label>Middle Name</ion-label>
+            <ion-input placeholder="Middle Name"
+                       formControlName="middleName"
+                       type="text"></ion-input><br/>
+            <ion-label>Last Name</ion-label>
+            <ion-input placeholder="Last Name"
+                       formControlName="lastName"
+                       type="text"></ion-input><br/>
+            <ion-label>Date of Birth</ion-label>
+            <ion-input formControlName="dob"
+                       type="date"></ion-input><br/>
+            <ion-label>Your Email address</ion-label>
+            <ion-input placeholder="Email"
+                       formControlName="email"
+                       type="email"></ion-input><br/>
+            <ion-label>Password</ion-label>            
+            <ion-input placeholder="Password"
+                       formControlName="password"
+                       type="password"></ion-input><br/>
+            <ion-button type="submit" expand="block" (click)="register()">Register</ion-button>
+          </form>
+      </ion-col>
+    </ion-row>
+    <br>
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <ion-label>
+        Already have an account? <a [routerLink]="['/login']">Login</a>
+      </ion-label>
+    </ion-row>
+  </ion-grid>
+</ion-content>

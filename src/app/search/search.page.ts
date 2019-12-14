@@ -1,19 +1,31 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { JobInfo } from '../job-card/job-card.module';
 import { JobCardService } from '../job-card/job-card.service';
 import { Observable } from 'rxjs';
+import { NavController, ModalController } from '@ionic/angular';
+import { JobDetailPage } from '../job-detail/job-detail.page';
+import { reject } from 'q';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
-export class SearchPage implements OnInit {
-
+export class SearchPage implements OnInit{
+  // ngAfterViewInit(): void {
+  //   console.log("YES",this.hah);
+  // }
+  // @ViewChild('t') hah;
   public searchTerm: String = "";
-  jobs: JobInfo[];
-  testt: JobInfo[];
-  newJob: JobInfo;
+  // @Input() teststr: ElementRef;
+  // jobs: JobInfo[];
+  // testt: JobInfo[] = [];
+  // newJob: JobInfo;
+  jobs =[];
+  tempList = [];
+  newJob;
+  ids: string[];
+  navCtrl: NavController;
   @Output() newjobs = new EventEmitter<JobInfo[]>();
 
   // testt: Observable<any>;
@@ -24,17 +36,37 @@ export class SearchPage implements OnInit {
     // console.dir(this.jobser.testdb());
     setTimeout(() => {
       this.jobs = this.jobser.get_jobinfo();
-      this.jobser.get_jobinfo_db().subscribe(res => {
-        this.testt = res.map(j => {
-          return <JobInfo> j.payload.doc.data();
-        });
-        // this.jobs = this.testt.concat(this.jobs);
-        this.jobs = this.testt;
-      });
-      this.newjobs.emit(this.jobs);
+      this.tempList = [];
+      var temp;
+      this.jobser.get_jobinfo_db().then(res => {
+        res.docs.forEach(doc => {
+          temp = doc.data();
+          temp['jid'] = doc.id;
+          this.tempList.push(temp);
+        })
+      }, err => {reject(err); console.log("err",err)});
+      this.jobs = this.tempList;
+      // this.jobser.get_jobinfo_db().subscribe(res => {
+      //   console.log(res);
+      //   // this.testt = res.map(j => {
+      //   //   return <JobInfo> j.payload.doc.data();
+      //   // });
+      //   res.map(j => {
+      //     let temp = j.payload.doc.data();
+      //     temp['jid'] = j.payload.doc.id;
+      //     this.testt.push(temp);
+      //   })
+      //   // this.testt.map(j => {
+      //   //   j.ID = 
+      //   // })
+      //   // this.jobs = this.testt.concat(this.jobs);
+      //   this.jobs = this.testt;
+      //   console.log(this.jobs);
+      // });
+      // this.newjobs.emit(this.jobs);
       console.log('Async operation has ended');
       event.target.complete();
-    }, 1500);
+    });
   }
 
   selectChange(ev){
@@ -53,7 +85,8 @@ export class SearchPage implements OnInit {
 
   addJob(){
     let data = this.jobser.jobForm.value;
-    this.jobser.createJob(data)
+    this.jobser.createJob(data).then(res => console.log(res));
+    // this.jobser.ttt();
   }
 
   cancelSearch(){
@@ -62,8 +95,22 @@ export class SearchPage implements OnInit {
     // this.newjobs.emit(this.jobs);
   }
 
+  async presentJobDetailModal(job){
+    const modal = await this.modalController.create({
+      component: JobDetailPage,
+      componentProps: {
+        test: "test",
+        job: job
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+  }
 
-  constructor(private jobser: JobCardService) { }
+
+  constructor(public jobser: JobCardService,
+              public modalController: ModalController) {
+  }
 
   ngOnInit() {
     this.jobs = this.jobser.get_jobinfo();

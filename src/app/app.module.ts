@@ -16,11 +16,12 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { LoginService } from './services/login.service'
+import { CommDbService } from './services/comm-db.service';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
+  imports: [BrowserModule, IonicModule.forRoot({animated: false}), AppRoutingModule,
   AngularFireModule.initializeApp(environment.firebaseConfig),
   AngularFirestoreModule,
   AngularFireAuthModule],
@@ -28,7 +29,8 @@ import { LoginService } from './services/login.service'
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    { provide: 'loginService', useClass: LoginService }
+    { provide: 'loginService', useClass: LoginService },
+    { provide: 'commDbService', useClass: CommDbService }
 
   ],
   bootstrap: [AppComponent]

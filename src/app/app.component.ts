@@ -3,7 +3,7 @@ import { Component, Inject, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { PersonalInfoComponent } from './personal-info/personal-info.component';
+// import { PersonalInfoComponent } from './personal-info/personal-info.component';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,12 @@ import { PersonalInfoComponent } from './personal-info/personal-info.component';
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  @ViewChild(PersonalInfoComponent, {read: ElementRef, static: true}) private testEleRef: ElementRef;
+  // ngAfterViewInit(): void {
+  //   console.log("From root: ",this.testt);
+  // }
+  t;
+  // @ViewChild(PersonalInfoComponent, {read: ElementRef, static: true}) private testEleRef: ElementRef;
+  // @ViewChild('t') testt;
   constructor(
     private platform: Platform,
     private splashScreen: SplashScreen,
@@ -30,6 +35,12 @@ export class AppComponent {
     });
   }
 
+  // ngAfterViewInit(): void {
+  //   console.log(this.t);
+  //   //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
+  //   //Add 'implements AfterViewInit' to the class.
+    
+  // }
   // test(){
   //   // console.log(this.LoginService.testEle);
   //   this.LoginService.testEle.innerHTML = "hahahahah";

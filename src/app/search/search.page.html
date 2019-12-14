@@ -71,7 +71,7 @@
       <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div style="background-color: white" >
-    <ion-card [(ngModel)]="jobs" ngDefaultControl style="background: white;" *ngFor="let j of jobs" [routerLink]="['./',j.ID]">
+    <ion-card ngDefaultControl style="background: white;" *ngFor="let j of jobs" (click)="presentJobDetailModal(j)">
       <ion-card-content>
       
       <ion-grid>
@@ -81,7 +81,7 @@
           <ion-row>
             <div style="margin-top: 15%;">
               <ion-thumbnail>
-              <img style=" overflow:scroll;" [src] = "j.ImageUrl">
+              <img style=" overflow:scroll;" [src] = "j.imageUrl">
               </ion-thumbnail> 
             </div>
           </ion-row>
@@ -98,16 +98,16 @@
         <ion-col size="9" style="height: 15vh;">
           <ion-row>
               <ion-col>
-                  <p style="font-size: 4.5vw; text-align: left;"><b> {{ j.Title }} </b></p>
+                  <p style="font-size: 4.5vw; text-align: left;"><b> {{ j.title }} </b></p>
               </ion-col>
   
               <ion-col style="text-align: right;">
-                  <p style="font-size: 4.5vw; color: orange">${{ j.Salary }}/h</p>
+                  <p style="font-size: 4.5vw; color: orange">${{ j.salary }}/h</p>
               </ion-col>
           </ion-row>
           <ion-row>
               <ion-col>
-              <p style="font-size: 3.5vw;">{{ j.IntroText }}</p>
+              <p style="font-size: 3.5vw;">{{ j.introText }}</p>
               </ion-col>
           </ion-row>
         </ion-col>
@@ -121,123 +121,79 @@
         
       
   </ion-card>
-  <ion-card>
+  <ion-card *ngFor="let j of jobs">
     <!-- <ion-card-content> -->
       <ion-grid>
         <!-- Company name& avatar, plus post time -->
         <ion-row class="ion-align-items-center ion-justify-content-center">
           <ion-col size=2>
             <ion-thumbnail>
-              <img src='../../assets/melbourne2.jpg'>
+              <img [src]='j.imageUrl[0]'>
             </ion-thumbnail> 
           </ion-col>
           <ion-col size=7 offset=0.5>
             <!-- <ion-label><b>墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩尔有限公司尔有限公司</b></ion-label> -->
             <ion-list>  
               <ion-item>
-                <ion-label class="ion-text-wrap ion-text-center"><b>墨尔本摩尔有限公司</b></ion-label>
+                <ion-label class="ion-text-wrap ion-text-center"><b>{{j.title}}</b></ion-label>
               </ion-item>
               <ion-item lines="none">
-                <ion-label class="ion-text-wrap ion-text-start">九九六九九六九九六九九六九九六</ion-label>
+                <ion-label class="ion-text-wrap ion-text-center">{{j.position}}</ion-label>
               </ion-item>
             </ion-list>
           </ion-col>
           <ion-col size=2 offset=0.5>
-            <span style="color: rgb(142, 171, 224); font-size: 7; ">5min</span>
+            <span style="color: rgb(142, 171, 224); font-size: 7; ">{{j.publishDateTime}}</span>
           </ion-col>
         </ion-row>
         <!-- Job's description, start with a fav icon -->
         <ion-row class="ion-align-items-center" style="border-bottom-style: dotted; border-bottom-color: darkgray; padding-bottom: 3px;">
-          <ion-label>好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟</ion-label>
+          <ion-label>{{j.introText}}</ion-label>
         </ion-row>
         <!-- Job's characteristics -->
         <ion-row>
-          <!-- <ion-chip *ngfor="let l for j.labels">{{ l }}</ion-chip> -->
-          <ion-chip>test</ion-chip>
-          <ion-chip>testtestest</ion-chip>
+          <ion-chip *ngFor="let tag of j.tags">{{tag}}</ion-chip>
+          <!-- <ion-chip>test</ion-chip>
+          <ion-chip>testtestest</ion-chip> -->
         </ion-row>
         <ion-button expand="block"><ion-icon name="heart-empty"></ion-icon></ion-button>
 
       </ion-grid>
     <!-- </ion-card-content> -->
-  </ion-card>
-  <ion-item-sliding>
-      <ion-item-options side="start">
-        <ion-item-option color="primary" expandable>
-          收藏
-        </ion-item-option>
-      </ion-item-options>
-  
-      <ion-item>
-          <ion-card>
-              <!-- <ion-card-content> -->
-                <ion-grid>
-                  <!-- Company name& avatar, plus post time -->
-                  <ion-row class="ion-align-items-center ion-justify-content-center">
-                    <ion-col size=2>
-                      <ion-thumbnail>
-                        <img src='../../assets/melbourne2.jpg'>
-                      </ion-thumbnail> 
-                    </ion-col>
-                    <ion-col size=7 offset=0.5>
-                      <!-- <ion-label><b>墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩尔有限公司尔有限公司</b></ion-label> -->
-                      <ion-item>
-          
-                      </ion-item>
-                    </ion-col>
-                    <ion-col size=2 offset=0.5>
-                      <span style="color: rgb(142, 171, 224); font-size: 7; ">5min</span>
-                    </ion-col>
-                  </ion-row>
-                  <!-- Job's description, start with a fav icon -->
-                  <ion-row class="ion-align-items-center" style="border-bottom-style: dotted; border-bottom-color: darkgray; padding-bottom: 3px;">
-                    <ion-label>好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟好多好多好多好多好多好多好多🐟</ion-label>
-                  </ion-row>
-                  <!-- Job's characteristics -->
-                  <ion-row>
-                    <!-- <ion-chip *ngfor="let l for j.labels">{{ l }}</ion-chip> -->
-                    <ion-chip>test</ion-chip>
-                    <ion-chip>testtestest</ion-chip>
-                  </ion-row>
-                  <ion-button expand="block"><ion-icon name="heart-empty"></ion-icon></ion-button>
-          
-                </ion-grid>
-              <!-- </ion-card-content> -->
-            </ion-card>
-      </ion-item>
-  
-      <ion-item-options side="end">
-        <ion-item-option color="danger" expandable>
-          删除
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
-      
-      
-     
-     
-     
+  </ion-card>  
+
   </div>
   <form [formGroup]="this.jobser.jobForm">
-    <ion-label>ID</ion-label>
+    <ion-label>Position</ion-label>
     <ion-input placeholder="ID"
-            formControlName="ID"></ion-input><br/>
+            formControlName="position"></ion-input><br/>
+    <ion-label>Publish</ion-label>
+    <ion-input placeholder="ID"
+            formControlName="publishDateTime"
+            type="date"></ion-input><br/>
+    <ion-label>LastEdit</ion-label>
+    <ion-input placeholder="ID"
+            formControlName="lastEditDateTime"
+            type="date"></ion-input><br/>
     <ion-label>ImageUrl</ion-label>            
     <ion-input placeholder="ImageUrl"
-            formControlName="ImageUrl"></ion-input><br/>
+            formControlName="imageUrl"></ion-input><br/>
     <ion-label>Title</ion-label>
     <ion-input placeholder="Title"
-            formControlName="Title"></ion-input><br/>
+            formControlName="title"></ion-input><br/>
     <ion-label>Salary</ion-label>
     <ion-input placeholder="Salary"
-            formControlName="Salary"
+            formControlName="salary"
             type="number"></ion-input><br/>
     <ion-label>IntroText</ion-label>
     <ion-textarea placeholder="IntroText"
-            formControlName="IntroText"></ion-textarea><br/>
+            formControlName="introText"></ion-textarea><br/>
+    <ion-label>GeoLocation</ion-label>
+    <ion-textarea placeholder="geolocation"
+            formControlName="geolocation"></ion-textarea><br/>
     <ion-label>Details</ion-label>
     <ion-textarea placeholder="Details"
-            formControlName="Details"></ion-textarea><br/>
+            formControlName="details"></ion-textarea><br/>
     <ion-button type="submit" expand="block" (click)="addJob()"><ion-icon name="add"></ion-icon></ion-button>
   </form>
 

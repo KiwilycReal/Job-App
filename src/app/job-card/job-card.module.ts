@@ -2,16 +2,23 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 
 export interface JobInfo {
 
-    ID: string;
+    imageUrl: SafeResourceUrl;
 
-    ImageUrl: SafeResourceUrl;
+    title: string;
 
-    Title: string;
+    salary: number;
 
-    Salary: number;
+    introText: string;
 
-    IntroText: string;
+    details: any;
 
-    Details: any;
+    position: string;
+
+    tags: string[];
+    
+    publishDateTime: string;
+
+    lastEditDateTime: string;
+
 }
 

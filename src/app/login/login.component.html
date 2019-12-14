@@ -19,7 +19,7 @@
           </form>
       </ion-col>
     </ion-row>
-    <ion-row>
+    <!-- <ion-row>
       <ion-col class="ion-align-items-center">
           <form [formGroup]="this.loginService.registerForm">
             <ion-label>Your Email address</ion-label>
@@ -35,6 +35,12 @@
             <ion-button type="submit" expand="block" (click)="tryRegister()">Register</ion-button>
           </form>
       </ion-col>
+    </ion-row> -->
+    <br><br><br>
+    <ion-row class="ion-align-items-center ion-justify-content-center">
+      <ion-label>
+        Not have an account? <a [routerLink]="['/register']">Register</a>
+      </ion-label>
     </ion-row>
   </ion-grid>
 </ion-content>
