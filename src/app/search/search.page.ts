@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input, ElementRef, ViewChild, 
 import { JobInfo } from '../job-card/job-card.module';
 import { JobCardService } from '../job-card/job-card.service';
 import { Observable } from 'rxjs';
-import { NavController, ModalController } from '@ionic/angular';
+import { NavController, ModalController, LoadingController } from '@ionic/angular';
 import { JobDetailPage } from '../job-detail/job-detail.page';
 import { reject } from 'q';
 
@@ -30,40 +30,24 @@ export class SearchPage implements OnInit{
 
   // testt: Observable<any>;
   
+  async updateJobList(){
+    this.tempList = [];
+    var temp;
+    await this.jobser.get_jobinfo_db().then(res => {
+      res.docs.forEach(doc => {
+        temp = doc.data();
+        temp['jid'] = doc.id;
+        this.tempList.push(temp);
+      })
+    }, err => {reject(err); console.log("err",err)});
+    this.jobs = this.tempList;
+  }
 
   refreshCard(event){
     console.log('Start');
     // console.dir(this.jobser.testdb());
-    setTimeout(() => {
-      this.jobs = this.jobser.get_jobinfo();
-      this.tempList = [];
-      var temp;
-      this.jobser.get_jobinfo_db().then(res => {
-        res.docs.forEach(doc => {
-          temp = doc.data();
-          temp['jid'] = doc.id;
-          this.tempList.push(temp);
-        })
-      }, err => {reject(err); console.log("err",err)});
-      this.jobs = this.tempList;
-      // this.jobser.get_jobinfo_db().subscribe(res => {
-      //   console.log(res);
-      //   // this.testt = res.map(j => {
-      //   //   return <JobInfo> j.payload.doc.data();
-      //   // });
-      //   res.map(j => {
-      //     let temp = j.payload.doc.data();
-      //     temp['jid'] = j.payload.doc.id;
-      //     this.testt.push(temp);
-      //   })
-      //   // this.testt.map(j => {
-      //   //   j.ID = 
-      //   // })
-      //   // this.jobs = this.testt.concat(this.jobs);
-      //   this.jobs = this.testt;
-      //   console.log(this.jobs);
-      // });
-      // this.newjobs.emit(this.jobs);
+    setTimeout(async () => {
+      await this.updateJobList();
       console.log('Async operation has ended');
       event.target.complete();
     });
@@ -109,12 +93,24 @@ export class SearchPage implements OnInit{
 
 
   constructor(public jobser: JobCardService,
-              public modalController: ModalController) {
+              public modalController: ModalController,
+              public loadingController: LoadingController) {
+  }
+
+  async testLoading(errMsg?: string) {
+    const loading = await this.loadingController.create({
+      message: 'Logging, Please wait...',
+      duration: 10000
+    });
+    await loading.present();
+    await this.updateJobList();
+    await this.loadingController.dismiss();
   }
 
   ngOnInit() {
-    this.jobs = this.jobser.get_jobinfo();
-    this.newjobs.emit(this.jobs);
+    // this.jobs = this.jobser.get_jobinfo();
+    // this.newjobs.emit(this.jobs);
+    this.testLoading();
   }
 
 }

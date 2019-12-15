@@ -20,6 +20,7 @@ export class LoginService {
   private curDisplayName = undefined;
   private curUser = undefined;
   private fuck = 0;
+  private imgUrl;
   // private myself = this;
 
   loginForm = new FormGroup({
@@ -41,15 +42,6 @@ export class LoginService {
       this.fa.auth.createUserWithEmailAndPassword(data.email, data.password)
                   .then(res => {
                     resolve(res);
-                    res.user.updateProfile({
-                      displayName: res.user.email,
-                      photoURL: "http://i0.hdslb.com/bfs/archive/1ebcd228cec3f5104031fa9a9f8d113ccbd082db.jpg"
-                    }).then(function(){
-                      console.log("Update success");
-                    }).catch(function(error){
-                      console.log(error);
-                    });
-                    console.log("Default display name set");
                   }, err => reject(err));
     })
   }
@@ -70,7 +62,7 @@ export class LoginService {
         // test.curUser = user;
         self.curUser = user;
         console.log("Current user is "+user.email+"////"+user.displayName);
-        self.curDisplayName = user.displayName;
+        if(user.displayName != null) self.curDisplayName = user.displayName;
         // console.log(self.loginIconEle);
         self.loginIconEle.el.style.display = "none";
         // console.log(this);
@@ -86,6 +78,12 @@ export class LoginService {
         self.displayNameEle.innerHTML = self.curDisplayName;
       }
     });
+  }
+
+  changeDisplayName(name){
+    if(this.displayNameEle){
+      this.displayNameEle.innerHTML = name;
+    }
   }
 
   userLogout(){

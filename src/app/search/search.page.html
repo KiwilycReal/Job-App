@@ -71,7 +71,7 @@
       <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div style="background-color: white" >
-    <ion-card ngDefaultControl style="background: white;" *ngFor="let j of jobs" (click)="presentJobDetailModal(j)">
+    <!-- <ion-card ngDefaultControl style="background: white;" *ngFor="let j of jobs" (click)="presentJobDetailModal(j)">
       <ion-card-content>
       
       <ion-grid>
@@ -120,8 +120,8 @@
 
         
       
-  </ion-card>
-  <ion-card *ngFor="let j of jobs">
+  </ion-card> -->
+  <ion-card *ngFor="let j of jobs" (click)="presentJobDetailModal(j)">
     <!-- <ion-card-content> -->
       <ion-grid>
         <!-- Company name& avatar, plus post time -->

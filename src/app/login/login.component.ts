@@ -32,20 +32,6 @@ export class LoginComponent implements OnInit {
     // console.log(errMsg);
   }
 
-  tryRegister(){
-    let data = this.loginService.registerForm.value;
-    console.log("User entered: "+data.toString());
-    this.loginService.userRegister(data).then(res => {
-      console.log("Register Result: ");
-      console.log(res);
-      console.log(res.additionalUserInfo.isNewUser);
-    }, err => {
-      console.log("Register Error: ");
-      console.log(err);
-    });
-    this.router.navigate(['personal-info']);
-  }
-
   async testLoading(errMsg?: string) {
     const loading = await this.loadingController.create({
       message: 'Logging, Please wait...',
