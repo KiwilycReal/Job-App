@@ -10,7 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit{
   // ngAfterViewInit(): void {
   //   console.log("From root: ",this.testt);
   // }
@@ -35,14 +35,10 @@ export class AppComponent {
     });
   }
 
-  // ngAfterViewInit(): void {
-  //   console.log(this.t);
-  //   //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-  //   //Add 'implements AfterViewInit' to the class.
-    
-  // }
-  // test(){
-  //   // console.log(this.LoginService.testEle);
-  //   this.LoginService.testEle.innerHTML = "hahahahah";
-  // }
+  @ViewChild("loginIcon", {static: true}) loginIconEle;
+
+  ngAfterViewInit() {
+    // console.log(this.loginIconEle);
+    this.LoginService.loginIconEle = this.loginIconEle;
+  }
 }

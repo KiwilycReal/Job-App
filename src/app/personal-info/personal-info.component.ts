@@ -32,6 +32,14 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     // this.router.navigate(["login"])
   }
 
+  toLogin(){
+    if(this.displayNameEle.nativeElement.innerHTML == "请先登录"){
+      this.router.navigate(['login']);
+    }else{
+      console.log("relax");
+    }
+  }
+
   ngOnInit() {}
 
   ngAfterViewInit() {

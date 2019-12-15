@@ -16,6 +16,7 @@ export class LoginService {
 
   // public t: any;
   private displayNameEle: HTMLElement = undefined;
+  private loginIconEle;
   private curDisplayName = undefined;
   private curUser = undefined;
   private fuck = 0;
@@ -70,11 +71,14 @@ export class LoginService {
         self.curUser = user;
         console.log("Current user is "+user.email+"////"+user.displayName);
         self.curDisplayName = user.displayName;
+        // console.log(self.loginIconEle);
+        self.loginIconEle.el.style.display = "none";
         // console.log(this);
         // self.displayNameEle.innerHTML = user.displayName;
       }else{
         console.log("No one is logged in");
         self.curDisplayName = "请先登录";
+        self.loginIconEle.el.style.display = "";
         // console.log(this);
         // self.displayNameEle.innerHTML = "请先登录";
       }
