@@ -14,6 +14,9 @@ export class InfoEditModalPage implements OnInit {
   title;
   uid;
   list;
+  input1;
+  input2;
+  input3;
 
   constructor(public modalController: ModalController,
               @Inject('commDbService') public commDbService,
@@ -43,13 +46,16 @@ export class InfoEditModalPage implements OnInit {
   }
 
   addWorkExp(){
+    if(!this.input1) this.input1="CXK";
+    if(!this.input2) this.input2="CEO";
+    if(!this.input3) this.input3="唱，跳，rap，足球";
     this.testexp = {
-      position: "CEO",
+      position: this.input2,
       startDate: "2019-01-01",
       endDate: "2019-12-31",
       geolocation: "Melb",
-      entityName: "CXK",
-      description: "唱，跳，rap，足球"
+      entityName: this.input1,
+      description: this.input3
     }
     let data = this.testexp;
     this.commDbService.updateUserDocWorkExp(this.uid, data, true).then(res => {

@@ -42,9 +42,14 @@
   </ion-list>
 
   <ion-card>
-    <form>
-
-    </form>
+    <!-- <form> -->
+      <ion-label>公司名</ion-label>
+      <ion-input [(ngModel)]="input1"></ion-input>
+      <ion-label>职位</ion-label>
+      <ion-input [(ngModel)]="input2"></ion-input>
+      <ion-label>描述</ion-label>
+      <ion-textarea [(ngModel)]="input3"></ion-textarea>
+    <!-- </form> -->
     <ion-button expand="block" (click)="addWorkExp()"><ion-icon name="add"></ion-icon></ion-button>
   </ion-card>
 </ion-content>

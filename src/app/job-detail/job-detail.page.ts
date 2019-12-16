@@ -18,7 +18,7 @@ export class JobDetailPage implements OnInit {
   salary;
   introText;
   details;
-  geolocation;
+  geolocation = "VIC 3166";
   images :string[];
   imgSliderOpts = {
     zoom: false,
@@ -38,7 +38,7 @@ export class JobDetailPage implements OnInit {
     this.salary = this.data.job.salary;
     this.introText = this.data.job.introText;
     this.details = this.data.job.details;
-    this.geolocation = this.data.job.geolocation;
+    // this.geolocation = this.data.job.geolocation;
     console.log(this.data,this.images);
   }
 

@@ -99,7 +99,7 @@ export class SearchPage implements OnInit{
 
   async testLoading(errMsg?: string) {
     const loading = await this.loadingController.create({
-      message: 'Logging, Please wait...',
+      message: 'Loading jobs, Please wait...',
       duration: 10000
     });
     await loading.present();

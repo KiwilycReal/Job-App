@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>什么招聘</ion-title>
-    <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: red;">
+    <ion-title style="text-align: center;">什么招聘</ion-title>
+    <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: red; position: absolute;">
       Back
     </ion-label>
   </ion-toolbar>
@@ -10,42 +10,92 @@
 <ion-content>
 
 <ion-slides [options] = "imgSliderOpts" pager="true">
-  <ion-slide style="max-height: 20vh" *ngFor="let img of images" >
+  <!-- <ion-slide style="max-height: 20vh" *ngFor="let img of images" >
       <ion-card> 
         <img [src]="img">
       </ion-card>
+  </ion-slide> -->
+  <ion-slide style="max-height: 20vh;">
+    <ion-card>
+      <img src="../../assets/melbourne1.jpg">
+    </ion-card>
+  </ion-slide>
+  <ion-slide style="max-height: 20vh;">
+    <ion-card>
+      <img src="../../assets/melbourne2.jpg">
+    </ion-card>
+  </ion-slide>
+  <ion-slide style="max-height: 20vh;">
+    <ion-card>
+      <img src="../../assets/melbourne3.jpg">
+    </ion-card>
   </ion-slide>
 </ion-slides>
 
-<!-- <div style="height: 260px; padding-left: 16px;padding-right: 16px;"> -->
-  <agm-map style="height: 260px;" [latitude]="lat" [zoom]="zoom" [longitude]="lng" disableDefaultUI="true" clickableIcons="false">
-    <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-  </agm-map>
-<!-- </div> -->
+
 
 <ion-card>
   <ion-card-header>
     <ion-card-subtitle>{{title}}</ion-card-subtitle>
     <ion-card-title>{{position}}</ion-card-title>
   </ion-card-header>
-  <ion-item-divider>
+  <ion-item-divider style="padding-right: 16;">
       <ion-label slot="start">
           <ion-icon name="pin"></ion-icon>{{geolocation}}
       </ion-label>
-      <ion-label slot="end">
+      <ion-label slot="end" style="color: darkgoldenrod;">
           {{salary}}$/hr
       </ion-label>
   </ion-item-divider>
+  <div style="text-align: center;">
+    <agm-map style="height: 150px; width: 100%; display: inline-block;" [latitude]="lat" [zoom]="zoom" [longitude]="lng" disableDefaultUI="true" clickableIcons="false">
+      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+    </agm-map>
+  </div>
   <ion-card-content>
     {{introText}}
   </ion-card-content>
 </ion-card>
 
 <ion-card>
-  <ion-card-content>
-    <p [innerHTML]="details"></p>
+  <ion-card-content style="padding: 0;">
+    <ion-list>
+      <ion-item-divider color="light"><b>公司简介</b></ion-item-divider>
+      <ion-item lines="none">
+        <p [innerHTML]="details"></p>
+      </ion-item>
+      <ion-item-divider color="light"><b>职位介绍</b></ion-item-divider>
+      <ion-item lines="none">
+        <p [innerHTML]="details"></p>
+      </ion-item>
+      <ion-item-divider color="light"><b>技能要求</b></ion-item-divider>
+      <ion-item lines="none">
+        <p [innerHTML]="details"></p>
+      </ion-item>
+      <ion-item-divider color="light"><b>薪资待遇</b></ion-item-divider>
+      <ion-item lines="none">
+        <p [innerHTML]="details"></p>
+      </ion-item>
+      <ion-item-divider color="light"><b>其他事项</b></ion-item-divider>
+      <ion-item lines="none">
+        <p [innerHTML]="details"></p>
+      </ion-item>
+      <ion-item-divider color="light"><b>商家可自定义栏目名字</b></ion-item-divider>
+      <ion-item lines="none">
+        <p [innerHTML]="details"></p>
+      </ion-item>
+    </ion-list>
   </ion-card-content>
 </ion-card>
+
+<ion-fab vertical="center" horizontal="end" slot="fixed">
+  <ion-fab-button><ion-icon name="menu"></ion-icon></ion-fab-button>
+  <ion-fab-list side="start">
+    <ion-fab-button><ion-icon name="heart-empty"></ion-icon></ion-fab-button>
+    <ion-fab-button><ion-icon name="text"></ion-icon></ion-fab-button>
+    <ion-fab-button><ion-icon name="share"></ion-icon></ion-fab-button>
+  </ion-fab-list>
+</ion-fab>
 
 </ion-content>
 
