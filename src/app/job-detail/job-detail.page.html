@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-title style="text-align: center;">什么招聘</ion-title>
-    <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: red; position: absolute;">
+    <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: red; position: absolute; z-index: 1;">
       Back
     </ion-label>
   </ion-toolbar>
@@ -39,7 +39,7 @@
     <ion-card-subtitle>{{title}}</ion-card-subtitle>
     <ion-card-title>{{position}}</ion-card-title>
   </ion-card-header>
-  <ion-item-divider style="padding-right: 16;">
+  <ion-item-divider style="padding-right: 16px;">
       <ion-label slot="start">
           <ion-icon name="pin"></ion-icon>{{geolocation}}
       </ion-label>

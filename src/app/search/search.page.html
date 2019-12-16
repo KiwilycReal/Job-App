@@ -126,12 +126,13 @@
       <ion-grid>
         <!-- Company name& avatar, plus post time -->
         <ion-row class="ion-align-items-center ion-justify-content-center">
-          <ion-col size=2>
-            <ion-thumbnail>
-              <img [src]='j.imageUrl[0]'>
+          <ion-col size=2 offset=0.5>
+            <ion-thumbnail style="width: 72px;height: 72px;">
+              <!-- <img [src]='j.imageUrl[0]'> -->
+              <img src="../../assets/cxk.jpg">
             </ion-thumbnail> 
           </ion-col>
-          <ion-col size=7 offset=0.5>
+          <ion-col size=6.5 offset=0.5>
             <!-- <ion-label><b>墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩墨尔本摩尔有限公司墨尔本摩尔有限公司墨尔本摩尔有限公司尔有限公司</b></ion-label> -->
             <ion-list>  
               <ion-item>
@@ -146,6 +147,7 @@
             <span style="color: rgb(142, 171, 224); font-size: 7; ">{{j.publishDateTime}}</span>
           </ion-col>
         </ion-row>
+        <ion-item-divider style="min-height: 0; height: 5px;"></ion-item-divider>
         <!-- Job's description, start with a fav icon -->
         <ion-row class="ion-align-items-center" style="border-bottom-style: dotted; border-bottom-color: darkgray; padding-bottom: 3px;">
           <ion-label>{{j.introText}}</ion-label>
