@@ -35,10 +35,10 @@ export class AppComponent implements AfterViewInit{
     });
   }
 
-  @ViewChild("loginIcon", {static: true}) loginIconEle;
+  @ViewChild("loginIcon", {static: true}) loginIconElem;
 
   ngAfterViewInit() {
     // console.log(this.loginIconEle);
-    this.LoginService.loginIconEle = this.loginIconEle;
+    this.LoginService.loginIconElem = this.loginIconElem;
   }
 }

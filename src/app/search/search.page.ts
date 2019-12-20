@@ -1,7 +1,7 @@
-import { Component, OnInit, EventEmitter, Output, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ElementRef, ViewChild, AfterViewInit, Inject, OnDestroy } from '@angular/core';
 import { JobInfo } from '../job-card/job-card.module';
 import { JobCardService } from '../job-card/job-card.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { NavController, ModalController, LoadingController } from '@ionic/angular';
 import { JobDetailPage } from '../job-detail/job-detail.page';
 import { reject } from 'q';
@@ -11,7 +11,12 @@ import { reject } from 'q';
   templateUrl: './search.page.html',
   styleUrls: ['./search.page.scss'],
 })
-export class SearchPage implements OnInit{
+export class SearchPage implements OnInit, OnDestroy{
+  ngOnDestroy(): void {
+    // this.authSubscription.
+    console.log("search destroyed");
+  }
+  authSubscription: Subscription
   // ngAfterViewInit(): void {
   //   console.log("YES",this.hah);
   // }
@@ -22,11 +27,14 @@ export class SearchPage implements OnInit{
   // testt: JobInfo[] = [];
   // newJob: JobInfo;
   jobs =[];
+  isLogged = true;
+  o;
   tempList = [];
   newJob;
   ids: string[];
   navCtrl: NavController;
-  @Output() newjobs = new EventEmitter<JobInfo[]>();
+  curUser;
+  // @Output() newjobs = new EventEmitter<JobInfo[]>();
 
   // testt: Observable<any>;
   
@@ -37,9 +45,24 @@ export class SearchPage implements OnInit{
       res.docs.forEach(doc => {
         temp = doc.data();
         temp['jid'] = doc.id;
+        temp['favIconName'] = "heart-empty";
         this.tempList.push(temp);
       })
-    }, err => {reject(err); console.log("err",err)});
+    });
+    //Handel when no one is logged in
+    if(this.curUser){
+      await this.commDbService.fetchUserDoc(this.curUser.uid).then(
+        res => {
+          this.tempList.forEach(
+            value => {
+              if(<string[]>res.data().favourite.includes(value.jid)) value.favIconName = "heart";
+            }
+          )
+        }
+      )
+    }else{
+      this.isLogged = false;
+    }
     this.jobs = this.tempList;
   }
 
@@ -94,7 +117,9 @@ export class SearchPage implements OnInit{
 
   constructor(public jobser: JobCardService,
               public modalController: ModalController,
-              public loadingController: LoadingController) {
+              public loadingController: LoadingController,
+              @Inject('loginService') public loginService,
+              @Inject('commDbService') public commDbService) {
   }
 
   async testLoading(errMsg?: string) {
@@ -107,10 +132,60 @@ export class SearchPage implements OnInit{
     await this.loadingController.dismiss();
   }
 
+  async changeFavJob(elem){
+    var jid = elem.id;
+    var curUser = this.curUser;
+    var isAdd = true;
+    //Show spinner and hid heart
+    elem.firstElementChild.style.display = "";
+    elem.lastElementChild.style.display = "none";
+    elem.disabled = true;
+    //Check whether this job's fav status (html elem can be altered locally)
+    await this.commDbService.fetchUserDoc(curUser.uid).then(
+      res => {
+        if(<string[]>res.data().favourite.includes(jid)) isAdd = false;
+      }
+    );
+    //Database operations
+    var iconStr = (isAdd) ? "heart" : "heart-empty";
+    console.log(elem);
+    if(curUser){
+      this.commDbService.updateUserDocArray(curUser.uid, "favourite", jid, isAdd).then(
+        res => {
+          elem.lastElementChild.name = iconStr;
+          elem.firstElementChild.style.display = "none";
+          elem.lastElementChild.style.display = "";
+          elem.disabled = false;
+        });
+    }else{
+      console.log("Please login first");
+    }
+  }
+
   ngOnInit() {
     // this.jobs = this.jobser.get_jobinfo();
     // this.newjobs.emit(this.jobs);
+    
+    var authState: Observable<any> = this.loginService.curAuthState;
+    console.log("before sub");
+    // this.authSubscription = authState.subscribe({
+    //   next(v) {console.log(v);this.curUser = v;},
+    //   error(e) {console.log(e)},
+    //   complete() {console.log("done")}
+    // });
+    this.authSubscription = authState.subscribe(
+      value => {
+        console.log(value);
+        this.curUser = value;
+        if(this.curUser){
+          this.isLogged = true;
+        }else{
+          this.isLogged = false;
+        }
+      });
+
     this.testLoading();
+    // this.authSubscription.
   }
 
 }

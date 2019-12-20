@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { resolve } from 'url';
-import { reject } from 'q';
-import * as ResumeInterfaces from '../interfaces/resume-interfaces'
 import * as firebase from 'firebase/app'
+import { resolve } from 'url';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommDbService {
-
   
-
+  constructor(private fs: AngularFirestore) { }
+  
   createUserDoc(uid, data){
     return new Promise<any>((resolve, reject) => {
       this.fs.collection("UserInfo").doc(uid).set(data).then(
@@ -32,44 +29,47 @@ export class CommDbService {
     });
   }
 
-  // updateUserDocArray(uid, field, value, isAdd){
-  //   if(isAdd){
-  //     return new Promise<any>((resolve, reject) => {
-  //       this.fs.collection("UserInfo").doc(uid).update({
-          
-  //       })
-  //     })
-  //   }else{
-
-  //   }
-  // }
-
-  updateUserDocWorkExp(uid, value, isAdd){
+  /**
+   * Can optimize the fucntion logic to allow 
+   * multiple fiedls updates in one function call
+   */
+  updateUserDocArray(uid: string, field, value, isAdd: boolean){
+    var updateObj = {};
     if(isAdd){
-      return new Promise<any>((resolve, reject) => {
-        this.fs.collection("UserInfo").doc(uid).update({
-          workExp: firebase.firestore.FieldValue.arrayUnion(value)
-        }).then(
-          res => {resolve(res); console.log("Workexp array updated(add)",res);},
-          err => reject(err)
-        )
-      });
+      updateObj[field] = firebase.firestore.FieldValue.arrayUnion(value)
     }else{
-      return new Promise<any>((resolve, reject) => {
-        this.fs.collection("UserInfo").doc(uid).update({
-          workExp: firebase.firestore.FieldValue.arrayRemove(value)
-        }).then(
-          res => {resolve(res); console.log("Workexp array updated(remove)",res);},
-          err => reject(err)
-        )
-      });
+      updateObj[field] = firebase.firestore.FieldValue.arrayRemove(value)
     }
+    return new Promise<any>((resolve, reject) => {
+      this.fs.collection("UserInfo").doc(uid).update(updateObj).then(
+        res => {resolve(res); console.log("User ",uid,field," update success")},
+        err => {reject(err); console.log("User",uid,field," update failed")}
+      );
+    });
   }
 
   fetchUserDoc(uid){
-    return this.fs.collection("UserInfo").doc(uid).snapshotChanges();
+    return this.fs.collection("UserInfo").doc(uid).get().toPromise();
   }
-  
 
-  constructor(private fs: AngularFirestore) { }
+  fetchFavJobList(jids: string[]){
+    var jobCollection = this.fs.firestore.collection("Jobs");
+    return this.fs.firestore.runTransaction(
+      transaction => {
+        return new Promise<any>((resolve, reject) => {
+          var tempList = [];
+          jids.forEach(
+            value => {
+              transaction.get(jobCollection.doc(value)).then(
+                res => {
+                  tempList.push(res.data());
+                }
+              )
+            }
+          );
+          return resolve(tempList);
+        });
+      });
+  }
+
 }

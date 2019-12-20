@@ -24,10 +24,11 @@ export class InfoEditModalPage implements OnInit {
     // this.title = navParams.get('title');
     this.uid = navParams.get('uid');
     // this.list = navParams.get('list');
-    this.commDbService.fetchUserDoc(this.uid).subscribe(
+    this.commDbService.fetchUserDoc(this.uid).then(
       res => {
         // console.log("array?",res.payload.data());
-        this.list = res.payload.data().workExp;
+        console.log(res);
+        this.list = res.data().workExp;
         let i=0;
         this.list.map(item => {
           item.id = i++;
@@ -58,7 +59,7 @@ export class InfoEditModalPage implements OnInit {
       description: this.input3
     }
     let data = this.testexp;
-    this.commDbService.updateUserDocWorkExp(this.uid, data, true).then(res => {
+    this.commDbService.updateUserDocArray(this.uid, "workExp", data, true).then(res => {
       console.log("Added new work exp for "+this.uid, res);
     }, err => reject(err));
   }
@@ -67,7 +68,7 @@ export class InfoEditModalPage implements OnInit {
     let data= this.list[id];
     delete data.id;
     console.log("gonna deleted:",data);
-    this.commDbService.updateUserDocWorkExp(this.uid, data, false).then(res => {
+    this.commDbService.updateUserDocArray(this.uid, "workExp", data, false).then(res => {
       console.log("Removed work exp for "+this.uid, res);
     }, err => reject(err));
   }

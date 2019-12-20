@@ -17,6 +17,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 
 import { LoginService } from './services/login.service'
 import { CommDbService } from './services/comm-db.service';
+import { SearchPageModule } from './search/search.module';
+import { FavJobsPageModule } from './fav-jobs/fav-jobs.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +26,9 @@ import { CommDbService } from './services/comm-db.service';
   imports: [BrowserModule, IonicModule.forRoot({animated: false}), AppRoutingModule,
   AngularFireModule.initializeApp(environment.firebaseConfig),
   AngularFirestoreModule,
-  AngularFireAuthModule],
+  AngularFireAuthModule,
+  SearchPageModule,
+  FavJobsPageModule],
   providers: [
     StatusBar,
     SplashScreen,

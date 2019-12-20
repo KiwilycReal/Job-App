@@ -5,18 +5,9 @@
     <ion-row>
       <ion-col>
           <ion-card>
-              <!-- <ion-card-header>
-                <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-                <ion-card-title>Display Name</ion-card-title>
-              </ion-card-header>
-            
-              <ion-card-content>
-                Keep close to Nature's heart... and break clear away, once in awhile,
-                and climb a mountain or spend a week in the woods. Wash your spirit clean.
-              </ion-card-content> -->
               <ion-row>
                   <ion-col>
-                    <ion-item detail (click)="toLogin()" detailIcon="create">
+                    <ion-item #headDetailIcon detail (click)="toLogin()" detailIcon="create">
                       <ion-avatar style="width: 66px; height: 66px; margin: 5px;">
                           <img src="../../assets/cxk.jpg" #userAvatar>
                       </ion-avatar>
@@ -28,9 +19,6 @@
                 </ion-row>
                 <ion-row>
                   <ion-col>
-                    <!-- <ion-item lines="none" class="ion-text-center">
-                      <ion-label>Personal Info 2</ion-label>
-                    </ion-item> -->
                     <ion-chip>
                         <ion-avatar>
                             <img src="../../assets/wechat.png">
@@ -58,12 +46,12 @@
           </ion-card>
             
             <ion-card>
-              <ion-item href="#">
+              <ion-item detail="true" [routerLink]="['/fav-jobs']">
                 <ion-icon name="star" slot="start"></ion-icon>
                 <ion-label>收藏</ion-label>
               </ion-item>
             
-              <ion-item href="#">
+              <ion-item detail="true">
                 <ion-icon name="book" slot="start"></ion-icon>
                 <ion-label>最近浏览</ion-label>
               </ion-item>
@@ -72,20 +60,20 @@
                 <ion-label>编辑简历</ion-label>
               </ion-item>
             
-              <ion-item href="#">
+              <ion-item detail="true">
                 <ion-icon name="cog" slot="start"></ion-icon>
                 <ion-label>通用设置</ion-label>
               </ion-item>
-              <ion-item href="#">
+              <ion-item detail="true">
                 <ion-icon name="finger-print" slot="start"></ion-icon>
                 <ion-label>隐私设置</ion-label>
               </ion-item>
             
-              <ion-item href="#">
+              <ion-item detail="true">
                 <ion-icon name="help" slot="start"></ion-icon>
                 <ion-label>FQA</ion-label>
               </ion-item>
-              <ion-item href="#" lines="none">
+              <ion-item detail="true" lines="none">
                 <ion-icon name="help-buoy" slot="start"></ion-icon>
                 <ion-label>客服中心</ion-label>
               </ion-item>
@@ -94,7 +82,7 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button expand="block" color="danger" (click)="tryLogout()">Sign Out</ion-button>
+        <ion-button #signOutBtn expand="block" color="danger" (click)="tryLogout()">Sign Out</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

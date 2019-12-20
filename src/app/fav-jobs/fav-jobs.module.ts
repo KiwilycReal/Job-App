@@ -1,30 +1,28 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { Routes, RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SearchPage } from './search.page';
+import { FavJobsPage } from './fav-jobs.page';
+import { Routes, RouterModule } from '@angular/router';
 import { JobDetailPageModule } from '../job-detail/job-detail.module';
 
 const routes: Routes = [
   {
-    path: 'search',
-    component: SearchPage
+    path: 'fav-jobs',
+    component: FavJobsPage
   }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    ReactiveFormsModule,
     FormsModule,
-    IonicModule,
     RouterModule.forChild(routes),
+    IonicModule,
     JobDetailPageModule
   ],
-  declarations: [SearchPage]
+  declarations: [FavJobsPage]
 })
-export class SearchPageModule {}
+export class FavJobsPageModule {}

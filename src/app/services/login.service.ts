@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { AngularFirestore } from '@angular/fire/firestore';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -8,17 +8,28 @@ import * as firebase from 'firebase/app'
 
 import { promise } from 'protractor';
 import { analytics } from 'firebase';
+import { Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class LoginService implements OnDestroy {
+
+  ngOnDestroy(): void {
+    this.unsubscribeAuth();
+  }
+
+  unsubscribeAuth: firebase.Unsubscribe;
 
   // public t: any;
-  private displayNameEle: HTMLElement = undefined;
-  private loginIconEle;
+  curAuthState;
+  private displayNameElem: HTMLElement = undefined;
+  private loginIconElem;
   private curDisplayName = undefined;
-  private curUser = undefined;
+  curUser = undefined;
+  signOutBtnElem;
+  headDetailIconElem;
   private fuck = 0;
   private imgUrl;
   // private myself = this;
@@ -56,33 +67,42 @@ export class LoginService {
   }
 
   userAuthState(self){
-    this.fa.auth.onAuthStateChanged(function(user) {
-      // console.log(this);
+    self.unsubscribeAuth = this.fa.auth.onAuthStateChanged(
+      user => {
+        console.log(self.signOutBtnElem);
+        console.log(self.headDetailIconElem);
       if(user){
+        self.signOutBtn = "";
         // test.curUser = user;
         self.curUser = user;
         console.log("Current user is "+user.email+"////"+user.displayName);
         if(user.displayName != null) self.curDisplayName = user.displayName;
-        // console.log(self.loginIconEle);
-        self.loginIconEle.el.style.display = "none";
+        // console.log(self.loginIconElem);
+        self.loginIconElem.el.style.display = "none";
+        self.headDetailIconElem.el.detailIcon = "noen";
+        self.signOutBtnElem.el.style.display = "";
         // console.log(this);
-        // self.displayNameEle.innerHTML = user.displayName;
+        // self.displayNameElem.innerHTML = user.displayName;
       }else{
+        self.signOutBtn = "none";
         console.log("No one is logged in");
+        self.curUser = undefined;
         self.curDisplayName = "请先登录";
-        self.loginIconEle.el.style.display = "";
+        self.loginIconElem.el.style.display = "";
+        self.headDetailIconElem.el.detailIcon = "arrow-round-forward";
+        self.signOutBtnElem.el.style.display = "none";
         // console.log(this);
-        // self.displayNameEle.innerHTML = "请先登录";
+        // self.displayNameElem.innerHTML = "请先登录";
       }
-      if(self.displayNameEle){
-        self.displayNameEle.innerHTML = self.curDisplayName;
+      if(self.displayNameElem){
+        self.displayNameElem.innerHTML = self.curDisplayName;
       }
     });
   }
 
   changeDisplayName(name){
-    if(this.displayNameEle){
-      this.displayNameEle.innerHTML = name;
+    if(this.displayNameElem){
+      this.displayNameElem.innerHTML = name;
     }
   }
 
@@ -98,11 +118,16 @@ export class LoginService {
     })
   }
 
+  // getUser(): Observable<firebase.User>{
+  //   return this.curAuthState.
+  // }
+
   constructor(private fs: AngularFirestore, public fa: AngularFireAuth) {
     // this.t = new Object();
     // this.testEle = undefined;
     console.log("Service created!");
     this.userAuthState(this);
     this.fa.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    this.curAuthState = this.fa.authState;
   }
 }

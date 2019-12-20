@@ -1,0 +1,43 @@
+<ion-content>
+<div *ngIf="!isLogged" style="height: 100%;width: 100%;z-index: 1;">暂无数据，请先登录</div>
+<ion-card *ngFor="let j of jobs">
+    <ion-grid>
+      <div (click)="presentJobDetailModal(j)">
+        <!-- Company name& avatar, plus post time -->
+        <ion-row class="ion-align-items-center ion-justify-content-center">
+          <ion-col size=2 offset=0.5>
+            <ion-thumbnail style="width: 72px;height: 72px;">
+              <!-- <img [src]='j.imageUrl[0]'> -->
+              <img src="../../assets/cxk.jpg">
+            </ion-thumbnail> 
+          </ion-col>
+          <ion-col size=6.5 offset=0.5>
+            <ion-list>  
+              <ion-item>
+                <ion-label class="ion-text-wrap ion-text-center"><b>{{j.title}}</b></ion-label>
+              </ion-item>
+              <ion-item lines="none">
+                <ion-label class="ion-text-wrap ion-text-center">{{j.position}}</ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-col>
+          <ion-col size=2 offset=0.5>
+            <span style="color: rgb(142, 171, 224); font-size: 7; ">{{j.publishDateTime}}</span>
+          </ion-col>
+        </ion-row>
+        <ion-item-divider style="min-height: 0; height: 5px;"></ion-item-divider>
+        <!-- Job's description, start with a fav icon -->
+        <ion-row class="ion-align-items-center" style="border-bottom-style: dotted; border-bottom-color: darkgray; padding-bottom: 3px;">
+          <ion-label>{{j.introText}}</ion-label>
+        </ion-row>
+        <!-- Job's characteristics -->
+        <ion-row>
+          <ion-chip *ngFor="let tag of j.tags">{{tag}}</ion-chip>
+        </ion-row>
+        </div>
+        <ion-button [id]="j.jid" expand="block" color="danger" (click)="changeFavAlert($event.target)"><ion-icon name="close"></ion-icon></ion-button>
+
+    </ion-grid>
+</ion-card>  
+
+</ion-content>

@@ -11,9 +11,10 @@ export class UploadPersonInfoPage implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     if(this.isFirst){
-      this.commDbService.fetchUserDoc(this.uid).subscribe(
+      if(this.loginService.curUser == undefined) return
+      this.commDbService.fetchUserDoc(this.loginService.curUser.uid).then(
         res => {
-          this.curUser = res.payload.data();
+          this.curUser = res.data();
           console.log("Fetched",this.curUser);
           this.email = this.curUser.email;
           this.title = this.curUser.title;
@@ -27,7 +28,7 @@ export class UploadPersonInfoPage implements OnInit, AfterViewInit {
   isFirst = true;
   email;
   curUser;
-  uid = 'a5VpypBHqyc6PlsIFf7GQFKHfPk1';
+  uid;
   title;
   name = 'CXK';
   pcolor: string;
@@ -43,6 +44,7 @@ export class UploadPersonInfoPage implements OnInit, AfterViewInit {
 
 
   constructor(@Inject('commDbService') public commDbService,
+              @Inject('loginService') public loginService,
               public modalController: ModalController) {
     if (this.value <= 0.2) {
       this.pcolor = 'medium';
@@ -68,13 +70,18 @@ export class UploadPersonInfoPage implements OnInit, AfterViewInit {
   }
 
   async presentInfoEditModal(a){
+    var curUser = this.loginService.curUser;
+    if(!curUser){
+      console.log("Please login first to edit personal info");
+      return;
+    }
     const modal = await this.modalController.create({
       component: InfoEditModalPage,
       componentProps: {
         type: "work",
         title: a.target.firstChild.innerHTML,
         // list: this.workExp,
-        uid: this.uid
+        uid: curUser.uid
       }
     });
 

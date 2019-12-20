@@ -65,21 +65,6 @@ export class JobCardService {
     return this.fs.collection('Jobs').get().toPromise();
   }
 
-  testdb(){
-    return this.fs.collection('Jobs').snapshotChanges().subscribe(res => {
-      return res.map(j => {
-        return <JobInfo> j.payload.doc.data();
-      })})
-  }
-
-  // get_jobInfo_byID(houseI: string) {
-  //   return {
-  //     ... this.jobinfos.find(hi => {
-  //     return hi.ID === houseI;
-  //   })
-  //  };
-  // }
-
   ttt(){
     return new Promise<any>((resolve, reject) => {
       this.fs.collection("Jobs").doc("J9z6Qy3Jqtfk7LDBXviq").update({Yes:"no", No:{haha:"haha"}}).then(res=>{},err=>{reject(err)})

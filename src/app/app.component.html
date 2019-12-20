@@ -18,9 +18,9 @@
     <ion-row>
 
       <ion-col>
-          <div style="text-align: center;">
+          <div style="text-align: center;" [routerLink]="['/front-page']">
               <button style="background: none;">
-                <ion-icon src="../assets/icon/house.svg" style="zoom: 1.4; font-size: 3vw;" [routerLink]="['/front-page']"></ion-icon>
+                <ion-icon src="../assets/icon/house.svg" style="zoom: 1.4; font-size: 3vw;"></ion-icon>
                 <br> 
                 <label style="font-size: 4vw;">首页</label>
               </button>
@@ -28,7 +28,7 @@
       </ion-col>
         
       <ion-col >
-          <div style="text-align: center;">
+          <div style="text-align: center;" [routerLink]="['fav-jobs']">
               <button style="background: none;">
                 <ion-icon src="../assets/icon/favor.svg" style="zoom: 1.4; font-size: 3vw;"></ion-icon>
                 <br> 
@@ -38,10 +38,10 @@
       </ion-col>
 
       <ion-col>
-        <div style="text-align: center;">
+        <div style="text-align: center;" [routerLink]="['/search']">
           
           <button ion-fab-button style="background: none;">
-            <ion-icon src="../assets/icon/search.svg" style="zoom: 1.4; font-size: 3vw;" [routerLink]="['/search']"></ion-icon>
+            <ion-icon src="../assets/icon/search.svg" style="zoom: 1.4; font-size: 3vw;"></ion-icon>
             <br> 
             <label style="font-size: 4vw;">探索</label>
           </button>
@@ -50,9 +50,9 @@
       </ion-col>
 
       <ion-col>
-          <div style="text-align: center;">
+          <div style="text-align: center;" [routerLink]="['/message']">
               <button style="background: none;">
-                <ion-icon src="../assets/icon/chat.svg" style="zoom: 1.4; font-size: 3vw;" [routerLink]="['/message']"></ion-icon>
+                <ion-icon src="../assets/icon/chat.svg" style="zoom: 1.4; font-size: 3vw;"></ion-icon>
                 <br> 
                 <label style="font-size: 4vw;">消息</label>
               </button>
@@ -60,9 +60,9 @@
       </ion-col>
       
       <ion-col>
-          <div style="text-align: center;">
+          <div style="text-align: center;" [routerLink]="['/personal-info']">
               <button style="background: none;">
-                <ion-icon src="../assets/icon/user.svg" style="zoom: 1.4; font-size: 3vw;" [routerLink]="['/personal-info']"></ion-icon>
+                <ion-icon src="../assets/icon/user.svg" style="zoom: 1.4; font-size: 3vw;"></ion-icon>
                 <br> 
                 <label style="font-size: 4vw;">个人</label>
               </button>

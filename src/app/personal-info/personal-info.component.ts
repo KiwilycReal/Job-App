@@ -10,6 +10,9 @@ import * as firebase from 'firebase/app'
 })
 export class PersonalInfoComponent implements OnInit, AfterViewInit {
 
+  @ViewChild('headDetailIcon', {static: false}) headDetailIconElem
+  @ViewChild('signOutBtn', {static: false}) signOutBtnElem
+
   private firstInit: boolean;
 
   constructor(@Inject('loginService') private loginService, private router: Router) {
@@ -17,7 +20,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     this.firstInit = true;
   }
 
-  @ViewChild("displayName", {static: true}) displayNameEle: ElementRef;
+  @ViewChild("displayName", {static: true}) displayNameElem: ElementRef;
 
   tryLogout(){
     this.loginService.userLogout().then(
@@ -33,7 +36,7 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
   }
 
   toLogin(){
-    if(this.displayNameEle.nativeElement.innerHTML == "请先登录"){
+    if(this.displayNameElem.nativeElement.innerHTML == "请先登录"){
       this.router.navigate(['login']);
     }else{
       console.log("relax");
@@ -46,18 +49,10 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     // console.dir(this.displayNameEle.nativeElement);
     // console.dir(history.state);
     console.log("PI component view ready, cur name is: "+this.loginService.curDisplayName);
-    this.displayNameEle.nativeElement.innerHTML = this.loginService.curDisplayName;
-    this.loginService.displayNameEle = this.displayNameEle.nativeElement;
-    // this.loginService.hello();
-    // console.dir(this.loginService);
-    // if(this.firstInit){
-    //   this.firstInit = false;
-    //   this.loginService.displayNameEle = this.displayNameEle.nativeElement;
-    // }
-    // this.displayNameEle.nativeElement.innerHTML = history.state.hello;
-    // this.loginService.userAuthState();
-    // this.displayNameEle.nativeElement.innerHTML = this.loginService.curDisplayName;
-    // console.dir(this.loginService.testEle);
+    this.displayNameElem.nativeElement.innerHTML = this.loginService.curDisplayName;
+    this.loginService.displayNameElem = this.displayNameElem.nativeElement;
+    this.loginService.headDetailIconElem = this.headDetailIconElem;
+    this.loginService.signOutBtnElem = this.signOutBtnElem;
   }
 
 }
