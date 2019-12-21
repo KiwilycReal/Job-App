@@ -41,6 +41,22 @@ export class UploadPersonInfoPage implements OnInit, AfterViewInit {
   value = 0.6;
   valueP = 100 * this.value;
   btn;
+  links = [
+    {name: "技能",
+     type: "skills"},
+    {name: "工作经验",
+     type: "workExps"},
+    {name: "教育经历",
+     type: "eduExps"},
+    {name: "项目经验",
+     type: "projExps"},
+    {name: "个人荣誉",
+     type: "honors"},
+    {name: "附件",
+     type: "files"},
+    {name: "个人简介",
+     type: "description"},
+  ];
 
 
   constructor(@Inject('commDbService') public commDbService,
@@ -78,9 +94,8 @@ export class UploadPersonInfoPage implements OnInit, AfterViewInit {
     const modal = await this.modalController.create({
       component: InfoEditModalPage,
       componentProps: {
-        type: "work",
-        title: a.target.firstChild.innerHTML,
-        // list: this.workExp,
+        infoType: a.type,
+        modalTitle: a.name,
         uid: curUser.uid
       }
     });

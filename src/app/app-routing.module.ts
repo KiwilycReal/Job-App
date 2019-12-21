@@ -20,10 +20,16 @@ const routes: Routes = [
     path: 'register',
     loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
   },
-  // {
-  //   path: 'fav-jobs',
-  //   loadChildren: () => import('./fav-jobs/fav-jobs.module').then( m => m.FavJobsPageModule)
-  // },
+  {
+    path: 'fav-jobs',
+    loadChildren: () => import('./fav-jobs/fav-jobs.module').then( m => m.FavJobsPageModule),
+    data: {msg:"favourite"}
+  },
+  {
+    path: 'history-jobs',
+    loadChildren: () => import('./fav-jobs/fav-jobs.module').then( m => m.FavJobsPageModule),
+    data: {msg:"history"}
+  },
   // { path: 'search/:id', loadChildren: './job-detail/job-detail.module#JobDetailPageModule' }
 ];
 

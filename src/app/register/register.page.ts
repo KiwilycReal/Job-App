@@ -47,7 +47,12 @@ export class RegisterPage implements OnInit {
     this.loginService.userRegister(t).then(
       res => {
         delete data.password;
-        data.workExp = [];
+        data.workExps = [];
+        data.eduExps = [];
+        data.projExps = [];
+        data.honors = [];
+        data.files = [];
+        data.description = "";
         data.skills = [];
         data.favourite = [];
         data.history =[];

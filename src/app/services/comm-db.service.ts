@@ -72,4 +72,12 @@ export class CommDbService {
       });
   }
 
+  fetchJobsByPay(range){
+    return this.fs.collection('Jobs', ref => {
+      return ref.where("salary", ">=", range.lower)
+                .where("salary", "<=", range.upper)
+                .orderBy("salary", "desc");
+    }).get().toPromise();
+  }
+
 }

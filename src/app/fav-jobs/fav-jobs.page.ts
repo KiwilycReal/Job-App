@@ -2,9 +2,9 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { JobDetailPage } from '../job-detail/job-detail.page';
 import { Subscription, Observable } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { resolve } from 'url';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-fav-jobs',
@@ -28,11 +28,12 @@ export class FavJobsPage implements OnInit, OnDestroy {
               @Inject('loginService') public loginService,
               public modalController: ModalController,
               public loadingController: LoadingController,
-              public router: Router) {
+              public router: Router,
+              public activatedRoute: ActivatedRoute) {
       console.log("fav constructor");
   }
 
-  async initialize(){
+  async initialize(type){
     var authState: Observable<any> = this.loginService.curAuthState;
     await new Promise((resolve,reject) => {
       this.authSubscription = authState.subscribe(
@@ -41,7 +42,7 @@ export class FavJobsPage implements OnInit, OnDestroy {
           if(value){
             this.isLogged = true;
             this.curUser = value;
-            this.updateFavJobList();
+            this.updateFavJobList(type);
             resolve(value);
           }else{
             this.isLogged = false;
@@ -65,9 +66,9 @@ export class FavJobsPage implements OnInit, OnDestroy {
     return loading;
   }
 
-  async updateFavJobList(){
+  async updateFavJobList(field: string = "favourite"){
     var loading;
-    if(this.router.url.includes("fav-jobs")){
+    if(this.router.url.includes("jobs")){
       loading = await this.presentLoading("Loading...");
       await loading.present();
     }
@@ -80,7 +81,7 @@ export class FavJobsPage implements OnInit, OnDestroy {
     }
     await this.commDbService.fetchUserDoc(this.curUser.uid).then(
       res => {
-        jidList = res.data().favourite;
+        jidList = res.data()[field];
         return jidList;
       }
     ).then(
@@ -114,6 +115,11 @@ export class FavJobsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-      this.initialize();
+    var type;
+    this.activatedRoute.data.subscribe((data)=>{console.log(data);type = data.msg})
+    // console.log(window.history);
+    // console.log(history.state);
+    // console.log(this.router.getCurrentNavigation().extras.state);
+      this.initialize(type);
   }
 }

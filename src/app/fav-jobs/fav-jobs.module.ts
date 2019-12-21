@@ -10,7 +10,7 @@ import { JobDetailPageModule } from '../job-detail/job-detail.module';
 
 const routes: Routes = [
   {
-    path: 'fav-jobs',
+    path: '',
     component: FavJobsPage
   }
 ];

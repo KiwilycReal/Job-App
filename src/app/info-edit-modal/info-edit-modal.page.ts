@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ModalController, NavParams } from '@ionic/angular';
+import { ModalController, NavParams, LoadingController } from '@ionic/angular';
 import { reject } from 'q';
-import * as ExpInterfaces from '../interfaces/resume-interfaces'
+import * as InfoInterfaces from '../interfaces/resume-interfaces'
 import { database } from 'firebase';
 
 @Component({
@@ -10,33 +10,34 @@ import { database } from 'firebase';
   styleUrls: ['./info-edit-modal.page.scss'],
 })
 export class InfoEditModalPage implements OnInit {
-  testexp: ExpInterfaces.WorkExperience;
+
+  startDate;
+  endDate;
+  entityName;
+  major;
+  grade;
+  level;
+  geolocation;
+  position;
+  name;
   title;
+  description;
+  skill;
+
+
+  testexp: InfoInterfaces.WorkExperience;
   uid;
   list;
   input1;
   input2;
   input3;
+  infoType: string;
+  editMode: boolean = false;
 
   constructor(public modalController: ModalController,
+              public loadingController: LoadingController,
               @Inject('commDbService') public commDbService,
-              navParams: NavParams) {
-    // this.title = navParams.get('title');
-    this.uid = navParams.get('uid');
-    // this.list = navParams.get('list');
-    this.commDbService.fetchUserDoc(this.uid).then(
-      res => {
-        // console.log("array?",res.payload.data());
-        console.log(res);
-        this.list = res.data().workExp;
-        let i=0;
-        this.list.map(item => {
-          item.id = i++;
-        })
-      },
-      err => reject(err)
-    );
-    console.log("Modal received", navParams.data);
+              public navParams: NavParams) {
     
   }
 
@@ -46,34 +47,145 @@ export class InfoEditModalPage implements OnInit {
     })
   }
 
-  addWorkExp(){
-    if(!this.input1) this.input1="CXK";
-    if(!this.input2) this.input2="CEO";
-    if(!this.input3) this.input3="唱，跳，rap，足球";
-    this.testexp = {
-      position: this.input2,
-      startDate: "2019-01-01",
-      endDate: "2019-12-31",
-      geolocation: "Melb",
-      entityName: this.input1,
-      description: this.input3
+  //Can be optimized by using formGroup rather than normal interface
+  addExp(){
+    var baseExp = {
+      startDate: this.startDate,
+      endDate: this.endDate,
+      entityName: this.entityName,
+      description: this.description
+    };
+    switch(this.infoType){
+      case "eduExps":
+        baseExp['major'] = this.major;
+        baseExp['grade'] = this.grade;
+        baseExp['level'] = this.level;
+        baseExp['geolocation'] = this.geolocation;
+        break;
+      case "projExps":
+        baseExp['position'] = this.position;
+        baseExp['name'] = this.name;
+        break;
+      case "workExps":
+        baseExp['geolocation'] = this.geolocation;
+        baseExp['position'] = this.position;
+        break;
+      case "honors":
+        baseExp['title'] = this.title;
+        break;
     }
-    let data = this.testexp;
-    this.commDbService.updateUserDocArray(this.uid, "workExp", data, true).then(res => {
-      console.log("Added new work exp for "+this.uid, res);
+    let data = baseExp;
+    this.commDbService.updateUserDocArray(this.uid, this.infoType, data, true).then(res => {
+      console.log("Added new ",this.infoType," for "+this.uid, res);
     }, err => reject(err));
   }
 
-  deleteWorkExp(id:number){
+  async editExp(id: number){
+    //TODO: Interact with DOM
+    //Database interactions
+    const loading = await this.loadingController.create({
+      message: 'Processing',
+      duration: 15000
+    });
+    await loading.present();
+    let oldData= this.list[id];
+    delete oldData.id;
+    var newData;
+    await this.commDbService.updateUserDocArray(this.uid, this.infoType, oldData, false).then(res => {
+      console.log("Removed work exp for "+this.uid, res);
+    }, err => reject(err));
+    await this.commDbService.updateUserDocArray(this.uid, this.infoType, newData, true).catch(
+      err => console.log(err)
+    )
+    await this.refresh();
+    this.loadingController.dismiss();
+
+  }
+
+  async addSkill(){
+    const loading = await this.loadingController.create({
+      message: 'Adding...',
+      duration: 15000
+    });
+    await loading.present();
+    await this.commDbService.updateUserDocArray(this.uid, "skills", this.skill, true);
+    await this.refresh();
+    this.loadingController.dismiss();
+  }
+
+  editOther(id: number){
+
+  }
+
+  async updateDescription(){
+    const loading = await this.loadingController.create({
+      message: 'Uploading...',
+      duration: 15000
+    });
+    await loading.present();
+    await this.commDbService.updateUserDoc(this.uid, {description: this.description});
+    this.loadingController.dismiss();
+  }
+
+  async deleteExp(id:number){
+    const loading = await this.loadingController.create({
+      message: 'Deleting...',
+      duration: 15000
+    });
+    await loading.present();
     let data= this.list[id];
     delete data.id;
     console.log("gonna deleted:",data);
-    this.commDbService.updateUserDocArray(this.uid, "workExp", data, false).then(res => {
+    await this.commDbService.updateUserDocArray(this.uid, this.infoType, data, false).then(res => {
       console.log("Removed work exp for "+this.uid, res);
     }, err => reject(err));
+    await this.refresh();
+    this.loadingController.dismiss();
+  }
+
+  async deleteSkill(skill: string){
+    const loading = await this.loadingController.create({
+      message: 'Deleting...',
+      duration: 15000
+    });
+    await loading.present();
+    await this.commDbService.updateUserDocArray(this.uid, "skills", skill, false);
+    await this.refresh();
+    this.loadingController.dismiss();
+  }
+
+  async refresh(){
+    await this.commDbService.fetchUserDoc(this.uid).then(
+      res => {
+        var tempList = res.data()[this.infoType];
+        if(!(typeof tempList[0] === "string")) tempList.map((item, index) => {item.id = index});
+        this.list = tempList;
+      }
+    );
+  }
+
+  async initilize(){
+    const loading = await this.loadingController.create({
+        message: 'Loading...',
+        duration: 15000
+      });
+    await loading.present();
+    if(this.infoType != "description"){
+      await this.refresh();
+    }else{
+      await this.commDbService.fetchUserDoc(this.uid).then(
+        res => {
+          this.description = res.data().description;
+        }
+      )
+    }
+
+    this.loadingController.dismiss();
+    console.log("Modal received", this.navParams.data);
   }
 
   ngOnInit() {
+    this.initilize();
   }
 
 }
