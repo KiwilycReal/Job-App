@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ModalController, NavParams, LoadingController } from '@ionic/angular';
+import { ModalController, NavParams, LoadingController, IonItemSliding } from '@ionic/angular';
 import { reject } from 'q';
 import * as InfoInterfaces from '../interfaces/resume-interfaces'
 import { database } from 'firebase';
@@ -23,6 +23,18 @@ export class InfoEditModalPage implements OnInit {
   title;
   description;
   skill;
+  
+  editStartDate;
+  editEndDate;
+  editEntityName;
+  editMajor;
+  editGrade;
+  editLevel;
+  editGeolocation;
+  editPosition;
+  editName;
+  editTitle;
+  editDescription;
 
 
   testexp: InfoInterfaces.WorkExperience;
@@ -33,6 +45,8 @@ export class InfoEditModalPage implements OnInit {
   input3;
   infoType: string;
   editMode: boolean = false;
+
+  curEditPanel
 
   constructor(public modalController: ModalController,
               public loadingController: LoadingController,
@@ -48,7 +62,12 @@ export class InfoEditModalPage implements OnInit {
   }
 
   //Can be optimized by using formGroup rather than normal interface
-  addExp(){
+  async addExp(){
+    const loading = await this.loadingController.create({
+      message: 'Processing',
+      duration: 15000
+    });
+    await loading.present();
     var baseExp = {
       startDate: this.startDate,
       endDate: this.endDate,
@@ -75,9 +94,26 @@ export class InfoEditModalPage implements OnInit {
         break;
     }
     let data = baseExp;
-    this.commDbService.updateUserDocArray(this.uid, this.infoType, data, true).then(res => {
+    await this.commDbService.updateUserDocArray(this.uid, this.infoType, data, true).then(res => {
       console.log("Added new ",this.infoType," for "+this.uid, res);
     }, err => reject(err));
+    await this.refresh();
+    this.loadingController.dismiss();
+  }
+
+  test(expItem){
+    expItem.close();
+    if(this.curEditPanel) this.curEditPanel.style.display = "none"
+    this.curEditPanel = expItem.children[0].firstElementChild.lastElementChild;
+    this.curEditPanel.style.display = "";
+  }
+
+  cancelEditPanel(){
+    this.curEditPanel.style.display = "none";
+  }
+
+  uploadEdit(){
+    this.curEditPanel.style.display = "none";
   }
 
   async editExp(id: number){

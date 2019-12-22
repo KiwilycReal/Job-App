@@ -11,8 +11,8 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher> -->
   <ion-list>
-    <ion-item-sliding *ngFor="let item of list">
-      <ion-item>
+    <ion-item-sliding *ngFor="let item of list" [class]="'sliding'+item.id">
+      <ion-item lines="none">
         <ion-grid style="width: 100%;">
           <ion-row>
             <ion-col size=4.5 style="padding-left: 0;">
@@ -49,11 +49,69 @@
           <ion-row>
             <ion-label class="ion-text-wrap">描述: {{item.description}}</ion-label>
           </ion-row>
+          <ion-row style="background-color:mediumaquamarine;display: none;">
+            <ion-grid>
+              <div>
+                <ion-label>起始时间</ion-label>
+                <ion-input [(ngModel)]="editStartDate" type="date"></ion-input>
+              </div>
+              <div>
+                <ion-label>终止时间</ion-label>
+                <ion-input [(ngModel)]="editEndDate" type="date"></ion-input>
+              </div>
+              <div>
+                <ion-label>单位/学校名</ion-label>
+                <ion-input [(ngModel)]="editEntityName"></ion-input>
+              </div>
+              <div *ngIf="infoType=='eduExps'">
+                <ion-label>专业</ion-label>
+                <ion-input [(ngModel)]="editMajor"></ion-input>
+              </div>
+              <div *ngIf="infoType=='eduExps'">
+                <ion-label>成绩</ion-label>
+                <ion-input [(ngModel)]="editGrade"></ion-input>
+              </div>
+              <div *ngIf="infoType=='eduExps'">
+                <ion-label>教育阶段</ion-label>
+                <ion-input [(ngModel)]="editLevel"></ion-input>
+              </div>
+              <div *ngIf="infoType=='eduExps' || infoType=='workExps'">
+                <ion-label>地点</ion-label>
+                <ion-input [(ngModel)]="editGeolocation"></ion-input>
+              </div>
+              <div *ngIf="infoType=='workExps' || infoType=='projExps'">
+                <ion-label>职位/分工</ion-label>
+                <ion-input [(ngModel)]="editPosition"></ion-input>
+              </div>
+              <div *ngIf="infoType=='projExps'">
+                <ion-label>项目名称</ion-label>
+                <ion-input [(ngModel)]="editName"></ion-input>
+              </div>
+              <div *ngIf="infoType=='honors'">
+                <ion-label>荣誉名称</ion-label>
+                <ion-input [(ngModel)]="editTitle"></ion-input>
+              </div>
+              <div>
+                <ion-label>描述</ion-label>
+                <ion-textarea [(ngModel)]="editDescription"></ion-textarea>
+              </div>
+
+              <ion-row>
+                <ion-col size=6>
+                  <ion-button color="light" expand="block" (click)="cancelEditPanel()">Cancel</ion-button>
+                </ion-col>
+                <ion-col size=6>
+                  <ion-button color="primary" expand="block" (click)="uploadEdit()">Update</ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-row>
         </ion-grid>
       </ion-item>
+      <ion-item-divider></ion-item-divider>
 
       <ion-item-options side="start">
-        <ion-item-option color="primary" expandable (click)="editExp(item.id)">
+        <ion-item-option color="primary" expandable (click)="test($event.target.parentElement.parentElement.parentElement.getElementsByClassName('sliding'+item.id)[0])">
           编辑
         </ion-item-option>
       </ion-item-options>
