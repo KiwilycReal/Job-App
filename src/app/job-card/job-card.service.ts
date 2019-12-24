@@ -13,7 +13,6 @@ import { resolve } from 'url';
 export class JobCardService {
 
   jobForm = new FormGroup({
-    // jid: new FormControl(''),
     imageUrl: new FormControl(''),
     title: new FormControl(''),
     salary: new FormControl(''),
@@ -51,24 +50,12 @@ export class JobCardService {
 
   ];
 
-  getJobsFromDb(searchTerm?: String, filterRules?){
-
-  }
-
   get_jobinfo(){
-    // console.log('HelloWorld');
     return [...this.jobinfos];
   }
 
   get_jobinfo_db(){
-    // return this.fs.collection('Jobs').snapshotChanges();
     return this.fs.collection('Jobs').get().toPromise();
-  }
-
-  ttt(){
-    return new Promise<any>((resolve, reject) => {
-      this.fs.collection("Jobs").doc("J9z6Qy3Jqtfk7LDBXviq").update({Yes:"no", No:{haha:"haha"}}).then(res=>{},err=>{reject(err)})
-    });
   }
 
   createJob(data){

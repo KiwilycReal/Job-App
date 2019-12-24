@@ -2,6 +2,7 @@ import { Component, OnInit, Inject, AfterViewInit, ViewChild, ElementRef } from 
 
 import { Router } from '@angular/router';
 import * as firebase from 'firebase/app'
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-personal-info',
@@ -10,49 +11,64 @@ import * as firebase from 'firebase/app'
 })
 export class PersonalInfoComponent implements OnInit, AfterViewInit {
 
-  @ViewChild('headDetailIcon', {static: false}) headDetailIconElem
-  @ViewChild('signOutBtn', {static: false}) signOutBtnElem
-
-  private firstInit: boolean;
-
-  constructor(@Inject('loginService') private loginService, private router: Router) {
-    this.loginService.fa.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
-    this.firstInit = true;
-  }
-
+  // @ViewChild('signOutBtn', {static: false}) signOutBtnElem;
   @ViewChild("displayName", {static: true}) displayNameElem: ElementRef;
+
+  curUser;
+  isLogged = false;
+  curDisplayName = "请先登录";
+  curAvatarUrl = "../../assets/cxk.jpg";
+
+  constructor(@Inject('loginService') private loginService,
+              private router: Router) {}
+
 
   tryLogout(){
     this.loginService.userLogout().then(
-      res => {
-        console.log("success");
-        console.log(res);
-      }, err => {
-        console.log("err");
-        console.log(err);
-      }
+      res => console.log("Log out success"),
+      err => console.log("Log out error")
     );
-    // this.router.navigate(["login"])
   }
 
   toLogin(){
-    if(this.displayNameElem.nativeElement.innerHTML == "请先登录"){
-      this.router.navigate(['login']);
-    }else{
+    if(this.isLogged){
       console.log("relax");
+    }else{
+      this.router.navigate(['login']);
     }
   }
 
-  ngOnInit() {}
+  async initialize(){
+    var authState: Observable<any> = this.loginService.curAuthState;
+    await new Promise((resolve, reject) => {
+      //Monitor user authstate changes
+      authState.subscribe(
+        value => {
+          if(value){
+            //If authstate become logged
+            this.isLogged = true;
+            this.curUser = value;
+            this.curDisplayName = value.displayName;
+            resolve(value);
+          }else{
+            this.isLogged = false;
+            this.curUser = null;
+            this.curDisplayName = "请先登录"
+            reject(null);
+          }
+        }
+      )
+    });
+  }
+
+  ngOnInit() {
+    this.loginService.fa.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
+    this.initialize();
+  }
 
   ngAfterViewInit() {
-    // console.dir(this.displayNameEle.nativeElement);
-    // console.dir(history.state);
-    console.log("PI component view ready, cur name is: "+this.loginService.curDisplayName);
-    this.displayNameElem.nativeElement.innerHTML = this.loginService.curDisplayName;
+    console.log("PI component view ready, cur name is: "+this.curDisplayName);
     this.loginService.displayNameElem = this.displayNameElem.nativeElement;
-    this.loginService.headDetailIconElem = this.headDetailIconElem;
-    this.loginService.signOutBtnElem = this.signOutBtnElem;
   }
 
 }

@@ -1,11 +1,7 @@
-import { Component, OnInit, EventEmitter, Output, Input, ElementRef, ViewChild, AfterViewInit, Inject, OnDestroy } from '@angular/core';
-import { JobInfo } from '../job-card/job-card.module';
-import { JobCardService } from '../job-card/job-card.service';
-import { Observable, Subscription } from 'rxjs';
-import { NavController, ModalController, LoadingController } from '@ionic/angular';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Observable} from 'rxjs';
+import { ModalController, LoadingController } from '@ionic/angular';
 import { JobDetailPage } from '../job-detail/job-detail.page';
-import { reject } from 'q';
-import { removeSummaryDuplicates } from '@angular/compiler';
 
 @Component({
   selector: 'app-search',
@@ -13,151 +9,93 @@ import { removeSummaryDuplicates } from '@angular/compiler';
   styleUrls: ['./search.page.scss'],
 })
 export class SearchPage implements OnInit, OnDestroy{
+
+  constructor(public modalController: ModalController,
+              public loadingController: LoadingController,
+              @Inject('loginService') public loginService,
+              @Inject('commDbService') public commDbService) {}
+
   ngOnDestroy(): void {
-    // this.authSubscription.
     console.log("search destroyed");
   }
-  authSubscription: Subscription
-  // ngAfterViewInit(): void {
-  //   console.log("YES",this.hah);
-  // }
-  // @ViewChild('t') hah;
-  public searchTerm: String = "";
-  // @Input() teststr: ElementRef;
-  // jobs: JobInfo[];
-  // testt: JobInfo[] = [];
-  // newJob: JobInfo;
+
+  curUser;
+  isLogged = true;
+  
   jobs =[];
   allList = [];
-  isLogged = true;
-  o;
-  newJob;
-  ids: string[];
-  navCtrl: NavController;
-  curUser;
-  // @Output() newjobs = new EventEmitter<JobInfo[]>();
-
-  // testt: Observable<any>;
   
-  async fetchLatestJobList(queryPromise: Promise<any> = this.jobser.get_jobinfo_db()){
-    var temp;
-    var tempList = [];
-    
-    await queryPromise.then(res => {
-      res.docs.forEach(doc => {
-        temp = doc.data();
-        temp['jid'] = doc.id;
-        temp['favIconName'] = "heart-empty";
-        temp['patternStr'] = temp.title.concat(temp.position);
-        tempList.push(temp);
-      })
-    });
-    if(this.curUser){
-      await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-        res => {
-          tempList.forEach(
-            value => {
-              if(<string[]>res.data().favourite.includes(value.jid)) value.favIconName = "heart";
-            }
-          )
-        }
-      )
-    }else{
-      this.isLogged = false;
-    }
-    return tempList;
-  }
+  searchTerm: String = "";
 
-  async updateJobList(){
-    var tempList = [];
+  // tst(e){
+  //   console.log(e);
+  // }
 
-    await this.fetchLatestJobList().then(
-      res => {
-        tempList = res;
-      }
-    )
+  // blur(){
+  //   console.log("blur");
+  // }
 
-    //Handel when no one is logged in
-    this.jobs = tempList;
-    this.allList = tempList;
-  }
+  // async startSearch(){
+  //   var tempList = [];
+  //   var regExStr = "";
+  //   this.searchTerm.split("").forEach(
+  //     v => {
+  //       regExStr += v.concat("?");
+  //     }
+  //   );
+  //   var regExp = new RegExp(regExStr, "g");
+  //   await this.fetchRequiredJobList().then(
+  //     res => {
+  //       tempList = res;
+  //       this.allList = tempList;
+  //     }
+  //   );
+  //   //Start filtering result
+  //   tempList = tempList.sort(
+  //     (j1, j2) => {
+  //       var score1 = 0, score2 = 0;
+  //       var temp1, temp2;
+  //       temp1 = j1.patternStr.match(regExp);
+  //       temp2 = j2.patternStr.match(regExp);
+  //       if(temp1) score1 = temp1.filter(e=>{return e!=""}).length;
+  //       if(temp2) score2 = temp2.filter(e=>{return e!=""}).length;
+  //       return score2-score1;
+  //     }
+  //   );
+  //   this.jobs = tempList;
+  // }
 
-  refreshCard(event){
-    console.log('Start');
-    // console.dir(this.jobser.testdb());
-    setTimeout(async () => {
-      await this.updateJobList();
-      console.log('Async operation has ended');
-      event.target.complete();
-    });
-  }
+  // selectChange(ev){
+  //   console.dir(ev);
+  // }
 
-  tst(e){
-    console.log(e);
-  }
+  // initSearch(){
+  //   console.log("search focus");
+  // }
 
-  blur(){
-    console.log("blur");
-  }
+  // async searchByPay(range){
+  //   await this.fetchRequiredJobList(this.commDbService.fetchJobsByPay(range)).then(
+  //     res => {
+  //       this.jobs = res;
+  //     }
+  //   )
+  // }
 
-  async startSearch(){
-    var searchResult = [];
-    var tempList = [];
-    var temp;
-    var regExStr = "";
-    this.searchTerm.split("").forEach(
-      v => {
-        regExStr += v.concat("?");
-      }
-    );
-    var regExp = new RegExp(regExStr, "g");
-    await this.fetchLatestJobList().then(
-      res => {
-        tempList = res;
-        this.allList = tempList;
-      }
-    );
-    //Start filtering result
-    tempList = tempList.sort(
-      (j1, j2) => {
-        var score1 = 0, score2 = 0;
-        var temp1, temp2;
-        temp1 = j1.patternStr.match(regExp);
-        temp2 = j2.patternStr.match(regExp);
-        if(temp1) score1 = temp1.filter(e=>{return e!=""}).length;
-        if(temp2) score2 = temp2.filter(e=>{return e!=""}).length;
-        return score2-score1;
-      }
-    );
-    this.jobs = tempList;
-  }
-
-  selectChange(ev){
-    console.dir(ev);
-  }
-
-  initSearch(){
-    console.log("search focus");
-  }
+  // cancelSearch(){}
 
   addJob(){
-    let data = this.jobser.jobForm.value;
-    this.jobser.createJob(data).then(res => console.log(res));
-    // this.jobser.ttt();
+    let data = this.commDbService.newJobForm.value;
+    this.commDbService.createJob(data).then(
+      res => console.log(res),
+      err => console.log(err)
+    );
   }
 
-  cancelSearch(){
-    // console.dir(this.jobser.testdb());
-    // this.jobs = this.jobser.get_jobinfo();
-    // this.newjobs.emit(this.jobs);
-  }
-
-  async searchByPay(range){
-    await this.fetchLatestJobList(this.commDbService.fetchJobsByPay(range)).then(
-      res => {
-        this.jobs = res;
-      }
-    )
+  refreshCard(e){
+    setTimeout(async () => {
+      await this.updateJobList();
+      e.target.complete();
+    });
   }
 
   async presentJobDetailModal(job){
@@ -165,7 +103,6 @@ export class SearchPage implements OnInit, OnDestroy{
     const modal = await this.modalController.create({
       component: JobDetailPage,
       componentProps: {
-        test: "test",
         job: job
       }
     });
@@ -173,39 +110,23 @@ export class SearchPage implements OnInit, OnDestroy{
     const { data } = await modal.onWillDismiss();
   }
 
-
-  constructor(public jobser: JobCardService,
-              public modalController: ModalController,
-              public loadingController: LoadingController,
-              @Inject('loginService') public loginService,
-              @Inject('commDbService') public commDbService) {
-  }
-
-  async testLoading(errMsg?: string) {
-    const loading = await this.loadingController.create({
-      message: 'Loading jobs, Please wait...',
-      duration: 10000
-    });
-    await loading.present();
-    await this.updateJobList();
-    await this.loadingController.dismiss();
-  }
-
   addToUserHistory(jid){
     if(!this.curUser) return;
-
-    this.commDbService.updateUserDocArray(this.curUser.uid, "history", jid, true);
+    this.commDbService.updateUserDocArray(this.curUser.uid, "history", jid, true).catch(
+      err => console.log("Failed to add history", err)
+    );
   }
 
   async changeFavJob(elem){
     var jid = elem.id;
     var curUser = this.curUser;
     var isAdd = true;
+    if(!curUser) return;
     //Show spinner and hid heart
     elem.firstElementChild.style.display = "";
     elem.lastElementChild.style.display = "none";
     elem.disabled = true;
-    //Check whether this job's fav status (html elem can be altered locally)
+    //Check this job's fav status (html elem can be altered locally)
     await this.commDbService.fetchUserDoc(curUser.uid).then(
       res => {
         if(<string[]>res.data().favourite.includes(jid)) isAdd = false;
@@ -227,20 +148,61 @@ export class SearchPage implements OnInit, OnDestroy{
     }
   }
 
-  ngOnInit() {
-    // this.jobs = this.jobser.get_jobinfo();
-    // this.newjobs.emit(this.jobs);
+  async initialize() {
+    const loading = await this.loadingController.create({
+      message: 'Loading jobs, Please wait...',
+      duration: 10000
+    });
+    await loading.present();
+    await this.updateJobList();
+    await this.loadingController.dismiss();
+  }
+
+  async updateJobList(){
+    var tempList = [];
+
+    await this.fetchRequiredJobList().then(
+      res => {
+        tempList = res;
+    });
+    this.jobs = tempList;
+    this.allList = tempList;
+  }
+
+  async fetchRequiredJobList(queryPromise: Promise<any> = this.commDbService.fetchJobList()){
+    var temp;
+    var tempList = [];
     
+    await queryPromise.then(
+      res => {
+        res.docs.forEach(
+          doc => {
+            temp = doc.data();
+            temp['jid'] = doc.id;
+            temp['favIconName'] = "heart-empty";
+            temp['patternStr'] = temp.title.concat(temp.position);
+            tempList.push(temp);
+        });
+    });
+    //Update jobs' user fav status if someone logged
+    if(this.curUser){
+      await this.commDbService.fetchUserDoc(this.curUser.uid).then(
+        res => {
+          tempList.forEach(
+            value => {
+              if(<string[]>res.data().favourite.includes(value.jid)) value.favIconName = "heart";
+          });
+      });
+    }else{
+      this.isLogged = false;
+    }
+    return tempList;
+  }
+
+  ngOnInit() {
     var authState: Observable<any> = this.loginService.curAuthState;
-    console.log("before sub");
-    // this.authSubscription = authState.subscribe({
-    //   next(v) {console.log(v);this.curUser = v;},
-    //   error(e) {console.log(e)},
-    //   complete() {console.log("done")}
-    // });
-    this.authSubscription = authState.subscribe(
+    authState.subscribe(
       value => {
-        console.log(value);
         this.curUser = value;
         if(this.curUser){
           this.isLogged = true;
@@ -249,8 +211,7 @@ export class SearchPage implements OnInit, OnDestroy{
         }
       });
 
-    this.testLoading();
-    // this.authSubscription.
+    this.initialize();
   }
 
 }

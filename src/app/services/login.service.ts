@@ -4,12 +4,7 @@ import { AngularFirestore } from '@angular/fire/firestore';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { AngularFireAuth } from '@angular/fire/auth';
-import * as firebase from 'firebase/app'
-
-import { promise } from 'protractor';
-import { analytics } from 'firebase';
-import { Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators'
+import * as firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'
@@ -69,38 +64,44 @@ export class LoginService implements OnDestroy {
   userAuthState(self){
     self.unsubscribeAuth = this.fa.auth.onAuthStateChanged(
       user => {
-        console.log(self.signOutBtnElem);
-        console.log(self.headDetailIconElem);
-      if(user){
-        self.signOutBtn = "";
-        // test.curUser = user;
-        self.curUser = user;
-        console.log("Current user is "+user.email+"////"+user.displayName);
-        if(user.displayName != null) self.curDisplayName = user.displayName;
-        // console.log(self.loginIconElem);
-        self.loginIconElem.el.style.display = "none";
-        self.headDetailIconElem.el.detailIcon = "noen";
-        self.signOutBtnElem.el.style.display = "";
-        // console.log(this);
-        // self.displayNameElem.innerHTML = user.displayName;
-      }else{
-        self.signOutBtn = "none";
-        console.log("No one is logged in");
-        self.curUser = undefined;
-        self.curDisplayName = "请先登录";
-        self.loginIconElem.el.style.display = "";
-        self.headDetailIconElem.el.detailIcon = "arrow-round-forward";
-        self.signOutBtnElem.el.style.display = "none";
-        // console.log(this);
-        // self.displayNameElem.innerHTML = "请先登录";
-      }
-      if(self.displayNameElem){
-        self.displayNameElem.innerHTML = self.curDisplayName;
-      }
-    });
+        if(user){
+          self.curUser = user;
+          console.log("Current user is "+user.email+"////"+user.displayName);
+
+        }else{
+          console.log("No one is logged in");
+        }
+      // if(user){
+      //   self.signOutBtn = "";
+      //   // test.curUser = user;
+      //   self.curUser = user;
+      //   console.log("Current user is "+user.email+"////"+user.displayName);
+      //   if(user.displayName != null) self.curDisplayName = user.displayName;
+      //   // console.log(self.loginIconElem);
+      //   self.loginIconElem.el.style.display = "none";
+      //   self.headDetailIconElem.el.detailIcon = "noen";
+      //   self.signOutBtnElem.el.style.display = "";
+      //   // console.log(this);
+      //   // self.displayNameElem.innerHTML = user.displayName;
+      // }else{
+      //   self.signOutBtn = "none";
+      //   console.log("No one is logged in");
+      //   self.curUser = undefined;
+      //   self.curDisplayName = "请先登录";
+      //   self.loginIconElem.el.style.display = "";
+      //   self.headDetailIconElem.el.detailIcon = "arrow-round-forward";
+      //   self.signOutBtnElem.el.style.display = "none";
+      //   // console.log(this);
+      //   // self.displayNameElem.innerHTML = "请先登录";
+      // }
+      // if(self.displayNameElem){
+      //   self.displayNameElem.innerHTML = self.curDisplayName;
+      // }
+      });
   }
 
   changeDisplayName(name){
+    this.curDisplayName = name;
     if(this.displayNameElem){
       this.displayNameElem.innerHTML = name;
     }

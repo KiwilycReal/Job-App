@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
@@ -15,47 +15,37 @@ export class LoginComponent implements OnInit {
               public loadingController: LoadingController,
               public toastController: ToastController) {}
 
-  tryLogin(){
+  async tryLogin(){
+    var msg: string;
+    var isLogged = false;
     let data = this.loginService.loginForm.value;
-    // var loginSuccess = false;
-    // var errMsg = "";
-    // console.log("User entered: "+data);
-    this.loginService.userLogin(data).then(res => {
-      console.log("Login Result: ");
-      console.log(res);
-      this.testLoading();
-    }, err => {
-      console.log("Login Error: ", err.message);
-      this.testLoading(err.message);
-      // console.log(err);
-    });
-    // console.log(errMsg);
-  }
-
-  async testLoading(errMsg?: string) {
     const loading = await this.loadingController.create({
       message: 'Logging, Please wait...',
-      duration: 2000
+      duration: 10000
     });
     await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log('dismissed');
-    if(!errMsg){
-      this.router.navigate(['personal-info'], {state: {hello: "world"}});
-    }else{
-      this.testToast(errMsg);
-    }
+    await this.loginService.userLogin(data).then(
+      res => {
+        console.log("Login Result:", res);
+        msg = "Login success!";
+        isLogged = true;
+      }, err => {
+        console.log("Login Error: ", err.message);
+        msg = "Login failed: " + err.message;
+      });
+    this.loadingController.dismiss();
+    this.presentToast(msg)
+    if(isLogged) this.router.navigate(['personal-info']);
   }
 
-  async testToast(errMsg){
+  async presentToast(msg: string, time: number = 2500){
     const toast = await this.toastController.create({
-      message: errMsg,
+      message: msg,
       position: "middle",
       showCloseButton: true,
-      duration: 2500
+      duration: time
     });
-    toast.present();
+    await toast.present();
   }
 
   ngOnInit() {}

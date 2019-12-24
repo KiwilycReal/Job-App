@@ -1,4 +1,7 @@
 <ion-content>
+  <ion-refresher (ionRefresh)="refresh($event)" slot="fixed" pullMin=120>
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div style="border-bottom: solid grey 2px; margin-top: 2vh;" style="display: none;">
     <ion-row style=" height: 18vh; ">
       <ion-col size="2.5" style=" height: 18vh; margin-left: 2vw;">
@@ -48,8 +51,8 @@
 
 
   <div style="width: 96vw; margin:auto; margin-top: 1vh;">
-    <b>资料完整度: &nbsp;&nbsp; {{valueP}}%</b>
-    <ion-progress-bar [value]="value" [color]="pcolor" style="height: 2vh; margin-bottom: 3vh; margin-top: 1vh;"></ion-progress-bar>
+    <b>资料完整度: &nbsp;&nbsp; {{pValueStr}}%</b>
+    <ion-progress-bar [value]="pValue" [color]="pColor" style="height: 2vh; margin-bottom: 3vh; margin-top: 1vh;"></ion-progress-bar>
   </div>
 
 
@@ -170,34 +173,24 @@
           </ion-row>
     </ion-card> -->
     <ion-card>
-      <ion-item *ngFor="let link of links" lines="none" (click)="presentInfoEditModal(link)">
-        <ion-label slot="start">{{link.name}}</ion-label>
-        <ion-icon slot="end" name="create"></ion-icon>
-      </ion-item>
-      <!-- <ion-item lines="none">
-        <ion-label slot="start">工作经验</ion-label>
-        <ion-icon slot="end" name="create"></ion-icon>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-label slot="start">教育经历</ion-label>
-        <ion-icon slot="end" name="create"></ion-icon>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-label slot="start">项目经理</ion-label>
-        <ion-icon slot="end" name="create"></ion-icon>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-label slot="start">个人荣誉</ion-label>
-        <ion-icon slot="end" name="create"></ion-icon>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-label slot="start">附件</ion-label>
-        <ion-icon slot="end" name="create"></ion-icon>
-      </ion-item>
-      <ion-item lines="none">
-        <ion-label slot="start">个人简介</ion-label>
-        <ion-icon slot="end" name="create"></ion-icon>
-      </ion-item> -->
+      <div *ngFor="let link of links">
+        <ion-item lines="none" (click)="presentInfoEditModal(link)">
+          <ion-label slot="start">{{link.name}}</ion-label>
+          <ion-icon slot="end" name="create"></ion-icon>
+        </ion-item>
+        <ion-item lines="none" *ngIf="curUserDoc[link.type].length==0">
+          <ion-chip color="tertiary">暂无数据，快来添加吧</ion-chip>
+        </ion-item>
+        <ion-item lines="none" *ngIf="curUserDoc[link.type].length>0">
+          <div *ngIf="!['files','description'].includes(link.type)">
+            <ion-chip *ngFor="let item of curUserDoc[link.type]">{{item | resumePreview: link.type}}</ion-chip>
+          </div>
+          <div *ngIf="link.type=='description'" style="margin-left: 4px; padding-left: 12px;">
+            {{curUserDoc.description}}
+          </div>
+        </ion-item>
+        <ion-item-divider></ion-item-divider>
+      </div>
     </ion-card>
 
 

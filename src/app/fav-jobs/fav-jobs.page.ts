@@ -2,8 +2,6 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { JobDetailPage } from '../job-detail/job-detail.page';
 import { Subscription, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { resolve } from 'url';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -120,6 +118,6 @@ export class FavJobsPage implements OnInit, OnDestroy {
     // console.log(window.history);
     // console.log(history.state);
     // console.log(this.router.getCurrentNavigation().extras.state);
-      this.initialize(type);
+    this.initialize(type);
   }
 }

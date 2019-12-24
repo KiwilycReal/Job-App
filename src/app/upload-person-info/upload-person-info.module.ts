@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { UploadPersonInfoPage } from './upload-person-info.page';
 import { InfoEditModalPageModule } from '../info-edit-modal/info-edit-modal.module';
+import { ResumePipe } from '../pipes/resume.pipe';
 
 const routes: Routes = [
   {
@@ -23,6 +24,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     InfoEditModalPageModule
   ],
-  declarations: [UploadPersonInfoPage]
+  declarations: [UploadPersonInfoPage, ResumePipe]
 })
 export class UploadPersonInfoPageModule {}

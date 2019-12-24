@@ -12,40 +12,45 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 })
 export class RegisterPage implements OnInit {
 
+  userDetailForm = this.formBuilder.group({
+    title: ['', Validators.required],
+    firstName: ['', Validators.required],
+    middleName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', Validators.required],
+    dob: [''],
+    password: ['']
+  })
+
+  curDisplayName;
+  curUser;
+
   constructor(
               private router: Router,
               @Inject('commDbService') public commDbService,
               @Inject('loginService') public loginService,
               public loadingController: LoadingController,
               public toastController: ToastController,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder) {}
 
-  
-
-  userDetailForm = this.formBuilder.group({
-    // uid: new FormControl(''),
-    // wechat: new FormControl(''),
-    // mobile: new FormControl(''),
-    title: ['', Validators.required],
-    // name: new FormControl(''),
-    firstName: ['', Validators.required],
-    middleName: ['', Validators.required],
-    lastName: ['', Validators.required],
-    email: ['', Validators.required],
-    // Details: new FormControl('')
-    dob: [''],
-    password: ['']
-  })
-
-  tryRegister(){
+  async tryRegister(){
+    var isLogged = false;
     let data = this.userDetailForm.value;
-    let t = {
+    let credential = {
       email: data.email,
       password: data.password
     }
+
+    const loading = await this.loadingController.create({
+      message: 'Registering, Please wait...',
+      duration: 15000
+    });
+    await loading.present();
     
-    this.loginService.userRegister(t).then(
+    await this.loginService.userRegister(credential).then(
       res => {
+        this.curUser = res.user;
+        isLogged = true;
         delete data.password;
         data.workExps = [];
         data.eduExps = [];
@@ -56,64 +61,49 @@ export class RegisterPage implements OnInit {
         data.skills = [];
         data.favourite = [];
         data.history =[];
-        this.testLoading();
-        this.loginService.curDisplayName = data.firstName;
-        this.loginService.changeDisplayName(data.firstName);
-        res.user.updateProfile({
-          displayName: data.firstName,
-          photoURL: "http://i0.hdslb.com/bfs/archive/1ebcd228cec3f5104031fa9a9f8d113ccbd082db.jpg"
-        }).then(function(){
-          console.log("Update success");
-        }).catch(function(error){
-          console.log(error);
-        });
-        console.log("Default display name set");
-        this.commDbService.createUserDoc(res.user.uid, data).then(
-          res => {
-            console.dir("Finally done", res);
-            this.testToast("You are all set!:)");
-            console.log(this.loginService);
-          }, err => {
-            console.dir("Error create user info", err);
-            this.testToast("Failed to create user info doc")
-          }
-        )
+        this.curDisplayName = data.title+data.firstName+" "+data.lastName;
+        this.loginService.changeDisplayName(this.curDisplayName);
       }, err => {
-        console.dir("register error ", err);
-        this.testLoading(err.message);
+        console.dir("Register error ", err.message);
+        this.presentToast("Register error "+err.message);
       }
     );
-    // this.router.navigate(['login']);
-  }
-
-  async testLoading(errMsg?: string) {
-    const loading = await this.loadingController.create({
-      message: 'Registering, Please wait...',
-      duration: 2000
-    });
-    await loading.present();
-
-    const { role, data } = await loading.onDidDismiss();
-    console.log('dismissed');
-    if(!errMsg){
-      this.router.navigate(['personal-info'], {state: {hello: "world"}});
-    }else{
-      this.testToast(errMsg);
+    //Set initial display name
+    if(!isLogged) {
+      this.loadingController.dismiss();
+      return;
     }
+    await this.curUser.updateProfile({
+      displayName: this.curDisplayName,
+      photoURL: "http://i0.hdslb.com/bfs/archive/1ebcd228cec3f5104031fa9a9f8d113ccbd082db.jpg"
+    }).then(
+      res => console.log("Initial dp name set"),
+      err => console.log("Failed to set initial dp name:",err.message)
+    );
+    //Create userinfo doc
+    await this.commDbService.createUserDoc(this.curUser.uid, data).then(
+      res => {
+        console.dir("Userinfo doc created", res);
+        this.presentToast("You are all set!:)");
+      }, err => {
+        console.dir("Failed to create userinfo doc", err);
+        this.presentToast("Failed to create userinfo doc")
+      }
+    );
+    this.router.navigate(['personal-info']);
+    this.loadingController.dismiss();
   }
 
-  async testToast(errMsg){
+  async presentToast(msg, time: number = 2500){
     const toast = await this.toastController.create({
-      message: errMsg,
+      message: msg,
       position: "top",
       showCloseButton: true,
-      color: "dark",
-      duration: 2500
+      duration: time
     });
     toast.present();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

@@ -53,47 +53,47 @@
             <ion-grid>
               <div>
                 <ion-label>起始时间</ion-label>
-                <ion-input [(ngModel)]="editStartDate" type="date"></ion-input>
+                <ion-input [value]="item.startDate" type="date"></ion-input>
               </div>
               <div>
                 <ion-label>终止时间</ion-label>
-                <ion-input [(ngModel)]="editEndDate" type="date"></ion-input>
+                <ion-input [value]="item.endDate" type="date"></ion-input>
               </div>
               <div>
                 <ion-label>单位/学校名</ion-label>
-                <ion-input [(ngModel)]="editEntityName"></ion-input>
+                <ion-input [value]="item.entityName"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps'">
                 <ion-label>专业</ion-label>
-                <ion-input [(ngModel)]="editMajor"></ion-input>
+                <ion-input [value]="item.major"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps'">
                 <ion-label>成绩</ion-label>
-                <ion-input [(ngModel)]="editGrade"></ion-input>
+                <ion-input [value]="item.grade"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps'">
                 <ion-label>教育阶段</ion-label>
-                <ion-input [(ngModel)]="editLevel"></ion-input>
+                <ion-input [value]="item.level"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps' || infoType=='workExps'">
                 <ion-label>地点</ion-label>
-                <ion-input [(ngModel)]="editGeolocation"></ion-input>
+                <ion-input [value]="item.geolocation"></ion-input>
               </div>
               <div *ngIf="infoType=='workExps' || infoType=='projExps'">
                 <ion-label>职位/分工</ion-label>
-                <ion-input [(ngModel)]="editPosition"></ion-input>
+                <ion-input [value]="item.position"></ion-input>
               </div>
               <div *ngIf="infoType=='projExps'">
                 <ion-label>项目名称</ion-label>
-                <ion-input [(ngModel)]="editName"></ion-input>
+                <ion-input [value]="item.name"></ion-input>
               </div>
               <div *ngIf="infoType=='honors'">
                 <ion-label>荣誉名称</ion-label>
-                <ion-input [(ngModel)]="editTitle"></ion-input>
+                <ion-input [value]="item.title"></ion-input>
               </div>
               <div>
                 <ion-label>描述</ion-label>
-                <ion-textarea [(ngModel)]="editDescription"></ion-textarea>
+                <ion-textarea [value]="item.description"></ion-textarea>
               </div>
 
               <ion-row>
