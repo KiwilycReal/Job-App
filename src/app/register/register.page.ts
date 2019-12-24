@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
-import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { Validators, FormBuilder } from '@angular/forms';
 
 
 @Component({
@@ -19,6 +19,8 @@ export class RegisterPage implements OnInit {
     lastName: ['', Validators.required],
     email: ['', Validators.required],
     dob: [''],
+    wechat: [''],
+    mobile: [''],
     password: ['']
   })
 

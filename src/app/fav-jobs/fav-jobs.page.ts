@@ -18,6 +18,8 @@ export class FavJobsPage implements OnInit, OnDestroy {
 
   isLogged = false;
 
+  type: string;
+
   authSubscription: Subscription;
 
   curUser;
@@ -31,7 +33,31 @@ export class FavJobsPage implements OnInit, OnDestroy {
       console.log("fav constructor");
   }
 
-  async initialize(type){
+  refresh(e){
+    setTimeout(async () => {
+      await this.updateFavJobList().catch(err => {
+        console.log(err);
+      });
+      e.target.complete();
+    });
+  }
+
+  async deleteJobCard(jid){
+    const loading = await this.loadingController.create({
+      message: 'Deleting...',
+      duration: 15000
+    });
+    await loading.present();
+    await this.commDbService.updateUserDocArray(this.curUser.uid, this.type, jid, false);
+    await this.updateFavJobList();
+  }
+
+  async initialize(){
+    const loading = await this.loadingController.create({
+      message: 'Loading...',
+      duration: 15000
+    });
+    await loading.present();
     var authState: Observable<any> = this.loginService.curAuthState;
     await new Promise((resolve,reject) => {
       this.authSubscription = authState.subscribe(
@@ -40,7 +66,7 @@ export class FavJobsPage implements OnInit, OnDestroy {
           if(value){
             this.isLogged = true;
             this.curUser = value;
-            this.updateFavJobList(type);
+            this.updateFavJobList();
             resolve(value);
           }else{
             this.isLogged = false;
@@ -51,40 +77,27 @@ export class FavJobsPage implements OnInit, OnDestroy {
     }).catch(
       err => {
         console.log(err);
+        this.loadingController.dismiss();
         this.router.navigate(["login"]);
       }
     );
   }
 
-  async presentLoading(loadMsg?: string) {
-    const loading = await this.loadingController.create({
-      message: loadMsg,
-      duration: 10000
-    });
-    return loading;
-  }
-
-  async updateFavJobList(field: string = "favourite"){
-    var loading;
-    if(this.router.url.includes("jobs")){
-      loading = await this.presentLoading("Loading...");
-      await loading.present();
-    }
+  async updateFavJobList(){
     var jidList = [];
     //Handel when no one is logged in
     if(!this.curUser){
-      console.log("yeah");
       this.router.navigate(["login"]);
       return;
     }
     await this.commDbService.fetchUserDoc(this.curUser.uid).then(
       res => {
-        jidList = res.data()[field];
+        jidList = res.data()[this.type];
         return jidList;
       }
     ).then(
       res => {
-        return this.commDbService.fetchFavJobList(res);
+        return this.commDbService.fetchPartialJobList(res);
       }
     ).then(
       res => {
@@ -92,7 +105,7 @@ export class FavJobsPage implements OnInit, OnDestroy {
         this.jobs = res;
       }
     );
-    if(loading) await this.loadingController.dismiss();
+    await this.loadingController.dismiss();
 
   }
 
@@ -108,16 +121,9 @@ export class FavJobsPage implements OnInit, OnDestroy {
     const { data } = await modal.onWillDismiss();
   }
 
-  changeFavAlert(elem){
-
-  }
-
   ngOnInit() {
-    var type;
-    this.activatedRoute.data.subscribe((data)=>{console.log(data);type = data.msg})
-    // console.log(window.history);
-    // console.log(history.state);
-    // console.log(this.router.getCurrentNavigation().extras.state);
-    this.initialize(type);
+    this.activatedRoute.data.subscribe((data)=>{console.log(data);this.type = data.msg})
+    
+    this.initialize();
   }
 }

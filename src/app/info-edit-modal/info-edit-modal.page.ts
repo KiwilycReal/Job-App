@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ModalController, NavParams, LoadingController, IonItemSliding } from '@ionic/angular';
+import { ModalController, NavParams, LoadingController } from '@ionic/angular';
 import { reject } from 'q';
 import * as InfoInterfaces from '../interfaces/resume-interfaces'
-import { database } from 'firebase';
 
 @Component({
   selector: 'app-info-edit-modal',
@@ -23,6 +22,7 @@ export class InfoEditModalPage implements OnInit {
   title;
   description;
   skill;
+  file;
   
   editStartDate;
   editEndDate;
@@ -36,13 +36,8 @@ export class InfoEditModalPage implements OnInit {
   editTitle;
   editDescription;
 
-
-  testexp: InfoInterfaces.WorkExperience;
   uid;
   list;
-  input1;
-  input2;
-  input3;
   infoType: string;
   editMode: boolean = false;
 
@@ -101,68 +96,6 @@ export class InfoEditModalPage implements OnInit {
     this.loadingController.dismiss();
   }
 
-  test(expItem){
-    expItem.close();
-    if(this.curEditPanel) this.curEditPanel.style.display = "none"
-    this.curEditPanel = expItem.children[0].firstElementChild.lastElementChild;
-    this.curEditPanel.style.display = "";
-  }
-
-  cancelEditPanel(){
-    this.curEditPanel.style.display = "none";
-  }
-
-  uploadEdit(){
-    this.curEditPanel.style.display = "none";
-  }
-
-  async editExp(id: number){
-    //TODO: Interact with DOM
-    //Database interactions
-    const loading = await this.loadingController.create({
-      message: 'Processing',
-      duration: 15000
-    });
-    await loading.present();
-    let oldData= this.list[id];
-    delete oldData.id;
-    var newData;
-    await this.commDbService.updateUserDocArray(this.uid, this.infoType, oldData, false).then(res => {
-      console.log("Removed work exp for "+this.uid, res);
-    }, err => reject(err));
-    await this.commDbService.updateUserDocArray(this.uid, this.infoType, newData, true).catch(
-      err => console.log(err)
-    )
-    await this.refresh();
-    this.loadingController.dismiss();
-
-  }
-
-  async addSkill(){
-    const loading = await this.loadingController.create({
-      message: 'Adding...',
-      duration: 15000
-    });
-    await loading.present();
-    await this.commDbService.updateUserDocArray(this.uid, "skills", this.skill, true);
-    await this.refresh();
-    this.loadingController.dismiss();
-  }
-
-  editOther(id: number){
-
-  }
-
-  async updateDescription(){
-    const loading = await this.loadingController.create({
-      message: 'Uploading...',
-      duration: 15000
-    });
-    await loading.present();
-    await this.commDbService.updateUserDoc(this.uid, {description: this.description});
-    this.loadingController.dismiss();
-  }
-
   async deleteExp(id:number){
     const loading = await this.loadingController.create({
       message: 'Deleting...',
@@ -179,6 +112,76 @@ export class InfoEditModalPage implements OnInit {
     this.loadingController.dismiss();
   }
 
+  editExp(expItem){
+    expItem.close();
+    if(this.curEditPanel) this.curEditPanel.style.display = "none"
+    this.curEditPanel = expItem.children[0].firstElementChild.lastElementChild;
+    this.curEditPanel.style.display = "";
+  }
+
+  cancelEditPanel(){
+    this.curEditPanel.style.display = "none";
+  }
+
+  async uploadEdit(id){
+    const loading = await this.loadingController.create({
+      message: 'Processing',
+      duration: 15000
+    });
+    await loading.present();
+    //First delete the old version
+    let oldData= this.list[id];
+    delete oldData.id;
+    console.log("gonna deleted:",oldData);
+    await this.commDbService.updateUserDocArray(this.uid, this.infoType, oldData, false).then(res => {
+      console.log("Removed work exp for "+this.uid, res);
+    }, err => reject(err));
+    //Start add the edited exp
+    var baseExp = {
+      startDate: this.editStartDate,
+      endDate: this.editEndDate,
+      entityName: this.editEntityName,
+      description: this.editDescription
+    };
+    switch(this.infoType){
+      case "eduExps":
+        baseExp['major'] = this.editMajor;
+        baseExp['grade'] = this.editGrade;
+        baseExp['level'] = this.editLevel;
+        baseExp['geolocation'] = this.editGeolocation;
+        break;
+      case "projExps":
+        baseExp['position'] = this.editPosition;
+        baseExp['name'] = this.editName;
+        break;
+      case "workExps":
+        baseExp['geolocation'] = this.editGeolocation;
+        baseExp['position'] = this.editPosition;
+        break;
+      case "honors":
+        baseExp['title'] = this.editTitle;
+        break;
+    }
+    let newData = baseExp;
+    await this.commDbService.updateUserDocArray(this.uid, this.infoType, newData, true).then(res => {
+      console.log("Added new ",this.infoType," for "+this.uid, res);
+    }, err => reject(err));
+    await this.refresh();
+    this.curEditPanel.style.display = "none";
+    this.loadingController.dismiss();
+  }
+
+  async addSkill(){
+    const loading = await this.loadingController.create({
+      message: 'Adding...',
+      duration: 15000
+    });
+    await loading.present();
+    await this.commDbService.updateUserDocArray(this.uid, "skills", this.skill, true);
+    await this.refresh();
+    this.loadingController.dismiss();
+  }
+
   async deleteSkill(skill: string){
     const loading = await this.loadingController.create({
       message: 'Deleting...',
@@ -188,6 +191,39 @@ export class InfoEditModalPage implements OnInit {
     await this.commDbService.updateUserDocArray(this.uid, "skills", skill, false);
     await this.refresh();
     this.loadingController.dismiss();
+  }
+
+  async updateDescription(){
+    const loading = await this.loadingController.create({
+      message: 'Uploading...',
+      duration: 15000
+    });
+    await loading.present();
+    await this.commDbService.updateUserDoc(this.uid, {description: this.description});
+    this.loadingController.dismiss();
+  }
+
+  getCurrentFile(f){
+    this.file = f;
+    // console.log(f);
+  }
+
+  async addFile(){
+    const loading = await this.loadingController.create({
+      message: 'Adding...',
+      duration: 20000
+    });
+    await loading.present();
+    await this.commDbService.uploadFile(this.file, this.uid).then(
+      res => {
+        this.commDbService.updateUserDocArray(this.uid, this.infoType, this.file.name, true);
+      }
+    );
+    await this.refresh();
+    this.loadingController.dismiss();
+    // this.commDbService.listFiles(this.uid).then(
+    //   res => console.log(res)
+    // )
   }
 
   async refresh(){

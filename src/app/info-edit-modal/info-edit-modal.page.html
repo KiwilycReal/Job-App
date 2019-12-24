@@ -53,47 +53,47 @@
             <ion-grid>
               <div>
                 <ion-label>起始时间</ion-label>
-                <ion-input [value]="item.startDate" type="date"></ion-input>
+                <ion-input [value]="item.startDate" (input)="editStartDate=$event.target.value" type="date"></ion-input>
               </div>
               <div>
                 <ion-label>终止时间</ion-label>
-                <ion-input [value]="item.endDate" type="date"></ion-input>
+                <ion-input [value]="item.endDate" (input)="editEndDate=$event.target.value" type="date"></ion-input>
               </div>
               <div>
                 <ion-label>单位/学校名</ion-label>
-                <ion-input [value]="item.entityName"></ion-input>
+                <ion-input [value]="item.entityName" (input)="editEntityName=$event.target.value"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps'">
                 <ion-label>专业</ion-label>
-                <ion-input [value]="item.major"></ion-input>
+                <ion-input [value]="item.major" (input)="editMajor=$event.target.value"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps'">
                 <ion-label>成绩</ion-label>
-                <ion-input [value]="item.grade"></ion-input>
+                <ion-input [value]="item.grade" (input)="editGrade=$event.target.value"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps'">
                 <ion-label>教育阶段</ion-label>
-                <ion-input [value]="item.level"></ion-input>
+                <ion-input [value]="item.level" (input)="editLevel=$event.target.value"></ion-input>
               </div>
               <div *ngIf="infoType=='eduExps' || infoType=='workExps'">
                 <ion-label>地点</ion-label>
-                <ion-input [value]="item.geolocation"></ion-input>
+                <ion-input [value]="item.geolocation" (input)="editGeolocation=$event.target.value"></ion-input>
               </div>
               <div *ngIf="infoType=='workExps' || infoType=='projExps'">
                 <ion-label>职位/分工</ion-label>
-                <ion-input [value]="item.position"></ion-input>
+                <ion-input [value]="item.position" (input)="editPosition=$event.target.value"></ion-input>
               </div>
               <div *ngIf="infoType=='projExps'">
                 <ion-label>项目名称</ion-label>
-                <ion-input [value]="item.name"></ion-input>
+                <ion-input [value]="item.name" (input)="editName=$event.target.value"></ion-input>
               </div>
               <div *ngIf="infoType=='honors'">
                 <ion-label>荣誉名称</ion-label>
-                <ion-input [value]="item.title"></ion-input>
+                <ion-input [value]="item.title" (input)="editTitle=$event.target.value"></ion-input>
               </div>
               <div>
                 <ion-label>描述</ion-label>
-                <ion-textarea [value]="item.description"></ion-textarea>
+                <ion-textarea [value]="item.description" (input)="editDescription=$event.target.value"></ion-textarea>
               </div>
 
               <ion-row>
@@ -101,7 +101,7 @@
                   <ion-button color="light" expand="block" (click)="cancelEditPanel()">Cancel</ion-button>
                 </ion-col>
                 <ion-col size=6>
-                  <ion-button color="primary" expand="block" (click)="uploadEdit()">Update</ion-button>
+                  <ion-button color="primary" expand="block" (click)="uploadEdit(item.id)">Update</ion-button>
                 </ion-col>
               </ion-row>
             </ion-grid>
@@ -111,7 +111,7 @@
       <ion-item-divider></ion-item-divider>
 
       <ion-item-options side="start">
-        <ion-item-option color="primary" expandable (click)="test($event.target.parentElement.parentElement.parentElement.getElementsByClassName('sliding'+item.id)[0])">
+        <ion-item-option color="primary" expandable (click)="editExp($event.target.parentElement.parentElement.parentElement.getElementsByClassName('sliding'+item.id)[0])">
           编辑
         </ion-item-option>
       </ion-item-options>
@@ -189,7 +189,7 @@
         <ion-label>{{item}}</ion-label>
       </ion-item>
 
-      <ion-item-options side="end">
+      <ion-item-options side="end" *ngIf="infoType=='skills'">
         <ion-item-option color="danger" expandable (click)="deleteSkill(item)">
           删除
         </ion-item-option>
@@ -202,9 +202,10 @@
       <ion-input [(ngModel)]="skill"></ion-input>
       <ion-button expand="block" (click)="addSkill()"><ion-icon name="add"></ion-icon></ion-button>
     </ion-card>
-  </ion-list>
 
-  <ion-card *ngIf="editMode">
-    <ion-button expand="block" (click)="updateOther()"><ion-icon name="cloud-upload"></ion-icon></ion-button>
-  </ion-card>
+    <ion-card *ngIf="infoType=='files'">
+      <ion-input clearOnEdit="true" (change)="getCurrentFile($event.target.files[0])" type="file"></ion-input>
+      <ion-button expand="block" (click)="addFile()"><ion-icon name="cloud-upload"></ion-icon></ion-button>
+    </ion-card>
+  </ion-list>
 </ion-content>

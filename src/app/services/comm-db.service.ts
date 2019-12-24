@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireStorage } from '@angular/fire/storage'
 import * as firebase from 'firebase/app'
 import { FormControl, FormGroup } from '@angular/forms';
 
@@ -9,7 +10,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class CommDbService {
   
-  constructor(private fs: AngularFirestore) { }
+  constructor(private afs: AngularFirestore,
+              private afstorage: AngularFireStorage) {}
 
   newJobForm = new FormGroup({
     imageUrl: new FormControl(''),
@@ -25,7 +27,7 @@ export class CommDbService {
 
   createJob(data){
     return new Promise<any>((resolve, reject) => {
-      this.fs.collection("Jobs").add(data).then(
+      this.afs.collection("Jobs").add(data).then(
         res => resolve(res),
         err => reject(err)
       )
@@ -33,20 +35,23 @@ export class CommDbService {
   }
 
   fetchJobList(){
-    return this.fs.collection('Jobs').get().toPromise();
+    return this.afs.collection('Jobs').get().toPromise();
   }
 
-  fetchFavJobList(jids: string[]){
-    var jobCollection = this.fs.firestore.collection("Jobs");
-    return this.fs.firestore.runTransaction(
+  fetchPartialJobList(jids: string[]){
+    var jobCollection = this.afs.firestore.collection("Jobs");
+    return this.afs.firestore.runTransaction(
       transaction => {
         return new Promise<any>((resolve, reject) => {
           var tempList = [];
+          var temp;
           jids.forEach(
             value => {
               transaction.get(jobCollection.doc(value)).then(
                 res => {
-                  tempList.push(res.data());
+                  temp = res.data();
+                  temp["jid"] = value;
+                  tempList.push(temp);
                 }
               )
             }
@@ -57,7 +62,7 @@ export class CommDbService {
   }
 
   fetchJobsByPay(range){
-    return this.fs.collection('Jobs', ref => {
+    return this.afs.collection('Jobs', ref => {
       return ref.where("salary", ">=", range.lower)
                 .where("salary", "<=", range.upper)
                 .orderBy("salary", "desc");
@@ -66,7 +71,7 @@ export class CommDbService {
   
   createUserDoc(uid, data){
     return new Promise<any>((resolve, reject) => {
-      this.fs.collection("UserInfo").doc(uid).set(data).then(
+      this.afs.collection("UserInfo").doc(uid).set(data).then(
         res => {resolve(res); console.dir("Create new user info",res)},
         err => reject(err)
       )
@@ -75,7 +80,7 @@ export class CommDbService {
 
   updateUserDoc(uid, data){
     return new Promise<any>((resolve, reject) => {
-      this.fs.collection("UserInfo").doc(uid).update(data).then(
+      this.afs.collection("UserInfo").doc(uid).update(data).then(
         res => {resolve(res); console.log("User doc updated", res)},
         err => reject(err)
       )
@@ -94,7 +99,7 @@ export class CommDbService {
       updateObj[field] = firebase.firestore.FieldValue.arrayRemove(value)
     }
     return new Promise<any>((resolve, reject) => {
-      this.fs.collection("UserInfo").doc(uid).update(updateObj).then(
+      this.afs.collection("UserInfo").doc(uid).update(updateObj).then(
         res => {resolve(res); console.log("User ",uid,field," update success")},
         err => {reject(err); console.log("User",uid,field," update failed")}
       );
@@ -102,7 +107,31 @@ export class CommDbService {
   }
 
   fetchUserDoc(uid){
-    return this.fs.collection("UserInfo").doc(uid).get().toPromise();
+    return this.afs.collection("UserInfo").doc(uid).get().toPromise();
+  }
+
+  async uploadFile(file: any, uid: string){
+    var ref = this.afstorage.storage.ref("/").child(uid).child(file.name);
+    var task = ref.put(file).then(
+      res => console.log(res)
+    );
+  }
+
+  async listFiles(uid: string){
+    var filePaths = [];
+    var ref = this.afstorage.storage.ref(uid);
+    await ref.listAll().then(
+      res => {
+        res.items.forEach(
+          item => {
+            filePaths.push(item.name);
+          }
+        );
+      }
+    ).catch(
+      err => console.log("Error when fetch file list",err)
+    );
+    return filePaths;
   }
 
 }

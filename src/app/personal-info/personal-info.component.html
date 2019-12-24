@@ -1,7 +1,7 @@
 <ion-content>
   <ion-card>
     <ion-grid>
-      <ion-row (click)="toLogin()">
+      <ion-row (click)="toLogin()" style="border-bottom-style: double;">
         <ion-col size=3>
           <ion-avatar style="width: 66px; height: 66px; margin: 5px;">
               <img [src]="curAvatarUrl">
@@ -16,32 +16,34 @@
           <ion-icon size="large" name="arrow-round-forward"></ion-icon>
         </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-chip>
-            <ion-avatar>
-                <img src="../../assets/wechat.png">
-            </ion-avatar>
-            <ion-label #wechatID>lyc1291822892</ion-label>
-          </ion-chip>
-        </ion-col> 
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-chip>
-            <ion-icon name="call"></ion-icon>
-            <ion-label #phoneNum>+61 435765076</ion-label>
-          </ion-chip>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-chip>
-            <ion-icon name="mail"></ion-icon>
-            <ion-label #emailAddr>kiwilyc9827@gmail.com</ion-label>
-          </ion-chip>
-        </ion-col>
-      </ion-row>
+      <div *ngIf="isLogged">
+        <ion-row>
+          <ion-col>
+            <ion-chip>
+              <ion-avatar>
+                  <img src="../../assets/wechat.png">
+              </ion-avatar>
+              <ion-label #wechatID>{{curUserDoc.wechat}}</ion-label>
+            </ion-chip>
+          </ion-col> 
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-chip>
+              <ion-icon name="call"></ion-icon>
+              <ion-label #phoneNum>{{curUserDoc.mobile}}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-chip>
+              <ion-icon name="mail"></ion-icon>
+              <ion-label #emailAddr>{{email}}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </div>
     </ion-grid>
   </ion-card>
           

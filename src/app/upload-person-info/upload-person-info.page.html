@@ -181,7 +181,7 @@
         <ion-item lines="none" *ngIf="curUserDoc[link.type].length==0">
           <ion-chip color="tertiary">暂无数据，快来添加吧</ion-chip>
         </ion-item>
-        <ion-item lines="none" *ngIf="curUserDoc[link.type].length>0">
+        <ion-item lines="none" *ngIf="curUserDoc[link.type].length>0 && link.type!='files'">
           <div *ngIf="!['files','description'].includes(link.type)">
             <ion-chip *ngFor="let item of curUserDoc[link.type]">{{item | resumePreview: link.type}}</ion-chip>
           </div>

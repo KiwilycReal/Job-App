@@ -15,11 +15,17 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
   @ViewChild("displayName", {static: true}) displayNameElem: ElementRef;
 
   curUser;
+  curUserDoc = {
+    mobile: "",
+    wechat: ""
+  }
   isLogged = false;
+  email;
   curDisplayName = "请先登录";
   curAvatarUrl = "../../assets/cxk.jpg";
 
   constructor(@Inject('loginService') private loginService,
+              @Inject('commDbService') private commDbService,
               private router: Router) {}
 
 
@@ -43,17 +49,26 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     await new Promise((resolve, reject) => {
       //Monitor user authstate changes
       authState.subscribe(
-        value => {
+        async value => {
           if(value){
             //If authstate become logged
             this.isLogged = true;
             this.curUser = value;
             this.curDisplayName = value.displayName;
+            this.email = value.email;
+            await this.commDbService.fetchUserDoc(value.uid).then(
+              res => {
+                console.log(res.data());
+                this.curUserDoc = res.data();
+                console.log(this.curUserDoc);
+              }
+            );
             resolve(value);
           }else{
             this.isLogged = false;
             this.curUser = null;
-            this.curDisplayName = "请先登录"
+            this.curDisplayName = "请先登录";
+            this.email = "";
             reject(null);
           }
         }

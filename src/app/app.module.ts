@@ -15,6 +15,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 import { AngularFireAuthModule } from '@angular/fire/auth';
 
+import { AngularFireStorageModule } from '@angular/fire/storage'
+
 import { LoginService } from './services/login.service'
 import { CommDbService } from './services/comm-db.service';
 import { SearchPageModule } from './search/search.module';
@@ -27,6 +29,7 @@ import { FavJobsPageModule } from './fav-jobs/fav-jobs.module';
   AngularFireModule.initializeApp(environment.firebaseConfig),
   AngularFirestoreModule,
   AngularFireAuthModule,
+  AngularFireStorageModule,
   SearchPageModule,
   FavJobsPageModule],
   providers: [

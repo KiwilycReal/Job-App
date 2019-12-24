@@ -1,106 +1,85 @@
-<ion-header></ion-header>
-
+<ion-header>
+ 
+</ion-header>
+  
 <ion-content>
+   
+    <div #header style="position: fixed; width: 100vw;  z-index: 10;">
+      <ion-grid>
+        <ion-row style="margin:auto;" class="ion-align-items-center ion-justify-content-center">
+          <ion-col size="3">
+            <ion-select #selector [selectedText]="selectcategory">
+              <ion-select-option value="悉尼">悉尼</ion-select-option>
+              <ion-select-option value="堪培拉">堪培拉</ion-select-option>
+            </ion-select>
+          </ion-col>
+
+          <ion-col size="8">
+              <input type="search" placeholder=" try ANZ">
+          </ion-col>
+
+          <ion-col size="1">
+            <ion-icon style=" zoom: 1.3" src="../assets/icon/login.svg" ></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
   
-  <ion-searchbar animated placeholder="try ANZ" clearInput></ion-searchbar>
+   
+    
   
-  <ion-slides [options] = "Advslider" #adv pager="true" (ionSlidesDidLoad)="slidesDidLoad(adv)">
-      <ion-slide style="max-height: 20vh" *ngFor="let adv of advs" >
-          <ion-card> 
-            <img [src]="adv.ImageUrl">
-          </ion-card>
+    <ion-slides [options] = "Advslider" #adv pager="true" (ionSlidesDidLoad)="slidesDidLoad(adv)">
+      <ion-slide style="max-height: 25vh" *ngFor="let adv of advs" >
+            <img [src]="adv.ImageUrl" style="max-width: 100% !important;max-height: 100% !important;">
       </ion-slide>
-  </ion-slides>
+      </ion-slides> 
+ 
 
-  <br>
-  
 
-  <div style="margin-left: 5vw; margin-right: 5vw;">
-    <h3>这里是介绍</h3>
-    <p> 我们这个app好用的一批，有多j8 j8牛逼，还有很多大厂商大家快来用</p>
+  <div style="margin-top: 2vh">
+
     <ion-row>
       <ion-col>
-        <ion-card style="height: 20vh;">
-            <img src="../assets/melbourne1.jpg">
-            <ion-card-content> 我是ANZ</ion-card-content>
+        <ion-card style="height: 10vh; width: 35vw; margin:auto">
+            <img src="../assets/jz.png" style="height: 100%; width: 100%;">
         </ion-card>
       </ion-col>
 
       <ion-col>
-          
-        <ion-card style="height: 20vh;">
-          <img src="../assets/melbourne2.jpg">
-          <ion-card-content> 我是CXK</ion-card-content>
+        <ion-card style="height: 10vh; width: 35vw; margin:auto">
+          <img src="../assets/sx.png" style="height: 100%; width: 100%;">
         </ion-card>
-         
       </ion-col>
-
     </ion-row>
 
     <ion-row>
-        <ion-col>
-          <ion-card style="height: 20vh;">
-              <img src="../assets/melbourne3.jpg">
-              <ion-card-content> 我是ANZ</ion-card-content>
+        <ion-col size=4>
+          <ion-card style="height: 9vh; width: 27vw; margin:auto">
+              <img src="../assets/xy.png" style="height: 100%; width: 100%;">
           </ion-card>
         </ion-col>
-  
-        <ion-col>
-            
-          <ion-card style="height: 20vh;">
-            <img src="../assets/melbourne1.jpg">
-            <ion-card-content> 我是CXK</ion-card-content>
+    
+        <ion-col size=4>
+          <ion-card style="height: 9vh; width: 27vw; margin:auto">
+              <img src="../assets/fl.png" style="height: 100%; width: 100%;">
           </ion-card>
-           
         </ion-col>
-  
+    
+        <ion-col size=4>
+          <ion-card style="height: 9vh; width: 27vw; margin:auto">
+            <img src="../assets/cs.png" style="height: 100%; width: 100%;">
+          </ion-card>
+        </ion-col>
     </ion-row>
 
   </div>
 
   <div style="margin-left: 5vw; margin-right: 5vw;">
-      <h3>这里是活动介绍</h3>
-      <p> 现在nmd有很多公司在招聘，大家快来看看，nmsl</p>
-      <ion-row>
-        <ion-col>
-          <ion-card style="height: 20vh;">
-              <img src="../assets/melbourne1.jpg">
-              <ion-card-content> 我是ANZ</ion-card-content>
-          </ion-card>
-        </ion-col>
+      <h4>当月热门职业推荐</h4>
   
-        <ion-col>
-            
-          <ion-card style="height: 20vh;">
-            <img src="../assets/melbourne2.jpg">
-            <ion-card-content> 我是CXK</ion-card-content>
-          </ion-card>
-           
-        </ion-col>
-  
-      </ion-row>
-  
-      <ion-row>
-          <ion-col>
-            <ion-card style="height: 20vh;">
-                <img src="../assets/melbourne3.jpg">
-                <ion-card-content> 我是ANZ</ion-card-content>
-            </ion-card>
-          </ion-col>
-    
-          <ion-col>
-              
-            <ion-card style="height: 20vh;">
-              <img src="../assets/melbourne1.jpg">
-              <ion-card-content> 我是CXK</ion-card-content>
-            </ion-card>
-             
-          </ion-col>
-    
-      </ion-row>
-  
-    </div>
+  </div>
 
+  
 </ion-content>
 
 <ion-footer></ion-footer>
