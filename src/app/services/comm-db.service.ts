@@ -22,7 +22,8 @@ export class CommDbService {
     position: new FormControl(''),
     publishDateTime: new FormControl(''),
     lastEditDateTime: new FormControl(''),
-    geolocation: new FormControl('')
+    geolocation: new FormControl(''),
+    tags: new FormControl('')
   });
 
   createJob(data){
