@@ -14,6 +14,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
   // @ViewChild('signOutBtn', {static: false}) signOutBtnElem;
   @ViewChild("displayName", {static: true}) displayNameElem: ElementRef;
 
+  authSubscription;
+
   curUser;
   curUserDoc = {
     mobile: "",
@@ -48,7 +50,8 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     var authState: Observable<any> = this.loginService.curAuthState;
     await new Promise((resolve, reject) => {
       //Monitor user authstate changes
-      authState.subscribe(
+      if(this.authSubscription) return "Auth subscription existed";
+      this.authSubscription = authState.subscribe(
         async value => {
           if(value){
             //If authstate become logged
@@ -60,7 +63,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
               res => {
                 console.log(res.data());
                 this.curUserDoc = res.data();
-                console.log(this.curUserDoc);
               }
             );
             resolve(value);

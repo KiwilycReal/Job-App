@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
         console.log("Login Result:", res);
         msg = "Login success!";
         isLogged = true;
+        this.loginService.loginForm.reset();
       }, err => {
         console.log("Login Error: ", err.message);
         msg = "Login failed: " + err.message;

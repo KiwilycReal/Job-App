@@ -21,6 +21,7 @@ import { LoginService } from './services/login.service'
 import { CommDbService } from './services/comm-db.service';
 import { SearchPageModule } from './search/search.module';
 import { FavJobsPageModule } from './fav-jobs/fav-jobs.module';
+import { ChatService } from './services/chat.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -37,7 +38,8 @@ import { FavJobsPageModule } from './fav-jobs/fav-jobs.module';
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: 'loginService', useClass: LoginService },
-    { provide: 'commDbService', useClass: CommDbService }
+    { provide: 'commDbService', useClass: CommDbService },
+    { provide: 'chatService', useClass: ChatService }
 
   ],
   bootstrap: [AppComponent]

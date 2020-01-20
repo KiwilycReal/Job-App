@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-align: center">{{targetName}}</ion-title>
+    <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: red; position: absolute; z-index: 1;">
+      Back
+    </ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content #container>
+  <!-- <ion-infinite-scroll thresold="1500px" (ionInfinite)="loadData($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="加载中...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll> -->
+  <!-- <div #container style="overflow: scroll; height: xyz;"> -->
+    <ion-list>
+      <div *ngFor="let log of logs">
+        <ion-item *ngIf="log.from==targetUid" lines="none">
+          <ion-avatar slot="start">
+            <img [src]="targetAvatarUrl">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{targetName}}</h2>
+            <p>{{log.timestamp}}</p>
+            <h3 class="ion-text-wrap">{{log.msg}}</h3>
+          </ion-label>
+        </ion-item>
+        <ion-item *ngIf="log.from==myUid" lines="none">
+          <ion-avatar slot="end">
+            <img [src]="targetAvatarUrl">
+          </ion-avatar>
+          <ion-label class="ion-text-end">
+            <!-- <h2>{{myName}}</h2> -->
+            <h2>Me</h2>
+            <p>{{log.timestamp}}</p>
+            <h3 class="ion-text-wrap">{{log.msg}}</h3>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  <!-- </div> -->
+</ion-content>
+
+<ion-footer>
+  <ion-grid style="border-top-style: groove; --ion-grid-padding: 0;">
+    <ion-row class="ion-align-items-start">
+      <ion-col offset=1 size=9.5 style="max-height: 46px;">
+        <ion-input [(ngModel)]="msg" (keyup.enter)="sendMsg()"></ion-input>
+      </ion-col>
+      <ion-col size=1.5>
+        <ion-icon name="add" size="large"></ion-icon>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-footer>

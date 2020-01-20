@@ -36,6 +36,8 @@ export class InfoEditModalPage implements OnInit {
   editTitle;
   editDescription;
 
+  /*Will be automatically initialized by the parent page
+  when this modal showing*/
   uid;
   list;
   infoType: string;

@@ -17,7 +17,6 @@ export class LoginService implements OnDestroy {
 
   unsubscribeAuth: firebase.Unsubscribe;
 
-  // public t: any;
   curAuthState;
   private displayNameElem: HTMLElement = undefined;
   private loginIconElem;
@@ -25,20 +24,9 @@ export class LoginService implements OnDestroy {
   curUser = undefined;
   signOutBtnElem;
   headDetailIconElem;
-  private fuck = 0;
   private imgUrl;
-  // private myself = this;
 
   loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl('')
-  });
-
-  hello(){
-    this.fuck += 10;
-  }
-
-  registerForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl('')
   });
@@ -61,6 +49,7 @@ export class LoginService implements OnDestroy {
     })
   }
 
+  // Bind a observer to monitor user auth state change
   userAuthState(self){
     self.unsubscribeAuth = this.fa.auth.onAuthStateChanged(
       user => {
@@ -71,32 +60,6 @@ export class LoginService implements OnDestroy {
         }else{
           console.log("No one is logged in");
         }
-      // if(user){
-      //   self.signOutBtn = "";
-      //   // test.curUser = user;
-      //   self.curUser = user;
-      //   console.log("Current user is "+user.email+"////"+user.displayName);
-      //   if(user.displayName != null) self.curDisplayName = user.displayName;
-      //   // console.log(self.loginIconElem);
-      //   self.loginIconElem.el.style.display = "none";
-      //   self.headDetailIconElem.el.detailIcon = "noen";
-      //   self.signOutBtnElem.el.style.display = "";
-      //   // console.log(this);
-      //   // self.displayNameElem.innerHTML = user.displayName;
-      // }else{
-      //   self.signOutBtn = "none";
-      //   console.log("No one is logged in");
-      //   self.curUser = undefined;
-      //   self.curDisplayName = "请先登录";
-      //   self.loginIconElem.el.style.display = "";
-      //   self.headDetailIconElem.el.detailIcon = "arrow-round-forward";
-      //   self.signOutBtnElem.el.style.display = "none";
-      //   // console.log(this);
-      //   // self.displayNameElem.innerHTML = "请先登录";
-      // }
-      // if(self.displayNameElem){
-      //   self.displayNameElem.innerHTML = self.curDisplayName;
-      // }
       });
   }
 
@@ -109,23 +72,19 @@ export class LoginService implements OnDestroy {
 
   userLogout(){
     return new Promise<any>((resolve, reject) => {
-      this.fa.auth.signOut()
-                  .then(res => {
-                    resolve(res);
-                  }, err => reject(err))
-                  .catch(function(error){
-                    console.log("Logout error => "+error);
-                  })
+      this.fa.auth.signOut().then(
+        res => {
+          console.log("Logout success", res);
+          resolve(res);
+        },
+        err => {
+          console.log("Logout error", err);
+          reject(err);
+        }
+      )
     })
   }
-
-  // getUser(): Observable<firebase.User>{
-  //   return this.curAuthState.
-  // }
-
   constructor(private fs: AngularFirestore, public fa: AngularFireAuth) {
-    // this.t = new Object();
-    // this.testEle = undefined;
     console.log("Service created!");
     this.userAuthState(this);
     this.fa.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);

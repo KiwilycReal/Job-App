@@ -1,9 +1,9 @@
 <ion-header>
   <ion-segment color="tertiary" (ionChange)="testSegment($event)">
-    <ion-segment-button checked layout="icon-start">
+    <!-- <ion-segment-button layout="icon-start">
       <ion-icon name="notifications"></ion-icon>
       <ion-label>通知</ion-label>
-    </ion-segment-button>
+    </ion-segment-button> -->
     <ion-segment-button checked layout="icon-end">
       <ion-icon name="text"></ion-icon>
       <ion-label>消息</ion-label>
@@ -11,6 +11,31 @@
   </ion-segment>
 </ion-header>
 
+<!-- <ion-content *ngIf="curSegment=='ion-sb-1'"> -->
 <ion-content>
-
+  <ion-select okText="Chat!" placeholder="Select one user to chat with" (ionChange)="startNewChat($event.detail.value)">
+    <ion-select-option *ngFor="let user of userList" [value]=user.uid>{{user.username}}</ion-select-option>
+  </ion-select>
+  <!-- <ion-button expand="block" (click)="startNewChat()">
+    Start a chat
+  </ion-button> -->
+  <!-- <ion-button expand="block" (click)="testFunc()">
+    time
+  </ion-button> -->
+  <ion-list>
+    <ion-list>
+      <div *ngFor="let chat of chats | keyvalue" (click)="showChatModal(chat.key, chat.value.targetName, chat.value.targetUid, chat.value.listenerIndex)">
+        <ion-item lines="full">
+          <ion-avatar slot="start">
+            <img [src]="chat.value.avatar">
+          </ion-avatar>
+          <ion-label>
+            <h2>{{chat.value.targetName}}</h2>
+            <p>{{chat.value.latestTime}}</p>
+            <h3><span *ngIf="chat.value.unreadCount>0" style="color: indianred;">[{{chat.value.unreadCount}}条未读消息]</span>{{chat.value.latestMsg}}</h3>
+          </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </ion-list>
 </ion-content>

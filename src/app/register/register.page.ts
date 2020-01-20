@@ -51,6 +51,7 @@ export class RegisterPage implements OnInit {
     
     await this.loginService.userRegister(credential).then(
       res => {
+        this.userDetailForm.reset();
         this.curUser = res.user;
         isLogged = true;
         delete data.password;
@@ -62,7 +63,9 @@ export class RegisterPage implements OnInit {
         data.description = "";
         data.skills = [];
         data.favourite = [];
-        data.history =[];
+        data.history = [];
+        data.chats = {};
+        data.talked = [];
         this.curDisplayName = data.title+data.firstName+" "+data.lastName;
         this.loginService.changeDisplayName(this.curDisplayName);
       }, err => {
