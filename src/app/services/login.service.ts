@@ -71,18 +71,7 @@ export class LoginService implements OnDestroy {
   }
 
   userLogout(){
-    return new Promise<any>((resolve, reject) => {
-      this.fa.auth.signOut().then(
-        res => {
-          console.log("Logout success", res);
-          resolve(res);
-        },
-        err => {
-          console.log("Logout error", err);
-          reject(err);
-        }
-      )
-    })
+    return this.fa.auth.signOut()
   }
   constructor(private fs: AngularFirestore, public fa: AngularFireAuth) {
     console.log("Service created!");

@@ -58,6 +58,22 @@ export class InfoEditModalPage implements OnInit {
     })
   }
 
+  clearInput(){
+    this.startDate = null;
+    this.endDate = null;
+    this.entityName = null;
+    this.major = null;
+    this.grade = null;
+    this.level = null;
+    this.geolocation = null;
+    this.position = null;
+    this.name = null;
+    this.title = null;
+    this.skill = null;
+    this.file = null;
+    this.description = null;
+  }
+
   //Can be optimized by using formGroup rather than normal interface
   async addExp(){
     const loading = await this.loadingController.create({
@@ -95,6 +111,7 @@ export class InfoEditModalPage implements OnInit {
       console.log("Added new ",this.infoType," for "+this.uid, res);
     }, err => reject(err));
     await this.refresh();
+    this.clearInput();
     this.loadingController.dismiss();
   }
 
@@ -139,32 +156,33 @@ export class InfoEditModalPage implements OnInit {
       console.log("Removed work exp for "+this.uid, res);
     }, err => reject(err));
     //Start add the edited exp
-    var baseExp = {
-      startDate: this.editStartDate,
-      endDate: this.editEndDate,
-      entityName: this.editEntityName,
-      description: this.editDescription
+    var newData = {
+      startDate: this.editStartDate ? this.editStartDate : oldData.startDate,
+      endDate: this.editEndDate ? this.editEndDate : oldData.endDate,
+      entityName: this.editEntityName ? this.editEntityName : oldData.entityName,
+      description: this.editDescription ? this.editDescription : oldData.description
     };
+
     switch(this.infoType){
       case "eduExps":
-        baseExp['major'] = this.editMajor;
-        baseExp['grade'] = this.editGrade;
-        baseExp['level'] = this.editLevel;
-        baseExp['geolocation'] = this.editGeolocation;
+        newData['major'] = this.editMajor ? this.editMajor : oldData.major;
+        newData['grade'] = this.editGrade ? this.editGrade : oldData.grade;
+        newData['level'] = this.editLevel ? this.editLevel : oldData.level;
+        newData['geolocation'] = this.editGeolocation ? this.editGeolocation : oldData.geolocation;
         break;
       case "projExps":
-        baseExp['position'] = this.editPosition;
-        baseExp['name'] = this.editName;
+        newData['position'] = this.editPosition ? this.editPosition : oldData.position;
+        newData['name'] = this.editName ? this.editName : oldData.name;
         break;
       case "workExps":
-        baseExp['geolocation'] = this.editGeolocation;
-        baseExp['position'] = this.editPosition;
+        newData['geolocation'] = this.editGeolocation ? this.editGeolocation : oldData.geolocation;
+        newData['position'] = this.editPosition ? this.editPosition : oldData.position;
         break;
       case "honors":
-        baseExp['title'] = this.editTitle;
+        newData['title'] = this.editTitle ? this.editTitle : oldData.title;
         break;
     }
-    let newData = baseExp;
+    console.log(newData);
     await this.commDbService.updateUserDocArray(this.uid, this.infoType, newData, true).then(res => {
       console.log("Added new ",this.infoType," for "+this.uid, res);
     }, err => reject(err));
@@ -181,6 +199,7 @@ export class InfoEditModalPage implements OnInit {
     await loading.present();
     await this.commDbService.updateUserDocArray(this.uid, "skills", this.skill, true);
     await this.refresh();
+    this.clearInput();
     this.loadingController.dismiss();
   }
 
@@ -202,6 +221,7 @@ export class InfoEditModalPage implements OnInit {
     });
     await loading.present();
     await this.commDbService.updateUserDoc(this.uid, {description: this.description});
+    this.description = null;
     this.loadingController.dismiss();
   }
 

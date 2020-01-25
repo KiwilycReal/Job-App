@@ -53,7 +53,7 @@
             <ion-grid>
               <div>
                 <ion-label>起始时间</ion-label>
-                <ion-input [value]="item.startDate" (input)="editStartDate=$event.target.value" type="date"></ion-input>
+                <ion-input [value]="item.startDate" (input)="editStartDate=$event.target.value ? $event.target.value : item.startDate" type="date"></ion-input>
               </div>
               <div>
                 <ion-label>终止时间</ion-label>

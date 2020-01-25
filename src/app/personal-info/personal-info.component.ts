@@ -22,7 +22,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
     wechat: ""
   }
   isLogged = false;
-  email;
   curDisplayName = "请先登录";
   curAvatarUrl = "../../assets/cxk.jpg";
 
@@ -58,7 +57,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
             this.isLogged = true;
             this.curUser = value;
             this.curDisplayName = value.displayName;
-            this.email = value.email;
             await this.commDbService.fetchUserDoc(value.uid).then(
               res => {
                 console.log(res.data());
@@ -70,7 +68,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
             this.isLogged = false;
             this.curUser = null;
             this.curDisplayName = "请先登录";
-            this.email = "";
             reject(null);
           }
         }
@@ -79,7 +76,6 @@ export class PersonalInfoComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.loginService.fa.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
     this.initialize();
   }
 

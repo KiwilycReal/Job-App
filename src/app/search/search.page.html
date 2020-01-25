@@ -1,7 +1,21 @@
-<ion-header>
+<ion-header style="margin: auto;">
   <div class="searchbox">
     <!-- <ion-searchbar [(ngModel)]="searchTerm" (search)="startSearch($event)" (ionBlur)="blur()" (ionCancel)="cancelSearch()" (ionFocus)="initSearch()" debounce=100 showCancelButton="focus" placeholder="输入关键字"></ion-searchbar> -->
-
+    <ion-row class="test" style="margin-top: -1.5vh;">
+      <!-- location selector -->
+      <ion-col class="test" size=2>
+        <ion-tab-button #locate_selector>
+          <ion-icon src="../assets/icon/pin.svg" style="zoom: 0.8;" [routerLink]="['/front-page']"></ion-icon>
+          <ion-label class="button-text">墨尔本</ion-label>
+        </ion-tab-button>
+      </ion-col>
+  
+      <!-- search bar -->
+      <ion-col class="test" size=10>
+        <ion-searchbar [(ngModel)]="searchTerm" showCancelButton="focus" placeholder="输入关键字"></ion-searchbar>
+      </ion-col>
+  
+    </ion-row>
     <!-- search drop down -->
     <ion-row style="background: white; text-align: center;">
         <ion-col>

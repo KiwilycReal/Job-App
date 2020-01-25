@@ -23,6 +23,9 @@ import { SearchPageModule } from './search/search.module';
 import { FavJobsPageModule } from './fav-jobs/fav-jobs.module';
 import { ChatService } from './services/chat.service';
 
+import { NgCircleProgressModule } from 'ng-circle-progress';
+import { ShareDataService } from './services/share-data.service';
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -39,8 +42,8 @@ import { ChatService } from './services/chat.service';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: 'loginService', useClass: LoginService },
     { provide: 'commDbService', useClass: CommDbService },
-    { provide: 'chatService', useClass: ChatService }
-
+    { provide: 'chatService', useClass: ChatService },
+    { provide: 'shareDataService', useClass: ShareDataService }
   ],
   bootstrap: [AppComponent]
 })

@@ -1,13 +1,9 @@
-<ion-content>
+<!-- <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col class="ion-align-items-center">
           <form [formGroup]="this.userDetailForm">
             <ion-label>Title</ion-label>
-            <!-- <ion-input placeholder="Email"
-                    formControlName="email"
-                    type="email"
-                    #registerEmail></ion-input> -->
               <ion-select interface="popover"
                           placeholder="Please select"
                           formControlName="title">
@@ -60,4 +56,127 @@
       </ion-label>
     </ion-row>
   </ion-grid>
+</ion-content> -->
+<ion-header>
+  <ion-toolbar>
+    <!-- back button -->
+    <ion-buttons slot="start">
+      <ion-icon name="arrow-dropleft" style="zoom: 1.5;" [routerLink]="['/mine']"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  
+  
+  <!-- title -->
+  <div style="text-align: center; margin-top: 4vh;">
+    <ion-label class="ion-text-center" style="font-size: 13px;">
+      已有账号？ 请<a [routerLink]="['/login']">登录</a>
+    </ion-label>
+    <h2 style="margin-top: 5px;"><b>创建猫耳招聘账号</b></h2>
+  </div>
+
+  <!-- login wechat, google button -->
+  <div style="text-align: center;">
+    <ion-row>
+      <!-- google -->
+      <ion-col>
+        <button class='tlogin' style="width: 30vw;">
+          <ion-icon name="logo-google"  style="zoom: 2;"></ion-icon>
+        </button>
+      </ion-col>
+
+      <!-- wechat -->
+      <ion-col>
+        <button class='tlogin' style="width: 30vw; background-color: #2dc100;">
+          <ion-icon src="../assets/icon/wechat.svg" style="zoom: 2;"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div style="text-align: center; margin-top: 4vh;">
+    <p style="color: grey; font-size: small;"> ---------------- 或使用邮箱注册 ----------------</p>
+  </div>
+
+  <!-- email login input -->
+  <!-- <div>
+    <ion-input placeholder=" 请输入邮箱" type='email'  class="login-in"></ion-input>
+
+    <ion-input placeholder=" 请输入密码" type='password' class="login-in"></ion-input>
+
+    <ion-input placeholder=" 再次确认密码" type='password' class="login-in"></ion-input>
+
+    <ion-input placeholder=" 请输入验证码" type='password' class="login-in" ></ion-input>
+    <ion-button style="margin-left: 7.5vw; margin-top: 1vh;">获得验证码</ion-button>
+    
+  </div> -->
+
+  <!-- <div  style="text-align: center;">
+    <ion-button style="width: 80%; margin:auto;">注册</ion-button>
+  </div> -->
+
+  <form [formGroup]="this.userDetailForm" class="login-in" style="margin-bottom: 2vh;">
+    <ion-label>Title</ion-label>
+    <!-- <ion-input placeholder="Email"
+            formControlName="email"
+            type="email"
+            #registerEmail></ion-input> -->
+      <ion-select interface="popover"
+                  placeholder="Please select"
+                  formControlName="title">
+        <ion-select-option value="Mr.">Mr.</ion-select-option>
+        <ion-select-option value="Ms.">Ms.</ion-select-option>
+        <ion-select-option value="Miss.">Miss.</ion-select-option>
+        <ion-select-option value="Prof.">Prof.</ion-select-option>
+        <ion-select-option value="Dr.">Dr.</ion-select-option>
+      </ion-select><br>
+    <ion-label>名<span style="color: red;">*</span></ion-label>
+    <ion-input placeholder="First Name"
+               formControlName="firstName"
+               type="text"
+               required></ion-input><br/>
+    <ion-label>中间名</ion-label>
+    <ion-input placeholder="Middle Name"
+               formControlName="middleName"
+               type="text"></ion-input><br/>
+    <ion-label>姓<span style="color: red;">*</span></ion-label>
+    <ion-input placeholder="Last Name"
+               formControlName="lastName"
+               type="text"></ion-input><br/>
+    <ion-label>出生日期<span style="color: red;">*</span></ion-label>
+    <ion-input formControlName="dob"
+               type="date"></ion-input><br/>
+    <ion-label>邮箱地址<span style="color: red;">*</span></ion-label>
+    <ion-input placeholder="Email"
+               formControlName="email"
+               type="email"></ion-input><br/>
+    <ion-label>密码<span style="color: red;">*</span></ion-label>            
+    <ion-input placeholder="Password"
+               formControlName="password"
+               type="password"></ion-input><br/>
+    <ion-label>确认密码<span style="color: red;">*</span></ion-label>            
+    <ion-input placeholder="Password"
+               formControlName="passwordC"
+               type="password"></ion-input><br/>
+    <ion-label>微信号</ion-label>
+    <ion-input placeholder="Wechat ID"
+               formControlName="wechat"
+               type="email"></ion-input><br/>
+    <ion-label>手机号</ion-label>
+    <ion-input placeholder="Mobile"
+               formControlName="mobile"
+               type="email"></ion-input><br/>
+    <ion-button type="submit" expand="block" (click)="tryRegister()" style="width: 80%; margin:auto;">注册</ion-button>
+  </form>
+
+  <ion-list lines="none" style="margin-left: 3.5vw;">
+    <ion-item style="margin-top: 2vh;">
+        <ion-checkbox></ion-checkbox>
+        <ion-label style="font-size: small;">我同意<u style="color: blue;">用户协议</u>和
+          <u style="color: blue;">用户隐私政策</u></ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
+

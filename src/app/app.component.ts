@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
@@ -10,18 +10,17 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements AfterViewInit{
-  // ngAfterViewInit(): void {
-  //   console.log("From root: ",this.testt);
-  // }
-  t;
-  // @ViewChild(PersonalInfoComponent, {read: ElementRef, static: true}) private testEleRef: ElementRef;
-  // @ViewChild('t') testt;
+export class AppComponent implements OnInit{
+  
+  unreadMsgCountSubscription;
+  unreadMsgCount;
+
   constructor(
+    @Inject('shareDataService') public shareDataService,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    @Inject('loginService') private LoginService
+    // @Inject('loginService') private LoginService
   ) {
     this.initializeApp();
     // this.LoginService.userAuthState();
@@ -34,11 +33,13 @@ export class AppComponent implements AfterViewInit{
       this.splashScreen.hide();
     });
   }
-
-  @ViewChild("loginIcon", {static: true}) loginIconElem;
-
-  ngAfterViewInit() {
-    // console.log(this.loginIconEle);
-    this.LoginService.loginIconElem = this.loginIconElem;
+  
+  ngOnInit() {
+    this.unreadMsgCountSubscription = this.shareDataService.currentUnreadMsgCount.subscribe(
+      msg => {
+        console.log(msg);
+        this.unreadMsgCount = msg;
+      }
+    )
   }
 }

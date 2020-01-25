@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { JobDetailPage } from './job-detail/job-detail.page';
-import { SearchPageModule } from './search/search.module'
 
 const routes: Routes = [
-  { path: '', redirectTo: 'front-page', pathMatch: 'full' },
+  // { path: '', redirectTo: 'front-page', pathMatch: 'full' },
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'front-page', loadChildren: './front-page/front-page.module#FrontPagePageModule' },
   // { path: 'search', loadChildren: './search/search.module#SearchPageModule' },
   // { path: 'search', loadChildren: () => SearchPageModule },
@@ -30,6 +29,12 @@ const routes: Routes = [
     loadChildren: () => import('./fav-jobs/fav-jobs.module').then( m => m.FavJobsPageModule),
     data: {msg:"history"}
   },
+  {
+    path: 'mine',
+    loadChildren: () => import('./mine/mine.module').then( m => m.MinePageModule)
+  },
+  { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)}
+
   // { path: 'search/:id', loadChildren: './job-detail/job-detail.module#JobDetailPageModule' }
 ];
 

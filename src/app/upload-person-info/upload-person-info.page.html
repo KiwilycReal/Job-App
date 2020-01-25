@@ -1,14 +1,140 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- back button -->
+    <ion-buttons slot="start">
+      <ion-icon name="arrow-dropleft" style="zoom: 1.5;" [routerLink]="['/mine']"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
   <ion-refresher (ionRefresh)="refresh($event)" slot="fixed" pullMin=120>
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div style="border-bottom: solid grey 2px; margin-top: 2vh;" style="display: none;">
+
+  <ion-card>
+    <ion-grid>
+      <!-- <ion-row (click)="toLogin()" style="border-bottom-style: double;">
+        <ion-col size=3>
+          <ion-avatar style="width: 66px; height: 66px; margin: 5px;">
+              <img [src]="curAvatarUrl">
+          </ion-avatar>
+        </ion-col>
+        <ion-col size=7.5 class="ion-align-self-center ion-text-center">
+          <ion-label>
+              <b style="font-size: 22px;">{{curDisplayName}}</b>
+          </ion-label>
+        </ion-col>
+        <ion-col size=1.5 class="ion-align-self-center ion-text-center" style="padding-left: 0;">
+          <ion-icon name="settings" style="zoom: 2; color: gray;"></ion-icon>
+        </ion-col>
+      </ion-row> -->
+      <ion-row class=test style="text-align: center;">
+        <!-- circle bar -->
+        <ion-col class=test size="3">
+          <circle-progress [percent]="pValueStr" [imageSrc]="curAvatarUrl">
+          </circle-progress>
+        </ion-col>
+        <!-- details -->
+        <ion-col class=test>
+    
+          <ion-row class=test style="height: 3vh;">
+          <p style="font-size: small; margin-top: 0;">{{curDisplayName}}</p>
+          </ion-row >
+    
+          <ion-row class=test>
+            <ion-icon name="medal"></ion-icon>
+            <ion-icon name="medal"></ion-icon>
+            <ion-icon name="medal"></ion-icon>
+            <ion-icon name="medal"></ion-icon>
+            <ion-icon name="medal"></ion-icon>
+          </ion-row>
+          <ion-row class=test style="height: 3vh;">
+            <p style="font-size: small; margin-top: 0;">&nbsp;</p>
+          </ion-row>
+          <ion-row class=test style="height: 3vh;">
+            <p style="font-size: small; margin-top: 0;">  资料完整度 {{pValueStr}}%</p>
+          </ion-row>
+        </ion-col>
+    
+        <ion-col class=test size="2" >
+          <ion-icon (click)="presentBasicInfoEditModal()" name="create" style="zoom: 2; color: gray;"></ion-icon>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-slides [options] = "sliderOpts" pager="true" (ionSlidesDidLoad)="slidesDidLoad(adv)">
+          <ion-slide style="max-height: 25vh">
+            <ion-list style="width: 100%;">
+              <ion-item lines="full">
+                姓名: {{curUserDoc.displayName}}
+              </ion-item>
+              <ion-item lines="full">
+                性别: {{curUserDoc.gender}}
+              </ion-item>
+              <ion-item lines="full">
+                邮箱: {{curUserDoc.email}}
+              </ion-item>
+              <ion-item lines="full">
+                手机: {{curUserDoc.mobile}}
+              </ion-item>
+            </ion-list>
+          </ion-slide>
+          <ion-slide style="max-height: 25vh">
+            <ion-list style="width: 100%;">
+              <ion-item lines="full">
+                期望职业: {{curUserDoc.preferJob}}
+              </ion-item>
+              <ion-item lines="full">
+                期望地点: {{curUserDoc.preferLocation}}
+              </ion-item>
+              <ion-item lines="full">
+                期望薪资: {{curUserDoc.preferSalary}}
+              </ion-item>
+              <ion-item lines="full">
+                已工作年数: {{curUserDoc.workYear}}
+              </ion-item>
+            </ion-list>
+          </ion-slide>
+        </ion-slides> 
+      </ion-row>
+      <!-- <div *ngIf="isLogged">
+        <ion-row>
+          <ion-col>
+            <ion-chip>
+              <ion-avatar>
+                  <img src="../../assets/wechat.png">
+              </ion-avatar>
+              <ion-label #wechatID>{{curUserDoc.wechat}}</ion-label>
+            </ion-chip>
+          </ion-col> 
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-chip>
+              <ion-icon name="call"></ion-icon>
+              <ion-label>{{curUserDoc.mobile}}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-chip>
+              <ion-icon name="mail"></ion-icon>
+              <ion-label>{{curUserDoc.email}}</ion-label>
+            </ion-chip>
+          </ion-col>
+        </ion-row>
+      </div> -->
+    </ion-grid>
+  </ion-card>
+  <!-- <div style="border-bottom: solid grey 2px; margin-top: 2vh;">
     <ion-row style=" height: 18vh; ">
-      <ion-col size="2.5" style=" height: 18vh; margin-left: 2vw;">
-        <img src="../assets/cxk.jpg" style="height: 20vw; width: 20vw; object-fit: cover;">
+      <ion-col size="3" style=" height: 18vh; margin-left: 2vw;">
+        <ion-avatar style="width: 66px; height: 66px; margin: 5px;">
+          <img [src]="curAvatarUrl">
+        </ion-avatar>
       </ion-col>
 
-      <ion-col size="8" style=" height: 18vh;">
+      <ion-col size="7" style=" height: 18vh;">
 
         <ion-row style=" height: 3vh;  margin: auto; margin-bottom: 0.5vh;">
           <p style="margin-top: auto; font-size: large; "> <b>{{title}} {{name}} </b></p>
@@ -44,16 +170,18 @@
       </ion-col>
 
       <ion-col>
-        <ion-icon src="../assets/icon/setting.svg"></ion-icon>
+        <ion-icon name="settings" style="zoom: 2; color: gray;"></ion-icon>
       </ion-col>
     </ion-row>
-  </div>
-
-
-  <div style="width: 96vw; margin:auto; margin-top: 1vh;">
+  </div> -->
+  <ion-item lines="none">
+    <ion-label slot="start">公开简历</ion-label>
+    <ion-toggle slot="end"></ion-toggle>
+  </ion-item>
+  <!-- <div style="width: 96vw; margin:auto; margin-top: 1vh;">
     <b>资料完整度: &nbsp;&nbsp; {{pValueStr}}%</b>
     <ion-progress-bar [value]="pValue" [color]="pColor" style="height: 2vh; margin-bottom: 3vh; margin-top: 1vh;"></ion-progress-bar>
-  </div>
+  </div> -->
 
 
   <div>
@@ -175,7 +303,7 @@
     <ion-card>
       <div *ngFor="let link of links">
         <ion-item lines="none" (click)="presentInfoEditModal(link)">
-          <ion-label slot="start">{{link.name}}</ion-label>
+          <ion-label slot="start"><b>{{link.name}}</b></ion-label>
           <ion-icon slot="end" name="create"></ion-icon>
         </ion-item>
         <ion-item lines="none" *ngIf="curUserDoc[link.type].length==0">

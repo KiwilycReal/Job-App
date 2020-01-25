@@ -21,10 +21,40 @@
   </ion-toolbar>
 </ion-header> -->
   
-
 <ion-content><ion-router-outlet></ion-router-outlet></ion-content>
 
-<ion-footer no-shadow style="max-height: 12vh; margin: auto">
+<ion-tabs #footer>
+  <ion-tab-bar slot="bottom" style="height: 10vh;">
+    <ion-tab-button [routerLink]="['/home']">
+      <ion-icon name="home" class="footer_button" ></ion-icon>
+      <ion-label>首页</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/search']">
+      <ion-icon name="search" class="footer_button"></ion-icon>
+      <ion-label>搜索</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/fav-jobs']">
+      <ion-icon name="flame" class="footer_button"></ion-icon>
+      <ion-label>推荐</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/message']">
+      <ion-icon name="chatboxes" class="footer_button"></ion-icon>
+      <ion-label>消息</ion-label>
+      <ion-badge *ngIf="unreadMsgCount > 0">{{unreadMsgCount}}</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button [routerLink]="['/mine']">
+      <ion-icon name="person" class="footer_button"></ion-icon>
+      <ion-label>个人</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>
+
+<!-- <ion-footer no-shadow style="max-height: 12vh; margin: auto">
   <ion-toolbar position="bottom">
     <ion-row>
 
@@ -86,7 +116,7 @@
       
 
   </ion-toolbar>
-</ion-footer>
+</ion-footer> -->
 
 <!-- <ion-tabs>
   <ion-tab-bar slot="bottom" style="height: 10vh;">

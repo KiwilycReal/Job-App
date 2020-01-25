@@ -1,8 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, IonSlides } from '@ionic/angular';
 import { InfoEditModalPage } from '../info-edit-modal/info-edit-modal.page'
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { BasicInfoEditPage } from '../basic-info-edit/basic-info-edit.page';
 
 @Component({
   selector: 'app-upload-person-info',
@@ -10,9 +11,19 @@ import { Router } from '@angular/router';
   styleUrls: ['./upload-person-info.page.scss'],
 })
 export class UploadPersonInfoPage implements OnInit {
+
+  sliderOpts = {
+    zoom: false,
+    slidesPerView: 1,
+    centeredSlides: true,
+    spaceBetween: 20,
+    speed: 1000,
+  };
   
   email;
   curUser;
+  curDisplayName;
+  curAvatarUrl;
   //Empty object to prevent console error log
   curUserDoc = {
     skills : [],
@@ -53,13 +64,40 @@ export class UploadPersonInfoPage implements OnInit {
 
   constructor(@Inject('commDbService') public commDbService,
               @Inject('loginService') public loginService,
+              @Inject('shareDataService') public shareDataService,
               public modalController: ModalController,
               public loadingController: LoadingController,
               public router: Router) {}
 
-  async presentInfoEditModal(link){
+  async presentBasicInfoEditModal(){
     if(!this.curUser){
       console.log("Please login first to edit personal info");
+      return;
+    }
+    const modal = await this.modalController.create({
+      component: BasicInfoEditPage,
+      componentProps: {
+        curUserDoc: this.curUserDoc,
+        curUser: this.curUser
+      }
+    });
+    await modal.present();
+    const { data } = await modal.onWillDismiss();
+    await this.commDbService.fetchUserDoc(this.curUser.uid).then(
+      res => {this.curUserDoc = res.data()}
+    );
+    console.log(data);
+    this.curDisplayName = data.displayName;
+    this.shareDataService.changeUserMetadata({
+      displayName: this.curDisplayName,
+      avatarUrl: "https://gravatar.com/avatar"
+    });
+    this.setProgressBar();
+  }
+
+  async presentInfoEditModal(link){
+    if(!this.curUser){
+      console.log("Please login first to edit resume info");
       return;
     }
     const modal = await this.modalController.create({
@@ -74,6 +112,10 @@ export class UploadPersonInfoPage implements OnInit {
     await modal.present();
 
     const { data } = await modal.onWillDismiss();
+    await this.commDbService.fetchUserDoc(this.curUser.uid).then(
+      res => {this.curUserDoc = res.data()}
+    );
+    this.setProgressBar();
   }
 
   setProgressBar(){
@@ -87,21 +129,26 @@ export class UploadPersonInfoPage implements OnInit {
     this.pValue = (weight * counter).toFixed(2);
     this.pValueStr = (this.pValue*100).toFixed(0);
 
-    if (this.pValue <= 0.2) {
-      this.pColor = 'medium';
-    } else if (this.pValue <= 0.4) {
-      this.pColor = 'secondary';
-    } else if (this.pValue <= 0.6) {
-      this.pColor = 'primary';
-    } else if (this.pValue <= 0.8) {
-      this.pColor = 'tertiary';
-    } else if (this.pValue === 1) {
-      this.pColor = 'success';
-    }
+    // Used to set the color of the deperacted progress bar
+    // if (this.pValue <= 0.2) {
+    //   this.pColor = 'medium';
+    // } else if (this.pValue <= 0.4) {
+    //   this.pColor = 'secondary';
+    // } else if (this.pValue <= 0.6) {
+    //   this.pColor = 'primary';
+    // } else if (this.pValue <= 0.8) {
+    //   this.pColor = 'tertiary';
+    // } else if (this.pValue === 1) {
+    //   this.pColor = 'success';
+    // }
   }
 
   refresh(e){
-    if(!this.curUser) return;
+    if(!this.curUser){
+      console.log("Please login first");
+      e.target.complete();
+      return;
+    }
     setTimeout(async () => {
       await this.commDbService.fetchUserDoc(this.curUser.uid).then(
         res => {this.curUserDoc = res.data()}
@@ -109,6 +156,10 @@ export class UploadPersonInfoPage implements OnInit {
       this.setProgressBar();
       e.target.complete();
     });
+  }
+
+  slidesDidLoad(slides: IonSlides) {
+    slides.startAutoplay();
   }
 
   async initialize(){
@@ -120,34 +171,28 @@ export class UploadPersonInfoPage implements OnInit {
     var authState: Observable<any> = this.loginService.curAuthState;
     await new Promise((resolve, reject) => {
       authState.subscribe(
-        value => {
-          this.curUser = value;
+        async value => {
           if(value){
             this.isLogged = true;
-            resolve(value);
+            this.curUser = value;
+            this.curDisplayName = value.displayName;
+            this.curAvatarUrl = value.photoURL;
+            await this.commDbService.fetchUserDoc(this.curUser.uid).then(
+              res => this.curUserDoc = res.data()
+            )
+            this.setProgressBar();
+            this.loadingController.dismiss().catch(err => console.log("Find loadingCtrl err: ", err));
+            console.log(this.curUserDoc);
           }else{
             this.isLogged = false;
-            reject(value);
+            console.log("No one is logged in!");
+            this.loadingController.dismiss().catch(err => console.log("Find loadingCtrl err: ", err));
           }
       });
-    }).then(
-      async res => {
-        await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-          res => this.curUserDoc = res.data()
-        )
-        this.setProgressBar();
-        this.loadingController.dismiss();
-        console.log(this.curUserDoc);
-    }).catch(
-      err => {
-        console.log(err);
-        this.loadingController.dismiss();
-        this.router.navigate(["login"]);
     });
   }
 
   async ngOnInit() {
-    console.log("oninit");
     await this.initialize();
   }
 

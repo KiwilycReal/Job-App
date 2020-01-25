@@ -1,0 +1,133 @@
+<ion-header style="margin: auto;">
+  <ion-row class="test" style="margin-top: -1.5vh;">
+    <!-- location selector -->
+    <ion-col class="test" size=2>
+      <ion-tab-button #locate_selector>
+        <ion-icon src="../assets/icon/pin.svg" style="zoom: 0.8;" [routerLink]="['/front-page']"></ion-icon>
+        <ion-label class="button-text">墨尔本</ion-label>
+      </ion-tab-button>
+    </ion-col>
+
+    <!-- search bar -->
+    <ion-col class="test" size=8>
+      <ion-searchbar #home_search_bar></ion-searchbar>
+    </ion-col>
+
+    <!-- wechat helper -->
+    <ion-col class="test" size=2>
+      <ion-tab-button #wechat_helper>
+        <ion-icon src="../assets/icon/wechat.svg" style="zoom: 0.8;"></ion-icon>
+        <ion-label class="button-text">微信助手</ion-label>
+      </ion-tab-button>
+    </ion-col>
+
+  </ion-row>
+</ion-header>
+
+<ion-content>
+ 
+  <!-- adv slider -->
+  <ion-slides [options] = "Advslider" #adv pager="true" (ionSlidesDidLoad)="slidesDidLoad(adv)">
+    <ion-slide style="max-height: 20vh" *ngFor="let adv of advs">
+          <img [src]="adv.ImageUrl" style="max-width: 100% !important;max-height: 100% !important;">
+    </ion-slide>
+  </ion-slides> 
+
+  <!-- 4 buttons --> 
+  <div style="margin:auto; border-bottom: solid 1vh #DDDDDD;">
+     <ion-row class="test">
+    <!-- 校招 -->
+    <ion-col class="test">
+      <ion-tab-button #locate_selector>
+        <img  class="fbutton" src="../assets/largeicon/xz.png">
+        <ion-label class="button-text">校招入口</ion-label>
+      </ion-tab-button>
+    </ion-col>
+
+    <!-- 测试 -->
+    <ion-col class="test">
+      <ion-tab-button #locate_selector>
+        <img class="fbutton" src="../assets/largeicon/cs.png">
+        <ion-label class="button-text">职业测试</ion-label>
+      </ion-tab-button>
+    </ion-col>
+
+    <!-- 志愿者 -->
+    <ion-col class="test">
+      <ion-tab-button #wechat_helper>
+        <img class="fbutton" src="../assets/largeicon/zyz.png">
+        <ion-label class="button-text">志愿者</ion-label>
+      </ion-tab-button>
+    </ion-col>
+
+    <!-- 求职指南 -->
+    <ion-col class="test">
+      <ion-tab-button #wechat_helper>
+        <img class="fbutton" src="../assets/largeicon/zc.png">
+        <ion-label class="button-text">求职指南</ion-label>
+      </ion-tab-button>
+    </ion-col>
+  </ion-row>
+
+</div>
+
+ <!-- segment adv list -->
+ <ion-segment color='medium' style="height: 4.5vh;">
+
+  <ion-segment-button checked class="segment" >
+    <ion-label>全职</ion-label>
+  </ion-segment-button>
+
+  <ion-segment-button class="segment">
+    <ion-label>兼职</ion-label>
+  </ion-segment-button>
+
+  <ion-segment-button class="segment">
+    <ion-label>实习</ion-label>
+  </ion-segment-button>
+
+</ion-segment>
+<ion-list style="margin-top: 3px;">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>副标题1</ion-card-subtitle>
+      <ion-card-title>热门推荐1</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      这里是内容1
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>副标题2</ion-card-subtitle>
+      <ion-card-title>热门推荐2</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      这里是内容2
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>副标题3</ion-card-subtitle>
+      <ion-card-title>热门推荐3</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      这里是内容3
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>副标题4</ion-card-subtitle>
+      <ion-card-title>热门推荐4</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      这里是内容4
+    </ion-card-content>
+  </ion-card>
+</ion-list>
+
+
+
+
+
+</ion-content>

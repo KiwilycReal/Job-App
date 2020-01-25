@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{curUserDoc.displayName}}</ion-title>
+    <ion-label (click)="selfDismiss()" slot="end" style="padding-right: 10px; color: red;">Cancel</ion-label>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>编辑个人基本信息</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-label>称谓</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.title"></ion-input>
+      <ion-label>姓</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.lastName"></ion-input>
+      <ion-label>中间名</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.middleName"></ion-input>
+      <ion-label>名</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.firstName"></ion-input>
+      <ion-label>性别</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.gender"></ion-input>
+      <ion-label>手机</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.mobile"></ion-input>
+      <ion-label>微信</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.wechat"></ion-input>
+      <ion-label>邮箱(暂不可通过此处修改)</ion-label>
+      <ion-input disabled [(ngModel)]="curUserDoc.email"></ion-input>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>编辑个人求职意向</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-label>期望职业</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.preferJob"></ion-input>
+      <ion-label>期望工作地点</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.preferLocation"></ion-input>
+      <ion-label>期望薪资</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.preferSalary"></ion-input>
+      <ion-label>已工作年数</ion-label>
+      <ion-input [(ngModel)]="curUserDoc.workYear"></ion-input>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" (click)="update()">更新</ion-button>
+</ion-content>

@@ -1,0 +1,86 @@
+<ion-header>
+</ion-header>
+
+<ion-content style="margin:auto">
+  <div style="border-bottom: solid 5px #EEEEEE;">
+    <div style="margin-top: 5vh;" text-center>
+      <ion-row>
+        <!-- empty -->
+        <ion-col class="test" size=2>
+        </ion-col>
+
+        <!-- user picture -->
+        <ion-col class="test" size=8>
+          <ion-avatar style="margin: auto; width: 18vw; height: 18vw;"> 
+            <img [src]="curAvatarUrl">
+          </ion-avatar>
+        </ion-col>
+
+        <!-- setting button -->
+        <ion-col class="test" size=2>
+          <ion-icon name="settings" style="zoom: 2; color: gray;"></ion-icon>  
+        </ion-col>
+
+      </ion-row>
+    </div>
+
+    <div class="ion-text-center" *ngIf="!isLogged">
+      <ion-button color="secondary" style="width: 25vw; margin-top: 1vh; margin-bottom: 2vh;" [routerLink]="['/login']">
+        登录
+      </ion-button>
+    </div>
+
+    <!-- Show logged user's name and medals -->
+    <div class="ion-text-center" *ngIf="isLogged">
+      <ion-label *ngIf="isLogged">{{curDisplayName}}</ion-label><br>
+      <ion-icon name="medal"></ion-icon>
+      <ion-icon name="medal"></ion-icon>
+      <ion-icon name="medal"></ion-icon>
+      <ion-icon name="medal"></ion-icon>
+      <ion-icon name="medal"></ion-icon>
+    </div>
+  </div>
+  
+<!-- settings -->
+  <div [hidden]="!isLogged" style="border-bottom: solid 5px #EEEEEE; margin-top: 2vh;">
+    <ion-list lines="none">
+
+      <ion-item class="settings" [routerLink]="['/fav-jobs']">
+        <ion-icon name="bookmark" color="secondary" slot="start"></ion-icon>
+        <ion-label>收藏</ion-label>
+      </ion-item>
+
+      <ion-item class="settings" [routerLink]="['/history-jobs']">
+        <ion-icon name="time" color="secondary" slot="start"></ion-icon>
+        <ion-label>最近浏览</ion-label>
+      </ion-item>
+
+      <ion-item class="settings" [routerLink]="['/upload-person-info']">
+        <ion-icon name="create" color="secondary" slot="start"></ion-icon>
+        <ion-label>修改简历</ion-label>
+      </ion-item>
+
+      <ion-item class="settings">
+        <ion-icon name="eye-off" color="secondary" slot="start"></ion-icon>
+        <ion-label>隐私</ion-label>
+      </ion-item>
+
+    </ion-list>
+  </div>
+  
+  <!-- feedback -->
+  <ion-list lines="none">
+    <ion-item class="settings">
+      <ion-icon src="../assets/icon/wechat.svg"  slot="start"></ion-icon>
+      <ion-label>微信小助手</ion-label>
+    </ion-item>
+
+    <ion-item class="settings">
+      <ion-icon name="help-circle-outline" color="tertiary" slot="start"></ion-icon>
+      <ion-label>帮助与反馈</ion-label>
+    </ion-item>
+  </ion-list>
+  
+  <ion-button *ngIf="isLogged" expand="block" color="danger" (click)="logout()">退出当前账户</ion-button>
+  
+</ion-content>

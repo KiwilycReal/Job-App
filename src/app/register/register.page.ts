@@ -21,7 +21,8 @@ export class RegisterPage implements OnInit {
     dob: [''],
     wechat: [''],
     mobile: [''],
-    password: ['']
+    password: [''],
+    passwordC: ['']
   })
 
   curDisplayName;
@@ -31,6 +32,7 @@ export class RegisterPage implements OnInit {
               private router: Router,
               @Inject('commDbService') public commDbService,
               @Inject('loginService') public loginService,
+              @Inject('shareDataService') public shareDataService,
               public loadingController: LoadingController,
               public toastController: ToastController,
               private formBuilder: FormBuilder) {}
@@ -55,6 +57,7 @@ export class RegisterPage implements OnInit {
         this.curUser = res.user;
         isLogged = true;
         delete data.password;
+        delete data.passwordC;
         data.workExps = [];
         data.eduExps = [];
         data.projExps = [];
@@ -66,7 +69,13 @@ export class RegisterPage implements OnInit {
         data.history = [];
         data.chats = {};
         data.talked = [];
+        data.preferJob = "";
+        data.preferLocation = "";
+        data.preferSalary = "";
+        data.workYear = 0;
+        data.avatarUrl = "https://gravatar.com/avatar";
         this.curDisplayName = data.title+data.firstName+" "+data.lastName;
+        data.displayName = this.curDisplayName;
         this.loginService.changeDisplayName(this.curDisplayName);
       }, err => {
         console.dir("Register error ", err.message);
@@ -80,9 +89,15 @@ export class RegisterPage implements OnInit {
     }
     await this.curUser.updateProfile({
       displayName: this.curDisplayName,
-      photoURL: "http://i0.hdslb.com/bfs/archive/1ebcd228cec3f5104031fa9a9f8d113ccbd082db.jpg"
+      photoURL: "https://gravatar.com/avatar"
     }).then(
-      res => console.log("Initial dp name set"),
+      res => {
+        this.shareDataService.changeUserMetadata({
+          displayName: this.curDisplayName,
+          avatarUrl: "https://gravatar.com/avatar"
+        });
+        console.log("Initial dp name set");
+      },
       err => console.log("Failed to set initial dp name:",err.message)
     );
     //Create userinfo doc
@@ -90,13 +105,14 @@ export class RegisterPage implements OnInit {
       res => {
         console.dir("Userinfo doc created", res);
         this.presentToast("You are all set!:)");
+        this.router.navigate(['mine']);
+        this.loadingController.dismiss();
       }, err => {
         console.dir("Failed to create userinfo doc", err);
         this.presentToast("Failed to create userinfo doc")
       }
     );
-    this.router.navigate(['personal-info']);
-    this.loadingController.dismiss();
+    // this.router.navigate(['personal-info']);
   }
 
   async presentToast(msg, time: number = 2500){

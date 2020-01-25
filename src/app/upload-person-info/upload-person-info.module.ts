@@ -9,6 +9,9 @@ import { UploadPersonInfoPage } from './upload-person-info.page';
 import { InfoEditModalPageModule } from '../info-edit-modal/info-edit-modal.module';
 import { ResumePipe } from '../pipes/resume.pipe';
 
+import { NgCircleProgressModule } from 'ng-circle-progress'
+import { BasicInfoEditPageModule } from '../basic-info-edit/basic-info-edit.module';
+
 const routes: Routes = [
   {
     path: '',
@@ -22,7 +25,19 @@ const routes: Routes = [
     FormsModule,
     IonicModule,
     RouterModule.forChild(routes),
-    InfoEditModalPageModule
+    InfoEditModalPageModule,
+    BasicInfoEditPageModule,
+    NgCircleProgressModule.forRoot({
+      radius: 30,
+      outerStrokeWidth: 7,
+      innerStrokeWidth: 0,
+      outerStrokeColor: "#AAAAAA",
+      animation: true,
+      animationDuration: 300,
+      showImage: true,
+      imageHeight: 40,
+      imageWidth: 40
+    })
   ],
   declarations: [UploadPersonInfoPage, ResumePipe]
 })

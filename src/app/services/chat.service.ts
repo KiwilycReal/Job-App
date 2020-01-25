@@ -33,8 +33,8 @@ export class ChatService {
     chat id to corresponding users' userinfo doc*/
     await this.afs.collection("Chats").add(newChatDoc).then(
       res => {
-        var obj = {"chats": {}};
-        obj["chats"][res.id] = "";
+        var obj = {};
+        obj["chats."+res.id] = "";
         obj["talked"] = firebase.firestore.FieldValue.arrayUnion(uid2);
         this.afs.collection("UserInfo").doc(uid1).update(obj);
         obj["talked"] = firebase.firestore.FieldValue.arrayUnion(uid1);

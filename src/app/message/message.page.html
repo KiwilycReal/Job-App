@@ -24,7 +24,7 @@
   </ion-button> -->
   <ion-list>
     <ion-list>
-      <div *ngFor="let chat of chats | keyvalue" (click)="showChatModal(chat.key, chat.value.targetName, chat.value.targetUid, chat.value.listenerIndex)">
+      <div *ngFor="let chat of chats | keyvalue" (click)="showChatModal(chat.key, chat.value)">
         <ion-item lines="full">
           <ion-avatar slot="start">
             <img [src]="chat.value.avatar">

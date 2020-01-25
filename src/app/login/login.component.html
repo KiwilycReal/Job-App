@@ -1,6 +1,6 @@
 <ion-header></ion-header>
 
-<ion-content>
+<!-- <ion-content>
   <ion-grid>
     <ion-row>
       <ion-col class="ion-align-items-center">
@@ -19,23 +19,6 @@
           </form>
       </ion-col>
     </ion-row>
-    <!-- <ion-row>
-      <ion-col class="ion-align-items-center">
-          <form [formGroup]="this.loginService.registerForm">
-            <ion-label>Your Email address</ion-label>
-            <ion-input placeholder="Email"
-                    formControlName="email"
-                    type="email"
-                    #registerEmail></ion-input><br/>
-            <ion-label>Password</ion-label>            
-            <ion-input placeholder="Password"
-                    formControlName="password"
-                    type="password"
-                    #registerPassword></ion-input><br/>
-            <ion-button type="submit" expand="block" (click)="tryRegister()">Register</ion-button>
-          </form>
-      </ion-col>
-    </ion-row> -->
     <br><br><br>
     <ion-row class="ion-align-items-center ion-justify-content-center">
       <ion-label>
@@ -43,6 +26,96 @@
       </ion-label>
     </ion-row>
   </ion-grid>
+</ion-content> -->
+<ion-header>
+  <ion-toolbar>
+    <!-- back button -->
+    <ion-buttons slot="start">
+      <ion-icon name="arrow-dropleft" style="zoom: 1.5;" [routerLink]="['/mine']"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- title -->
+  <div style="text-align: center; margin-top: 4vh;">
+    <h2><b>登陆猫耳招聘</b></h2>
+  </div>
+
+  <!-- login wechat, google button -->
+  <div style="text-align: center;">
+    <ion-row>
+      <!-- google -->
+      <ion-col>
+        <button class='tlogin' style="width: 30vw;">
+          <ion-icon name="logo-google"  style="zoom: 2;"></ion-icon>
+        </button>
+      </ion-col>
+
+      <!-- wechat -->
+      <ion-col>
+        <button class='tlogin' style="width: 30vw; background-color: #2dc100;">
+          <ion-icon src="../assets/icon/wechat.svg" style="zoom: 2;"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+  </div>
+
+  <div style="text-align: center; margin-top: 4vh;">
+    <p style="color: grey; font-size: small;"> ---------------- 或使用邮箱登录 ----------------</p>
+  </div>
+
+  <!-- email login input -->
+  <!-- <div>
+    <ion-input placeholder=" 请输入邮箱" type='email'  class="login-in"></ion-input>
+
+    <ion-input placeholder=" 请输入密码" type='password' class="login-in"></ion-input>
+  </div> -->
+  <form [formGroup]="this.loginService.loginForm" class="login-in">
+    <ion-label>Your Email address</ion-label>
+    <ion-input placeholder="Email"
+            formControlName="email"
+            type="email"
+            #loginEmail></ion-input><br/>
+    <ion-label>Password</ion-label>            
+    <ion-input placeholder="Password"
+            formControlName="password"
+            type="password"
+            #loginPassword></ion-input><br/>
+    <ion-button type="submit" expand="block" (click)="tryLogin()">Login</ion-button>
+  </form>
+
+  <!-- remember and find password  -->
+  <div>
+    <ion-row style="margin:auto; width: 95vw;">
+
+    <ion-col>
+      <ion-list lines="none">
+        <ion-item style="margin-top: 2vh;">
+            <ion-checkbox></ion-checkbox>
+            <ion-label style="font-size: small;">记住我</ion-label>
+        </ion-item>
+      </ion-list>
+      
+    </ion-col>
+
+    <ion-col>
+      <ion-list lines="none">
+        <ion-item style="margin-top: 2vh; margin-left: 20vw;">
+            <u style="font-size: small;">忘记密码</u>
+        </ion-item>
+      </ion-list>
+    </ion-col>
+  </ion-row>
+  </div>
+  
+  <div style="text-align: center; margin-top: 15vh;">
+    <!-- <ion-button style="width: 80%; margin:auto;">登录</ion-button> -->
+    <p>如果还没有账号，请<u [routerLink]="['/register']">注册</u></p>
+  </div>
+  
+
 </ion-content>
+
 
 <ion-footer></ion-footer>

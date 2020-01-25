@@ -24,16 +24,15 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewChecked {
   /* Will be automatically initialized by the parent page
   when this modal showing */
   myUid;
+  myAvatarUrl;
   targetUid;
   targetName = "Loading";
+  targetAvatarUrl;
   cid;
   // The variable bound to user's input
   msg;
   // The listener of the current chat
   chatListener;
-
-  targetAvatarUrl = "https://gravatar.com/avatar";
-  myAvatarUrl = '../../assets/cxk.jpg';
 
   // The array that store all the logs of the current chat
   logs = [];

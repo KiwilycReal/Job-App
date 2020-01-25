@@ -36,7 +36,8 @@ export class LoginComponent implements OnInit {
       });
     this.loadingController.dismiss();
     this.presentToast(msg)
-    if(isLogged) this.router.navigate(['personal-info']);
+    // if(isLogged) this.router.navigate(['personal-info']);
+    if(isLogged) this.router.navigate(['mine']);
   }
 
   async presentToast(msg: string, time: number = 2500){

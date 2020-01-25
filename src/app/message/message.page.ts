@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ChatComponent } from '../chat/chat.component';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-message',
@@ -32,15 +32,18 @@ export class MessagePage implements OnInit, OnDestroy {
               @Inject('chatService') public chatService,
               @Inject('loginService') public loginService,
               @Inject('commDbService') public commDbService,
+              @Inject('shareDataService') public shareDataService,
               private router: Router) { }
 
-  async showChatModal(chatID, targetName, targetUid, listenerIndex){
+  async showChatModal(chatID, chatDoc){
     const modal = await this.modalController.create({
       component: ChatComponent,
       componentProps: {
         myUid: this.curUser.uid,
-        targetUid: targetUid,
-        targetName: targetName,
+        myAvatarUrl: this.curUser.photoURL,
+        targetUid: chatDoc.targetUid,
+        targetName: chatDoc.targetName,
+        targetAvatarUrl: chatDoc.targetAvatarUrl,
         cid: chatID
       }
     });
@@ -50,6 +53,7 @@ export class MessagePage implements OnInit, OnDestroy {
     const { data } = await modal.onWillDismiss();
     this.chats[chatID].unreadCount = 0;
     this.chats[chatID].lastReadMsg = data.lastMid;
+    this.shareDataService.changeUnreadMsgCount(this.calculateTotalUnreadMsgCount());
   }
 
   testSegment(event: any){
@@ -59,6 +63,19 @@ export class MessagePage implements OnInit, OnDestroy {
 
   startNewChat(uid){
     this.chatService.createChat(this.curUser.uid, uid);
+  }
+
+  calculateTotalUnreadMsgCount(){
+    // return Object.values(this.chats).reduce(
+    //   (prevChat: any, curChat: any) => {
+    //     return prevChat.unreadCount + curChat.unreadCount;
+    //   }
+    // )
+    return Object.values(this.chats).map(
+      (chat: any) => {
+        return chat.unreadCount;
+      }
+    ).reduce((p,c)=>{return p+c});
   }
 
   createChatListener(cid) {
@@ -79,6 +96,7 @@ export class MessagePage implements OnInit, OnDestroy {
       }else{
         this.chats[cid].unreadCount = msgList.indexOf(lastReadMsg);
       }
+      this.shareDataService.changeUnreadMsgCount(this.calculateTotalUnreadMsgCount());
       // Get the other user's username
       await new Promise((resolve, reject) => {
         // First fetch the chat document to get the other user's uid
@@ -116,7 +134,6 @@ export class MessagePage implements OnInit, OnDestroy {
         this.chats[cid].latestMsg = latestMsgObj.msg;
         // In case of the other user changed their avatar or display name
         this.chats[cid].avatar = "https://gravatar.com/avatar";
-        // this.chats[cid].targetName = "The other guy";
         console.log(this.chats);
       }catch(error){
         console.log(error, latestMsgObj);
@@ -170,20 +187,27 @@ export class MessagePage implements OnInit, OnDestroy {
                       this.chatService.fetchChat(cid).then(
                         res => {
                           var users = res.data().users;
+                          var targetUid = "";
                           if(users[0]==this.curUser.uid){
-                            tempChats[cid]["targetUid"] = users[1];
+                            targetUid = users[1];
                           }else{
-                            tempChats[cid]["targetUid"] = users[0];
+                            targetUid = users[0];
                           }
-                        }
-                      );
-                      // Update targetName
-                      this.commDbService.fetchUserDoc(this.curUser.uid).then(
+                          tempChats[cid]["targetUid"] = targetUid;
+                          return (targetUid);
+                        },
+                        err => console.log("Fetch chat error", err)
+                      ).then(
+                        res => {return this.commDbService.fetchUserDoc(res)}
+                      ).then(
+                        // Update targetName
                         res => {
                           var userDoc = res.data();
-                          tempChats[cid]["targetName"] = userDoc.title+userDoc.firstName+" "+userDoc.lastName;
-                        }
-                      )
+                          tempChats[cid]["targetName"] = userDoc.displayName;
+                          tempChats[cid]["targetAvatarUrl"] = userDoc.avatarUrl;
+                        },
+                        err => console.log("Fetch user doc error", err)
+                      );
                     }
                   }
                 );
@@ -205,9 +229,13 @@ export class MessagePage implements OnInit, OnDestroy {
   cleanUp(){
     // Detach all listeners
     if(this.chatListListener) this.chatListListener.unsubscribe();
+    this.chatListListener = null;
     this.chatListeners.forEach(
-      l => l.unsubscribe()
+      l => {
+        l.unsubscribe();
+      }
     );
+    this.chatListeners = [];
     // Clear chat list
     this.chats = {};
   }
