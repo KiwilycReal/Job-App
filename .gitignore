@@ -1,3 +1,12 @@
 node_modules/
 package-lock.json
 .DS_Store
+www/
+platforms/
+plugins/cordova-plugin-device/
+plugins/cordova-plugin-ionic-keyboard/
+plugins/cordova-plugin-ionic-webview/
+plugins/cordova-plugin-splashscreen/
+plugins/cordova-plugin-statusbar/
+plugins/cordova-plugin-whitelist/
+plugins/android.json
