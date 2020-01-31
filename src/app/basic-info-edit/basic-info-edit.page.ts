@@ -11,6 +11,11 @@ export class BasicInfoEditPage implements OnInit {
   curUserDoc;
   curUser;
 
+  // The chosen avatar file
+  file;
+  // The download url for uploaded avatar
+  avatarUrl;
+
   // Variables for user input
   editTitle;
   editLastName;
@@ -33,6 +38,7 @@ export class BasicInfoEditPage implements OnInit {
   selfDismiss(){
     this.modalController.dismiss({
       dismissed: true,
+      avatarUrl: this.avatarUrl,
       displayName: this.curUserDoc.title+""+this.curUserDoc.firstName+" "+this.curUserDoc.lastName
     })
   }
@@ -69,6 +75,28 @@ export class BasicInfoEditPage implements OnInit {
         }
       )
     )
+  }
+
+  getCurrentFile(f){
+    this.file = f;
+  }
+
+  async updateAvatar(){
+    const loading = await this.loadingController.create({
+      message: 'Adding...',
+      duration: 20000
+    });
+    await loading.present();
+    await this.commDbService.uploadFile(this.file, this.curUser.uid).then(
+      res => {
+        this.avatarUrl = res;
+        this.curUser.updateProfile({
+          photoURL: res
+        })
+        this.commDbService.updateUserDoc(this.curUser.uid, {avatarUrl: res});
+      }
+    );
+    this.loadingController.dismiss();
   }
 
   ngOnInit() {

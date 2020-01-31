@@ -27,6 +27,9 @@ export class SearchPage implements OnInit, OnDestroy{
   jobs =[];
   allList = [];
   searchList = [];
+
+  // The work type radio group
+  typeRadioGroup;
   
   searchTerm: String = "";
 
@@ -126,6 +129,21 @@ export class SearchPage implements OnInit, OnDestroy{
 
   // cancelSearch(){}
 
+  radioChange(ev){
+    this.typeRadioGroup = ev.target;
+    var selected = ev.detail.value
+    if(selected){
+      this.jobs = this.allList.filter(
+        job => {
+          return job.type == selected;
+        }
+      );
+    }else{
+      // Restore the full job list
+      this.jobs = this.allList;
+    }
+  }
+
   selectChange(ev){
     if(ev.detail.value == null) return;
     if(this.workTypeSelect == null &&
@@ -198,11 +216,13 @@ export class SearchPage implements OnInit, OnDestroy{
     const modal = await this.modalController.create({
       component: JobDetailPage,
       componentProps: {
-        job: job
+        job: job,
+        uid: this.curUser.uid
       }
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
+    this.updateJobList();
   }
 
   addToUserHistory(jid){
@@ -212,36 +232,36 @@ export class SearchPage implements OnInit, OnDestroy{
     );
   }
 
-  async changeFavJob(elem){
-    var jid = elem.id;
-    var curUser = this.curUser;
-    var isAdd = true;
-    if(!curUser) return;
-    //Show spinner and hid heart
-    elem.firstElementChild.style.display = "";
-    elem.lastElementChild.style.display = "none";
-    elem.disabled = true;
-    //Check this job's fav status (html elem can be altered locally)
-    await this.commDbService.fetchUserDoc(curUser.uid).then(
-      res => {
-        if(<string[]>res.data().favourite.includes(jid)) isAdd = false;
-      }
-    );
-    //Database operations
-    var iconStr = (isAdd) ? "heart" : "heart-empty";
-    console.log(elem);
-    if(curUser){
-      this.commDbService.updateUserDocArray(curUser.uid, "favourite", jid, isAdd).then(
-        res => {
-          elem.lastElementChild.name = iconStr;
-          elem.firstElementChild.style.display = "none";
-          elem.lastElementChild.style.display = "";
-          elem.disabled = false;
-        });
-    }else{
-      console.log("Please login first");
-    }
-  }
+  // async changeFavJob(elem){
+  //   var jid = elem.id;
+  //   var curUser = this.curUser;
+  //   var isAdd = true;
+  //   if(!curUser) return;
+  //   //Show spinner and hid heart
+  //   elem.firstElementChild.style.display = "";
+  //   elem.lastElementChild.style.display = "none";
+  //   elem.disabled = true;
+  //   //Check this job's fav status (html elem can be altered locally)
+  //   await this.commDbService.fetchUserDoc(curUser.uid).then(
+  //     res => {
+  //       if(<string[]>res.data().favourite.includes(jid)) isAdd = false;
+  //     }
+  //   );
+  //   //Database operations
+  //   var iconStr = (isAdd) ? "heart" : "heart-empty";
+  //   console.log(elem);
+  //   if(curUser){
+  //     this.commDbService.updateUserDocArray(curUser.uid, "favourite", jid, isAdd).then(
+  //       res => {
+  //         elem.lastElementChild.name = iconStr;
+  //         elem.firstElementChild.style.display = "none";
+  //         elem.lastElementChild.style.display = "";
+  //         elem.disabled = false;
+  //       });
+  //   }else{
+  //     console.log("Please login first");
+  //   }
+  // }
 
   async initialize() {
     const loading = await this.loadingController.create({
@@ -254,6 +274,7 @@ export class SearchPage implements OnInit, OnDestroy{
   }
 
   async updateJobList(){
+    if(this.typeRadioGroup) this.typeRadioGroup.value = undefined;
     var tempList = [];
 
     await this.fetchRequiredJobList().then(
@@ -265,6 +286,7 @@ export class SearchPage implements OnInit, OnDestroy{
     this.clearSelect();
   }
 
+  // The parameter here accept various job list fetch Promise, the default one fetches all jobs
   async fetchRequiredJobList(queryPromise: Promise<any> = this.commDbService.fetchJobList()){
     var temp;
     var tempList = [];
@@ -275,23 +297,25 @@ export class SearchPage implements OnInit, OnDestroy{
           doc => {
             temp = doc.data();
             temp['jid'] = doc.id;
-            temp['favIconName'] = "heart-empty";
+            // temp['isApplied'] = false;
+            // temp['favIconName'] = "heart-empty";
             temp['patternStr'] = temp.title.concat(temp.position);
             tempList.push(temp);
         });
     });
     //Update jobs' user fav status if someone logged
-    if(this.curUser){
-      await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-        res => {
-          tempList.forEach(
-            value => {
-              if(<string[]>res.data().favourite.includes(value.jid)) value.favIconName = "heart";
-          });
-      });
-    }else{
-      this.isLogged = false;
-    }
+    // if(this.curUser){
+    //   await this.commDbService.fetchUserDoc(this.curUser.uid).then(
+    //     res => {
+    //       tempList.forEach(
+    //         value => {
+    //           if(<string[]>res.data().favourite.includes(value.jid)) value.favIconName = "heart";
+    //           if(<string[]>res.data().applied.includes(value.jid)) value.isApplied = true;
+    //       });
+    //   });
+    // }else{
+    //   this.isLogged = false;
+    // }
     return tempList;
   }
 

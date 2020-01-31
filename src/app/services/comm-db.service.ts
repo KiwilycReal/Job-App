@@ -27,6 +27,10 @@ export class CommDbService {
     tags: new FormControl('')
   });
 
+  fetchAdvList(){
+    return this.afs.collection("Advs").get().toPromise();
+  }
+
   /**
    * Create a job into the firestore database, returns a promise
    * @param data the entire object of a newly added job, based on the @param newJobForm
@@ -157,8 +161,14 @@ export class CommDbService {
    */
   async uploadFile(file: any, uid: string){
     var ref = this.afstorage.storage.ref("/").child(uid).child(file.name);
-    var task = ref.put(file).then(
-      res => console.log(res)
+    return ref.put(file).then(
+      res => {
+        return ref.getDownloadURL();
+      }
+    ).then(
+      res => {
+        return res;
+      }
     );
   }
 

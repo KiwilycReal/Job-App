@@ -1,118 +1,136 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title style="text-align: center;">什么招聘</ion-title>
+    <ion-title style="text-align: center; color: cornflowerblue;">职位介绍</ion-title>
     <ion-label (click)="selfDismiss()" slot="start" style="padding-left: 10px; color: red; position: absolute; z-index: 1;">
-      Back
+      <!-- Back -->
+      <ion-icon name="arrow-round-back" size="large"></ion-icon>
+    </ion-label>
+    <ion-label slot="end">
+      <ion-icon name="text" size="large" style="color: cornflowerblue; margin-right: 5px;"></ion-icon>
+      <ion-icon name="information-circle-outline" size="large" style="color: cornflowerblue;"></ion-icon>
     </ion-label>
   </ion-toolbar>
 </ion-header>
-<!-- <ion-header>
-  <ion-toolbar style="height: 6vh;">
-      <ion-title class="headerlabel">什么招聘</ion-title>
-  </ion-toolbar>
-</ion-header> -->
   
 
 <ion-content>
+  <ion-grid>
+    <div>
+      <ion-row class="ion-justify-content-center">
+        <ion-col size=2>
+          <ion-thumbnail style="width: 72px;height: 72px;">
+            <!-- <img [src]='job.imageUrl[0]'> -->
+            <img src="../../assets/cxk.jpg">
+          </ion-thumbnail> 
+        </ion-col>
+        <ion-col size=6 offset=1>
+          <ion-label style="margin: 0; font-size: 20px;"><b>{{job.position}}</b></ion-label><br>
+          <!-- Job's characteristics -->
+          <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of job.tags; let i = index"><span *ngIf="i!=0">|</span>{{tag}}</ion-label><br>
+          <ion-label style="font-size: 13px;">截止日期: {{job.publishDateTime}}</ion-label>
+        </ion-col>
+        <ion-col size=2.5>
+          <span style="color:goldenrod; font-size: 8; ">{{job.salary}}$/hr</span>
+        </ion-col>
+      </ion-row>
+      </div>
+  </ion-grid>
 
-<ion-slides [options] = "imgSliderOpts" pager="true">
-  <!-- <ion-slide style="max-height: 20vh" *ngFor="let img of images" >
-      <ion-card> 
-        <img [src]="img">
-      </ion-card>
-  </ion-slide> -->
-  <ion-slide style="max-height: 20vh;">
-    <ion-card>
-      <img src="../../assets/melbourne1.jpg">
-    </ion-card>
-  </ion-slide>
-  <ion-slide style="max-height: 20vh;">
-    <ion-card>
-      <img src="../../assets/melbourne2.jpg">
-    </ion-card>
-  </ion-slide>
-  <ion-slide style="max-height: 20vh;">
-    <ion-card>
-      <img src="../../assets/melbourne3.jpg">
-    </ion-card>
-  </ion-slide>
-</ion-slides>
 
 
 
 <ion-card>
-  <ion-card-header>
-    <ion-card-subtitle>{{title}}</ion-card-subtitle>
-    <ion-card-title>{{position}}</ion-card-title>
-  </ion-card-header>
-  <ion-item-divider style="padding-right: 16px;">
-      <ion-label slot="start">
-          <ion-icon name="pin"></ion-icon>{{geolocation}}
-      </ion-label>
-      <ion-label slot="end" style="color: darkgoldenrod;">
-          {{salary}}$/hr
-      </ion-label>
-  </ion-item-divider>
-  <div style="text-align: center;">
-    <agm-map style="height: 150px; width: 100%; display: inline-block;" [latitude]="lat" [zoom]="zoom" [longitude]="lng" disableDefaultUI="true" clickableIcons="false">
-      <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
-    </agm-map>
+  <ion-label style="margin-top: 5px; margin-left: 16px; font-size: 21px;"><b>{{job.title}}</b></ion-label><br>
+  <div style="margin-left: 16px; margin-bottom: 5px;">
+    <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of job.tags; let i = index"><span *ngIf="i!=0">|</span>{{tag}}</ion-label><br>
   </div>
-  <ion-card-content>
+  <ion-slides [options] = "imgSliderOpts" pager="true">
+    <!-- <ion-slide style="max-height: 20vh" *ngFor="let img of images" >
+        <ion-card> 
+          <img [src]="img">
+        </ion-card>
+    </ion-slide> -->
+    <ion-slide style="max-height: 20vh;">
+      <ion-card>
+        <img src="../../assets/melbourne1.jpg">
+      </ion-card>
+    </ion-slide>
+    <ion-slide style="max-height: 20vh;">
+      <ion-card>
+        <img src="../../assets/melbourne2.jpg">
+      </ion-card>
+    </ion-slide>
+    <ion-slide style="max-height: 20vh;">
+      <ion-card>
+        <img src="../../assets/melbourne3.jpg">
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+  <!-- <ion-card-content>
     {{introText}}
-  </ion-card-content>
+  </ion-card-content> -->
 </ion-card>
 
+
 <ion-card>
+  <ion-segment (ionChange)="segmentChanged($event)">
+    <ion-segment-button checked value="description">
+      <ion-label>职位介绍</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="contact">
+      <ion-label>联系详情</ion-label>
+    </ion-segment-button>
+  </ion-segment>
   <ion-card-content style="padding: 0;">
-    <ion-list>
+    <ion-list [hidden]="curView=='contact'">
       <ion-item-divider color="light"><b>公司简介</b></ion-item-divider>
       <ion-item lines="none">
-        <p [innerHTML]="details"></p>
+        <p [innerHTML]="job.details"></p>
       </ion-item>
       <ion-item-divider color="light"><b>职位介绍</b></ion-item-divider>
       <ion-item lines="none">
-        <p [innerHTML]="details"></p>
+        <p [innerHTML]="job.details"></p>
       </ion-item>
       <ion-item-divider color="light"><b>技能要求</b></ion-item-divider>
       <ion-item lines="none">
-        <p [innerHTML]="details"></p>
+        <p [innerHTML]="job.details"></p>
       </ion-item>
       <ion-item-divider color="light"><b>薪资待遇</b></ion-item-divider>
       <ion-item lines="none">
-        <p [innerHTML]="details"></p>
+        <p [innerHTML]="job.details"></p>
       </ion-item>
       <ion-item-divider color="light"><b>其他事项</b></ion-item-divider>
       <ion-item lines="none">
-        <p [innerHTML]="details"></p>
+        <p [innerHTML]="job.details"></p>
       </ion-item>
       <ion-item-divider color="light"><b>商家可自定义栏目名字</b></ion-item-divider>
       <ion-item lines="none">
-        <p [innerHTML]="details"></p>
+        <p [innerHTML]="job.details"></p>
       </ion-item>
     </ion-list>
+  <div [hidden]="curView=='description'">
+    <ion-label slot="start">
+      <ion-icon name="pin"></ion-icon>{{geolocation}}
+    </ion-label>
+    <div style="text-align: center;">
+      <agm-map style="height: 150px; width: 100%; display: inline-block;" [latitude]="lat" [zoom]="zoom" [longitude]="lng" disableDefaultUI="true" clickableIcons="false">
+        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+      </agm-map>
+    </div>
+  </div>
   </ion-card-content>
 </ion-card>
-
-<ion-fab vertical="center" horizontal="end" slot="fixed">
-  <ion-fab-button><ion-icon name="menu"></ion-icon></ion-fab-button>
-  <ion-fab-list side="start">
-    <ion-fab-button><ion-icon name="heart-empty"></ion-icon></ion-fab-button>
-    <ion-fab-button><ion-icon name="text"></ion-icon></ion-fab-button>
-    <ion-fab-button><ion-icon name="share"></ion-icon></ion-fab-button>
-  </ion-fab-list>
-</ion-fab>
 
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-row>
-      <ion-col>
-        <ion-button expand="full">联系商家</ion-button>
+      <ion-col size=3>
+        <ion-button (click)="changeFavBtn($event.target)" expand="block" [color]="isFavoured ? 'medium' : 'light'"><ion-icon [name]="isFavoured ? 'heart' : 'heart-empty'"></ion-icon><span [hidden]="!isFavoured">取消</span>收藏</ion-button>
       </ion-col>
-      <ion-col>
-        <ion-button expand="full" color="danger">立即申请</ion-button>
+      <ion-col size=9>
+        <ion-button (click)="changeApplyBtn($event.target)" expand="block" [color]="isApplied ? 'medium' : 'primary'"><span [innerHTML]="isApplied ? '撤销' : '立即'"></span>申请</ion-button>
       </ion-col>
     </ion-row>
   </ion-toolbar>

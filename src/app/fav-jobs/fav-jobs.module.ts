@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { FavJobsPage } from './fav-jobs.page';
 import { Routes, RouterModule } from '@angular/router';
 import { JobDetailPageModule } from '../job-detail/job-detail.module';
+import { SearchPageModule } from '../search/search.module';
 
 const routes: Routes = [
   {
@@ -21,7 +22,8 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
     IonicModule,
-    JobDetailPageModule
+    JobDetailPageModule,
+    SearchPageModule
   ],
   declarations: [FavJobsPage]
 })

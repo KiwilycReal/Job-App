@@ -1,11 +1,19 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>{{curUserDoc.displayName}}</ion-title>
-    <ion-label (click)="selfDismiss()" slot="end" style="padding-right: 10px; color: red;">Cancel</ion-label>
+    <ion-label (click)="selfDismiss()" slot="end" style="padding-right: 10px; color: red;">取消</ion-label>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>更改头像</ion-card-title>
+    </ion-card-header>
+    <ion-input accept="image/*" clearOnEdit="true" (change)="getCurrentFile($event.target.files[0])" type="file"></ion-input>
+    <ion-button expand="block" (click)="updateAvatar()"><ion-icon name="cloud-upload"></ion-icon></ion-button>
+  </ion-card>
+
   <ion-card>
     <ion-card-header>
       <ion-card-title>编辑个人基本信息</ion-card-title>

@@ -133,7 +133,7 @@ export class MessagePage implements OnInit, OnDestroy {
         this.chats[cid].latestTime = dateObj.toLocaleString();
         this.chats[cid].latestMsg = latestMsgObj.msg;
         // In case of the other user changed their avatar or display name
-        this.chats[cid].avatar = "https://gravatar.com/avatar";
+        // this.chats[cid].avatar = "https://gravatar.com/avatar";
         console.log(this.chats);
       }catch(error){
         console.log(error, latestMsgObj);
@@ -175,7 +175,7 @@ export class MessagePage implements OnInit, OnDestroy {
                       tempChats[cid] = {
                         latestTime: null,
                         latestMsg: "Click to start...",
-                        avatar: "https://gravatar.com/avatar",
+                        targetAvatarUrl: "https://gravatar.com/avatar",
                         targetName: null,
                         targetUid: null,
                         lastReadMsg: chatList[cid],

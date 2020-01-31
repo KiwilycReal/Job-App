@@ -30,6 +30,11 @@ const routes: Routes = [
     data: {msg:"history"}
   },
   {
+    path: 'applied-jobs',
+    loadChildren: () => import('./fav-jobs/fav-jobs.module').then( m => m.FavJobsPageModule),
+    data: {msg:"applied"}
+  },
+  {
     path: 'mine',
     loadChildren: () => import('./mine/mine.module').then( m => m.MinePageModule)
   },

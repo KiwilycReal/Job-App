@@ -9,6 +9,8 @@ import { IonicModule } from '@ionic/angular';
 import { SearchPage } from './search.page';
 import { JobDetailPageModule } from '../job-detail/job-detail.module';
 
+import { WorkTypePipe } from '../pipes/work-type.pipe';
+
 const routes: Routes = [
   {
     path: 'search',
@@ -25,6 +27,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     JobDetailPageModule
   ],
-  declarations: [SearchPage]
+  declarations: [SearchPage, WorkTypePipe],
+  exports: [WorkTypePipe]
 })
 export class SearchPageModule {}

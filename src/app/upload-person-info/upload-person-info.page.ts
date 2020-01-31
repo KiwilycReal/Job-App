@@ -88,9 +88,10 @@ export class UploadPersonInfoPage implements OnInit {
     );
     console.log(data);
     this.curDisplayName = data.displayName;
+    this.curAvatarUrl = data.avatarUrl;
     this.shareDataService.changeUserMetadata({
       displayName: this.curDisplayName,
-      avatarUrl: "https://gravatar.com/avatar"
+      avatarUrl: this.curAvatarUrl
     });
     this.setProgressBar();
   }
@@ -113,7 +114,9 @@ export class UploadPersonInfoPage implements OnInit {
 
     const { data } = await modal.onWillDismiss();
     await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-      res => {this.curUserDoc = res.data()}
+      res => {
+        this.curUserDoc = res.data();
+      }
     );
     this.setProgressBar();
   }
@@ -151,7 +154,10 @@ export class UploadPersonInfoPage implements OnInit {
     }
     setTimeout(async () => {
       await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-        res => {this.curUserDoc = res.data()}
+        res => {
+          this.curUserDoc = res.data();
+          this.curAvatarUrl = this.curUser.photoURL;
+        }
       );
       this.setProgressBar();
       e.target.complete();

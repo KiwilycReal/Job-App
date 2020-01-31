@@ -1,7 +1,7 @@
 <ion-header style="margin: auto;">
-  <ion-row class="test" style="margin-top: -1.5vh;">
+  <ion-row class="test" style="margin-top: 0vh;">
     <!-- location selector -->
-    <ion-col class="test" size=2>
+    <ion-col class="test" size=2.5>
       <ion-tab-button #locate_selector>
         <ion-icon src="../assets/icon/pin.svg" style="zoom: 0.8;" [routerLink]="['/front-page']"></ion-icon>
         <ion-label class="button-text">墨尔本</ion-label>
@@ -9,12 +9,12 @@
     </ion-col>
 
     <!-- search bar -->
-    <ion-col class="test" size=8>
+    <ion-col class="test" size=7>
       <ion-searchbar #home_search_bar></ion-searchbar>
     </ion-col>
 
     <!-- wechat helper -->
-    <ion-col class="test" size=2>
+    <ion-col class="test" size=2.5>
       <ion-tab-button #wechat_helper>
         <ion-icon src="../assets/icon/wechat.svg" style="zoom: 0.8;"></ion-icon>
         <ion-label class="button-text">微信助手</ion-label>
@@ -27,9 +27,9 @@
 <ion-content>
  
   <!-- adv slider -->
-  <ion-slides [options] = "Advslider" #adv pager="true" (ionSlidesDidLoad)="slidesDidLoad(adv)">
-    <ion-slide style="max-height: 20vh" *ngFor="let adv of advs">
-          <img [src]="adv.ImageUrl" style="max-width: 100% !important;max-height: 100% !important;">
+  <ion-slides [options] = "Advslider" #advSlide pager="true" (ionSlidesDidLoad)="slidesDidLoad(advSlide)">
+    <ion-slide style="max-height: 20vh" *ngFor="let advSlide of advSlides">
+          <img [src]="advSlide.ImageUrl" style="max-width: 100% !important;max-height: 100% !important;">
     </ion-slide>
   </ion-slides> 
 
@@ -72,62 +72,36 @@
 </div>
 
  <!-- segment adv list -->
- <ion-segment color='medium' style="height: 4.5vh;">
+ <ion-segment (ionChange)="segmentChange($event)" color='medium' style="height: 4.5vh;">
+    <ion-segment-button  value="full" class="segment" >
+      <ion-label>全职</ion-label>
+    </ion-segment-button>
 
-  <ion-segment-button checked class="segment" >
-    <ion-label>全职</ion-label>
-  </ion-segment-button>
+    <ion-segment-button value="part" class="segment">
+      <ion-label>兼职</ion-label>
+    </ion-segment-button>
 
-  <ion-segment-button class="segment">
-    <ion-label>兼职</ion-label>
-  </ion-segment-button>
+    <ion-segment-button value="intern" class="segment">
+      <ion-label>实习</ion-label>
+    </ion-segment-button>
 
-  <ion-segment-button class="segment">
-    <ion-label>实习</ion-label>
-  </ion-segment-button>
+    <ion-segment-button value="all" checked class="segment">
+      <ion-label>不限</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-</ion-segment>
-<ion-list style="margin-top: 3px;">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>副标题1</ion-card-subtitle>
-      <ion-card-title>热门推荐1</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      这里是内容1
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>副标题2</ion-card-subtitle>
-      <ion-card-title>热门推荐2</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      这里是内容2
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>副标题3</ion-card-subtitle>
-      <ion-card-title>热门推荐3</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      这里是内容3
-    </ion-card-content>
-  </ion-card>
-  <ion-card>
-    <ion-card-header>
-      <ion-card-subtitle>副标题4</ion-card-subtitle>
-      <ion-card-title>热门推荐4</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      这里是内容4
-    </ion-card-content>
-  </ion-card>
-</ion-list>
-
-
-
-
-
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-list style="margin-top: 3px;">
+    <ion-card *ngFor="let adv of advList" (click)="presentAdvModal(adv)">
+      <ion-card-header>
+        <ion-card-subtitle style="font-size: 14px; color: cornflowerblue;">{{adv.company}}</ion-card-subtitle>
+        <ion-card-subtitle>截止日期: {{adv.endDateTime.seconds * 1000 | date}}</ion-card-subtitle>
+        <ion-card-title>{{adv.title}}</ion-card-title>
+        <img [src]="adv.images[0]">
+        <ion-label class="adv-card-bottom-text">{{adv.detail | slice:0:60}}....</ion-label>
+      </ion-card-header>
+    </ion-card>
+  </ion-list>
 </ion-content>

@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { Routes, RouterModule } from '@angular/router';
 
 import { MessagePage } from './message.page';
-import { ChatComponent } from '../chat/chat.component';
 import { ChatModule } from '../chat/chat.module';
 
 const routes: Routes = [

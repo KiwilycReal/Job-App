@@ -72,6 +72,7 @@ export class RegisterPage implements OnInit {
         data.preferJob = "";
         data.preferLocation = "";
         data.preferSalary = "";
+        data.applied = [];
         data.workYear = 0;
         data.avatarUrl = "https://gravatar.com/avatar";
         this.curDisplayName = data.title+data.firstName+" "+data.lastName;

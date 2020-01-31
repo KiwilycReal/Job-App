@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController, NavParams, IonSlide, IonSlides } from '@ionic/angular';
+import { Component, OnInit, Inject } from '@angular/core';
+import { ModalController, LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-job-detail',
@@ -12,12 +12,15 @@ export class JobDetailPage implements OnInit {
   lng = -49.8046873;
   zoom = 15;
 
-  data;
-  title;
-  position;
-  salary;
-  introText;
-  details;
+  // Initialized when the modal created
+  job;
+  uid;
+
+  isFavoured = false;
+  isApplied = false;
+
+  curView = "description";
+
   geolocation = "VIC 3166";
   images :string[];
   imgSliderOpts = {
@@ -29,20 +32,8 @@ export class JobDetailPage implements OnInit {
   };
 
   constructor(public modalController: ModalController,
-              navParams: NavParams) {
-    this.data = navParams.data;
-    // this.jid = this.data.jid;
-    this.title = this.data.job.title;
-    this.images = this.data.job.imageUrl;
-    this.position = this.data.job.position;
-    this.salary = this.data.job.salary;
-    this.introText = this.data.job.introText;
-    this.details = this.data.job.details;
-    // this.geolocation = this.data.job.geolocation;
-    console.log(this.data,this.images);
-  }
-
-  ngOnInit() {
+              public loadingController: LoadingController,
+              @Inject('commDbService') public commDbService) {
   }
 
   async selfDismiss(){
@@ -51,8 +42,68 @@ export class JobDetailPage implements OnInit {
     })
   }
 
+  segmentChanged(ev){
+    this.curView = ev.detail.value;
+  }
+
   // slidesDidLoad(hello: IonSlides){
   //   hello.startAutoplay();
   // }
+
+  changeFavBtn(elem){
+    this.buttomBtnAction(!this.isFavoured, "favourite").then(
+      res => this.isFavoured = !this.isFavoured,
+      err => console.log("Failed to change fav status", err)
+    );
+    
+  }
+
+  changeApplyBtn(){
+    this.buttomBtnAction(!this.isApplied, "applied").then(
+      res => this.isApplied = !this.isApplied,
+      err => console.log("Failed to change apply status", err)
+    );
+  }
+
+  async buttomBtnAction(becomeActivated: boolean, actionType: string){
+    const loading = await this.loadingController.create({
+      message: '请稍后...',
+      duration: 20000
+    });
+    await loading.present();
+    //Check this job's fav status (html elem can be altered locally)
+    await this.commDbService.fetchUserDoc(this.uid).then(
+      res => {
+        if(<string[]>res.data()[actionType].includes(this.job.jid)) becomeActivated = false;
+      }
+    );
+    //Database operations
+    this.commDbService.updateUserDocArray(this.uid, actionType, this.job.jid, becomeActivated).then(
+      res => this.loadingController.dismiss(),
+      err => this.loadingController.dismiss()
+    );
+  }
+
+
+  async ngOnInit() {
+    const loading = await this.loadingController.create({
+      message: '请稍后...',
+      duration: 20000
+    });
+    await loading.present();
+    // Check fav and apply status
+    this.commDbService.fetchUserDoc(this.uid).then(
+      res => {
+        var data = res.data();
+        this.isFavoured = data.favourite.includes(this.job.jid);
+        this.isApplied = data.applied.includes(this.job.jid);
+        this.loadingController.dismiss().catch(err=>console.log(err));
+      },
+      err => {
+        console.log("Failed to fetch userdoc", err);
+        this.loadingController.dismiss().catch(err=>console.log(err));
+      }
+    )
+  }
 
 }

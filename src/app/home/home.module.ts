@@ -6,12 +6,14 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { AdvDetailPageModule } from '../adv-detail/adv-detail.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    AdvDetailPageModule,
     RouterModule.forChild([
       {
         path: '',

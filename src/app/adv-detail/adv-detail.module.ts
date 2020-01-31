@@ -4,10 +4,8 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
+import { AdvDetailPage } from './adv-detail.page';
 import { AgmCoreModule } from '@agm/core'
-
-import { JobDetailPage } from './job-detail.page';
-
 
 @NgModule({
   imports: [
@@ -18,7 +16,7 @@ import { JobDetailPage } from './job-detail.page';
       apiKey: 'AIzaSyDQMF27P4q4jc5IE0c40XvJ_4e5yj2f3h0'
     })
   ],
-  declarations: [JobDetailPage],
-  entryComponents: [JobDetailPage]
+  declarations: [AdvDetailPage],
+  entryComponents: [AdvDetailPage]
 })
-export class JobDetailPageModule {}
+export class AdvDetailPageModule {}

@@ -1,9 +1,9 @@
 <ion-header style="margin: auto;">
   <div class="searchbox">
     <!-- <ion-searchbar [(ngModel)]="searchTerm" (search)="startSearch($event)" (ionBlur)="blur()" (ionCancel)="cancelSearch()" (ionFocus)="initSearch()" debounce=100 showCancelButton="focus" placeholder="输入关键字"></ion-searchbar> -->
-    <ion-row class="test" style="margin-top: -1.5vh;">
+    <ion-row class="test" style="margin-top: 0vh;">
       <!-- location selector -->
-      <ion-col class="test" size=2>
+      <ion-col class="test" size=2.5>
         <ion-tab-button #locate_selector>
           <ion-icon src="../assets/icon/pin.svg" style="zoom: 0.8;" [routerLink]="['/front-page']"></ion-icon>
           <ion-label class="button-text">墨尔本</ion-label>
@@ -11,13 +11,65 @@
       </ion-col>
   
       <!-- search bar -->
-      <ion-col class="test" size=10>
+      <ion-col class="test" size=8>
         <ion-searchbar [(ngModel)]="searchTerm" showCancelButton="focus" placeholder="输入关键字"></ion-searchbar>
       </ion-col>
-  
     </ion-row>
+    <!-- work type radio -->
+    <ion-radio-group allowEmptySelection=true (ionChange)="radioChange($event)">
+      <ion-row class="work-type-checkboxes-outer">
+
+        <ion-col style="text-align: center;" class="work-type-checkboxes-inner-full">
+          <ion-row>
+            <ion-col size="0.5">
+              <ion-radio value="full"></ion-radio>
+            </ion-col>
+
+            <ion-col>
+              <ion-label style="color: #000099;">全职</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
+          <ion-row>
+            <ion-col size="0.5">
+              <ion-radio value="part"></ion-radio>
+            </ion-col>
+
+            <ion-col>
+              <ion-label style="color: #66CC66;">兼职</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
+          <ion-row>
+            <ion-col size="0.5">
+              <ion-radio value="intern"></ion-radio>
+            </ion-col>
+
+            <ion-col>
+              <ion-label style="color: #6633CC;">实习</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+
+        <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
+          <ion-row>
+            <ion-col size="0.5">
+              <ion-radio value="fast"></ion-radio>
+            </ion-col>
+
+            <ion-col>
+              <ion-label style="color: #FF0066;">快聘</ion-label>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-radio-group>
     <!-- search drop down -->
-    <ion-row style="background: white; text-align: center;">
+    <!-- <ion-row style="background: white; text-align: center;">
         <ion-col>
           <div>
             <ion-select [(ngModel)]="workTypeSelect" placeholder="工作种类" name="work_type" interface="popover" (ionChange)="selectChange($event)">
@@ -42,7 +94,7 @@
     </ion-row>
     <ion-button expand="full" #clearSelectBtn style="display:none" color="danger" (click)="clearSelect()">
       <label>清除搜索结果</label>
-    </ion-button>
+    </ion-button> -->
     <!-- <ion-range min="15" max="500" color="secondary" (ionChange)="searchByPay($event.detail.value)" dual-knobs pin value=250 debounce=1800 style="padding-top: 0;padding-bottom: 0;">
       <ion-icon slot="start" size="small" name="card"></ion-icon>
       <ion-icon slot="end" name="card"></ion-icon>
@@ -56,51 +108,41 @@
   </ion-refresher>
   <div style="background-color: white" >
     
-  <ion-card *ngFor="let j of jobs">
+  <ion-card [style.border-left-color]="j.type | workType" style="border-left-style: solid; border-left-width: 12px;" *ngFor="let j of jobs">
       <ion-grid>
         <div (click)="presentJobDetailModal(j)">
           <!-- Company name& avatar, plus post time -->
+          <!-- <ion-row class="ion-justify-content-center">
+            <ion-label style="color:  rgb(142, 171, 224);">{{job.publishDateTime}}</ion-label>
+          </ion-row> -->
           <ion-row class="ion-justify-content-center">
-            <ion-label style="color:  rgb(142, 171, 224);">{{j.publishDateTime}}</ion-label>
-          </ion-row>
-          <ion-row class="ion-align-items-center ion-justify-content-center">
-            <ion-col size=2 offset=0.5>
+            <ion-col size=2>
               <ion-thumbnail style="width: 72px;height: 72px;">
-                <!-- <img [src]='j.imageUrl[0]'> -->
+                <!-- <img [src]='job.imageUrl[0]'> -->
                 <img src="../../assets/cxk.jpg">
               </ion-thumbnail> 
             </ion-col>
-            <ion-col size=6.5 offset=0.5>
-              <ion-list>  
-                <ion-item>
-                  <ion-label class="ion-text-wrap ion-text-center"><b>{{j.title}}</b></ion-label>
-                </ion-item>
-                <ion-item lines="none">
-                  <ion-label class="ion-text-wrap ion-text-center">{{j.position}}</ion-label>
-                </ion-item>
-              </ion-list>
+            <ion-col size=6 offset=1>
+              <ion-label style="margin: 0; font-size: 20px;"><b>{{j.position}}</b></ion-label><br>
+              <ion-label style="margin: 0; font-size: 17px;">{{j.title}}</ion-label><br>
+              <!-- Job's characteristics -->
+              <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">|</span>{{tag}}</ion-label><br>
+              <ion-label style="font-size: 14px; margin-right: 5px; color: #FF3366; background-color:#FFFFCC;" *ngFor="let tag of j.tags">{{tag}}</ion-label>
+              <!-- <ion-chip style="font-size: 2px;" *ngFor="let tag of j.tags">{{tag}}</ion-chip> -->
             </ion-col>
             <ion-col size=2.5>
-              <span style="color:goldenrod; font-size: 7; ">{{j.salary}}$/hr</span>
+              <span style="color:goldenrod; font-size: 8; ">{{j.salary}}$/hr</span>
             </ion-col>
           </ion-row>
-          <ion-item-divider style="min-height: 0; height: 5px;"></ion-item-divider>
-          <!-- Job's description, start with a fav icon -->
-          <ion-row class="ion-align-items-center" style="border-bottom-style: dotted; border-bottom-color: darkgray; padding-bottom: 3px;">
-            <ion-label>{{j.introText}}</ion-label>
-          </ion-row>
-          <!-- Job's characteristics -->
-          <ion-row>
-            <ion-chip *ngFor="let tag of j.tags">{{tag}}</ion-chip>
-          </ion-row>
           </div>
-        <ion-button *ngIf="isLogged" [id]="j.jid" expand="block" (click)="changeFavJob($event.target)"><ion-spinner style="display: none;"></ion-spinner><ion-icon [name]="j.favIconName"></ion-icon></ion-button>
+        <!-- <ion-button *ngIf="isLogged" [id]="j.jid" expand="block" (click)="changeFavJob($event.target)"><ion-spinner style="display: none;"></ion-spinner><ion-icon [name]="j.favIconName"></ion-icon></ion-button> -->
 
       </ion-grid>
   </ion-card>  
 
   </div>
-  <form [formGroup]="this.commDbService.newJobForm">
+  <!-- Test job-add function -->
+  <!-- <form [formGroup]="this.commDbService.newJobForm">
     <ion-label>Position</ion-label>
     <ion-input placeholder="ID"
             formControlName="position"></ion-input><br/>
@@ -135,7 +177,7 @@
     <ion-textarea placeholder="Details"
             formControlName="details"></ion-textarea><br/>
     <ion-button type="submit" expand="block" (click)="addJob()"><ion-icon name="add"></ion-icon></ion-button>
-  </form>
+  </form> -->
 
 </ion-content>
 

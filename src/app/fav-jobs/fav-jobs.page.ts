@@ -14,7 +14,13 @@ export class FavJobsPage implements OnInit, OnDestroy {
     console.log("fav destroyed");
   }
 
+  pageTitle;
+
+  // The radio group for work type filter
+  typeRadioGroup;
+
   jobs = [];
+  allList = [];
 
   isLogged = false;
 
@@ -77,14 +83,16 @@ export class FavJobsPage implements OnInit, OnDestroy {
     }).catch(
       err => {
         console.log(err);
-        this.loadingController.dismiss();
+        this.loadingController.dismiss().catch(err=>console.log(err));
         this.router.navigate(["login"]);
       }
     );
   }
 
   async updateFavJobList(){
+    if(this.typeRadioGroup) this.typeRadioGroup.value = undefined;
     var jidList = [];
+    var tempList = [];
     //Handel when no one is logged in
     if(!this.curUser){
       this.router.navigate(["login"]);
@@ -102,10 +110,12 @@ export class FavJobsPage implements OnInit, OnDestroy {
     ).then(
       res => {
         console.log(res);
-        this.jobs = res;
+        tempList= res;
       }
-    );
-    await this.loadingController.dismiss();
+    )
+    this.jobs = tempList;
+    this.allList = tempList;
+    await this.loadingController.dismiss().catch(err=>console.log(err));
 
   }
 
@@ -113,17 +123,39 @@ export class FavJobsPage implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: JobDetailPage,
       componentProps: {
-        test: "test",
+        uid: this.curUser.uid,
         job: job
       }
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
+    this.updateFavJobList();
+  }
+
+  radioChange(ev){
+    this.typeRadioGroup = ev.target;
+    var selected = ev.detail.value
+    if(selected){
+      this.jobs = this.allList.filter(
+        job => {
+          return job.type == selected;
+        }
+      );
+    }else{
+      // Restore the full job list
+      this.jobs = this.allList;
+    }
   }
 
   ngOnInit() {
     this.activatedRoute.data.subscribe((data)=>{console.log(data);this.type = data.msg})
-    
+    if(this.type=="history"){
+      this.pageTitle = "历史记录";
+    }else if(this.type=="favourite"){
+      this.pageTitle = "收藏列表";
+    }else{
+      this.pageTitle = "申请记录";
+    }
     this.initialize();
   }
 }
