@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+// import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { AdvDetailPageModule } from '../adv-detail/adv-detail.module';
 
 @NgModule({
@@ -14,6 +15,7 @@ import { AdvDetailPageModule } from '../adv-detail/adv-detail.module';
     FormsModule,
     IonicModule,
     AdvDetailPageModule,
+    // InAppBrowser,
     RouterModule.forChild([
       {
         path: '',

@@ -3,6 +3,8 @@ import { IonSlides, ModalController } from '@ionic/angular';
 import { DomSanitizer} from '@angular/platform-browser';
 import { AdvDetailPage } from '../adv-detail/adv-detail.page';
 
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+
 
 @Component({
   selector: 'app-home',
@@ -46,7 +48,12 @@ export class HomePage implements OnInit{
 
   constructor(@Inject('commDbService') public commDbService,
               private sanitizer: DomSanitizer,
+              private iab: InAppBrowser,
               private modalController: ModalController){
+  }
+
+  openPage(link="https://www.baidu.com"){
+    this.iab.create(link);
   }
 
   // auto play slides

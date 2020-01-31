@@ -22,9 +22,9 @@ import { CommDbService } from './services/comm-db.service';
 import { SearchPageModule } from './search/search.module';
 import { FavJobsPageModule } from './fav-jobs/fav-jobs.module';
 import { ChatService } from './services/chat.service';
-
-import { NgCircleProgressModule } from 'ng-circle-progress';
 import { ShareDataService } from './services/share-data.service';
+
+import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -38,6 +38,7 @@ import { ShareDataService } from './services/share-data.service';
   FavJobsPageModule],
   providers: [
     StatusBar,
+    InAppBrowser,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: 'loginService', useClass: LoginService },
