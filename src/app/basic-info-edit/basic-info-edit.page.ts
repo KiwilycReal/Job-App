@@ -31,7 +31,10 @@ export class BasicInfoEditPage implements OnInit {
   editPreferSalary;
   editWorkYear;
 
+  // Avatar preview
   tempImgUrl;
+  // Flag determine whether the avatar btn be disabled
+  disableBtn = true;
 
   constructor(
     public modalController: ModalController,
@@ -82,6 +85,7 @@ export class BasicInfoEditPage implements OnInit {
   }
 
   getCurrentFile(f){
+    this.disableBtn = false;
     this.file = f;
     console.log(f);
     this.tempImgUrl = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(f));
