@@ -12,6 +12,9 @@ export class SearchPage implements OnInit, OnDestroy{
 
   @ViewChild('clearSelectBtn', {static: true}) clearSelectBtnElem;
 
+  // The current user subscription
+  currentUserSubscription;
+
   constructor(public modalController: ModalController,
               public loadingController: LoadingController,
               @Inject('loginService') public loginService,
@@ -31,47 +34,47 @@ export class SearchPage implements OnInit, OnDestroy{
   // The work type radio group
   typeRadioGroup;
   
-  searchTerm: String = "";
+  // searchTerm: String = "";
 
-  workTypeSelect;
-  jobTypeSelect;
-  salarySelect;
-  workTypeOpts = [
-    {value: null,
-     display: "ALL"},
-    {value: "fulltime",
-     display: "Full Time"},
-    {value: "parttime",
-     display: "Part Time"},
-    {value: "intern",
-     display: "Intern"},
-    {value: "volunteer",
-     display: "Volunteer"},
-    {value: "spring",
-     display: "春招"},
-    {value: "autumn",
-     display: "秋招"},
-    {value: "chinaintern",
-     display: "中国Intern"},
-  ];
-  jobTypeOpts = [
-    {value: null,
-     display: "ALL"},
-    {value: "black",
-     display: "Black Job"},
-    {value: "white",
-     display: "White Job"}
-  ];
-  salaryOpts = [
-    {value: null,
-     display: "ALL"},
-    {value: {lower:50,upper:100},
-     display: "50-100"},
-    {value: {lower:100,upper:150},
-     display: "100-150"},
-    {value: {lower:150,upper:10000},
-     display: "150+"}
-  ];
+  // workTypeSelect;
+  // jobTypeSelect;
+  // salarySelect;
+  // workTypeOpts = [
+  //   {value: null,
+  //    display: "ALL"},
+  //   {value: "fulltime",
+  //    display: "Full Time"},
+  //   {value: "parttime",
+  //    display: "Part Time"},
+  //   {value: "intern",
+  //    display: "Intern"},
+  //   {value: "volunteer",
+  //    display: "Volunteer"},
+  //   {value: "spring",
+  //    display: "春招"},
+  //   {value: "autumn",
+  //    display: "秋招"},
+  //   {value: "chinaintern",
+  //    display: "中国Intern"},
+  // ];
+  // jobTypeOpts = [
+  //   {value: null,
+  //    display: "ALL"},
+  //   {value: "black",
+  //    display: "Black Job"},
+  //   {value: "white",
+  //    display: "White Job"}
+  // ];
+  // salaryOpts = [
+  //   {value: null,
+  //    display: "ALL"},
+  //   {value: {lower:50,upper:100},
+  //    display: "50-100"},
+  //   {value: {lower:100,upper:150},
+  //    display: "100-150"},
+  //   {value: {lower:150,upper:10000},
+  //    display: "150+"}
+  // ];
 
   // tst(e){
   //   console.log(e);
@@ -129,6 +132,56 @@ export class SearchPage implements OnInit, OnDestroy{
 
   // cancelSearch(){}
 
+  // selectChange(ev){
+  //   if(ev.detail.value == null) return;
+  //   if(this.workTypeSelect == null &&
+  //      this.jobTypeSelect == null &&
+  //      this.salarySelect == null){
+  //     this.clearSelectBtnElem.el.style.display = "none";
+  //     return;
+  //   }
+  //   var candidates = this.allList;
+  //   var lower = 0;
+  //   var upper = 10000000;
+  //   this.clearSelectBtnElem.el.style.display = "";
+    
+  //   if(this.salarySelect){
+  //     lower = this.salarySelect.lower;
+  //     upper = this.salarySelect.upper;
+  //   }
+  //   if(this.workTypeSelect){
+  //     candidates = candidates.filter(
+  //       job => {
+  //         return job.tags.includes(this.workTypeSelect)
+  //       }
+  //     )
+  //   }
+  //   if(this.jobTypeSelect){
+  //     candidates = candidates.filter(
+  //       job => {
+  //         return job.tags.includes(this.jobTypeSelect)
+  //       }
+  //     )
+  //   }
+  //   this.jobs = candidates.filter(
+  //     job => {
+  //       return job.salary >= lower && job.salary < upper;
+  //     }
+  //   ).sort(
+  //     (j1, j2) => {
+  //       return j2.salary - j1.salary;
+  //     }
+  //   );
+  // }
+
+  // clearSelect(){
+  //   this.workTypeSelect = null;
+  //   this.jobTypeSelect = null;
+  //   this.salarySelect = null;
+
+  //   this.jobs = this.allList;
+  // }
+
   radioChange(ev){
     this.typeRadioGroup = ev.target;
     var selected = ev.detail.value
@@ -144,57 +197,6 @@ export class SearchPage implements OnInit, OnDestroy{
     }
   }
 
-  selectChange(ev){
-    if(ev.detail.value == null) return;
-    if(this.workTypeSelect == null &&
-       this.jobTypeSelect == null &&
-       this.salarySelect == null){
-      this.clearSelectBtnElem.el.style.display = "none";
-      return;
-    }
-    var candidates = this.allList;
-    var tempList = [];
-    var lower = 0;
-    var upper = 10000000;
-    this.clearSelectBtnElem.el.style.display = "";
-    
-    if(this.salarySelect){
-      lower = this.salarySelect.lower;
-      upper = this.salarySelect.upper;
-    }
-    if(this.workTypeSelect){
-      candidates = candidates.filter(
-        job => {
-          return job.tags.includes(this.workTypeSelect)
-        }
-      )
-    }
-    if(this.jobTypeSelect){
-      candidates = candidates.filter(
-        job => {
-          return job.tags.includes(this.jobTypeSelect)
-        }
-      )
-    }
-    this.jobs = candidates.filter(
-      job => {
-        return job.salary >= lower && job.salary < upper;
-      }
-    ).sort(
-      (j1, j2) => {
-        return j2.salary - j1.salary;
-      }
-    );
-  }
-
-  clearSelect(){
-    this.workTypeSelect = null;
-    this.jobTypeSelect = null;
-    this.salarySelect = null;
-
-    this.jobs = this.allList;
-  }
-
   addJob(){
     let data = this.commDbService.newJobForm.value;
     data.tags = data.tags.split(";").filter(tag=>{return tag!=""});
@@ -204,11 +206,9 @@ export class SearchPage implements OnInit, OnDestroy{
     );
   }
 
-  refreshCard(e){
-    setTimeout(async () => {
-      await this.updateJobList();
-      e.target.complete();
-    });
+  async refresh(e){
+    await this.updateJobList();
+    e.target.complete();
   }
 
   async presentJobDetailModal(job){
@@ -217,7 +217,7 @@ export class SearchPage implements OnInit, OnDestroy{
       component: JobDetailPage,
       componentProps: {
         job: job,
-        uid: this.curUser.uid
+        uid: this.curUser?this.curUser.uid:null
       }
     });
     await modal.present();
@@ -232,37 +232,6 @@ export class SearchPage implements OnInit, OnDestroy{
     );
   }
 
-  // async changeFavJob(elem){
-  //   var jid = elem.id;
-  //   var curUser = this.curUser;
-  //   var isAdd = true;
-  //   if(!curUser) return;
-  //   //Show spinner and hid heart
-  //   elem.firstElementChild.style.display = "";
-  //   elem.lastElementChild.style.display = "none";
-  //   elem.disabled = true;
-  //   //Check this job's fav status (html elem can be altered locally)
-  //   await this.commDbService.fetchUserDoc(curUser.uid).then(
-  //     res => {
-  //       if(<string[]>res.data().favourite.includes(jid)) isAdd = false;
-  //     }
-  //   );
-  //   //Database operations
-  //   var iconStr = (isAdd) ? "heart" : "heart-empty";
-  //   console.log(elem);
-  //   if(curUser){
-  //     this.commDbService.updateUserDocArray(curUser.uid, "favourite", jid, isAdd).then(
-  //       res => {
-  //         elem.lastElementChild.name = iconStr;
-  //         elem.firstElementChild.style.display = "none";
-  //         elem.lastElementChild.style.display = "";
-  //         elem.disabled = false;
-  //       });
-  //   }else{
-  //     console.log("Please login first");
-  //   }
-  // }
-
   async initialize() {
     const loading = await this.loadingController.create({
       message: 'Loading jobs, Please wait...',
@@ -270,20 +239,16 @@ export class SearchPage implements OnInit, OnDestroy{
     });
     await loading.present();
     await this.updateJobList();
-    await this.loadingController.dismiss();
+    await this.loadingController.dismiss().catch(err=>console.log("Failed to dismiss loading layer:",err));
   }
 
-  async updateJobList(){
+  updateJobList(){
     if(this.typeRadioGroup) this.typeRadioGroup.value = undefined;
-    var tempList = [];
-
-    await this.fetchRequiredJobList().then(
+    return this.fetchRequiredJobList().then(
       res => {
-        tempList = res;
+        this.jobs = res;
+        this.allList = res;
     });
-    // this.jobs = tempList;
-    this.allList = tempList;
-    this.clearSelect();
   }
 
   // The parameter here accept various job list fetch Promise, the default one fetches all jobs
@@ -297,40 +262,21 @@ export class SearchPage implements OnInit, OnDestroy{
           doc => {
             temp = doc.data();
             temp['jid'] = doc.id;
-            // temp['isApplied'] = false;
-            // temp['favIconName'] = "heart-empty";
             temp['patternStr'] = temp.title.concat(temp.position);
             tempList.push(temp);
         });
     });
-    //Update jobs' user fav status if someone logged
-    // if(this.curUser){
-    //   await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-    //     res => {
-    //       tempList.forEach(
-    //         value => {
-    //           if(<string[]>res.data().favourite.includes(value.jid)) value.favIconName = "heart";
-    //           if(<string[]>res.data().applied.includes(value.jid)) value.isApplied = true;
-    //       });
-    //   });
-    // }else{
-    //   this.isLogged = false;
-    // }
     return tempList;
   }
 
   ngOnInit() {
-    var authState: Observable<any> = this.loginService.curAuthState;
-    authState.subscribe(
-      value => {
-        this.curUser = value;
-        if(this.curUser){
-          this.isLogged = true;
-        }else{
-          this.isLogged = false;
-        }
-      });
-
+    this.currentUserSubscription = this.loginService.currentUser.subscribe(
+      user => {
+        console.log("search.page got current user:", user);
+        this.curUser = user;
+      }
+    );
+    // Set loading layer and job list updating
     this.initialize();
   }
 

@@ -1,9 +1,8 @@
 <ion-header style="margin: auto;">
   <div class="searchbox">
-    <!-- <ion-searchbar [(ngModel)]="searchTerm" (search)="startSearch($event)" (ionBlur)="blur()" (ionCancel)="cancelSearch()" (ionFocus)="initSearch()" debounce=100 showCancelButton="focus" placeholder="输入关键字"></ion-searchbar> -->
     <ion-row class="test" style="margin-top: 0vh;">
       <!-- location selector -->
-      <ion-col class="test" size=2.5>
+      <ion-col class="test" size=2>
         <ion-tab-button #locate_selector>
           <ion-icon src="../assets/icon/pin.svg" style="zoom: 0.8;" [routerLink]="['/front-page']"></ion-icon>
           <ion-label class="button-text">墨尔本</ion-label>
@@ -11,7 +10,7 @@
       </ion-col>
   
       <!-- search bar -->
-      <ion-col class="test" size=8>
+      <ion-col class="test" size=10>
         <ion-searchbar [(ngModel)]="searchTerm" showCancelButton="focus" placeholder="输入关键字"></ion-searchbar>
       </ion-col>
     </ion-row>
@@ -103,7 +102,7 @@
 </ion-header>
 
 <ion-content> 
-  <ion-refresher #refresh (ionRefresh)="refreshCard($event)" slot="fixed" pullMin=120>
+  <ion-refresher (ionRefresh)="refresh($event)" slot="fixed" pullMin=120>
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div style="background-color: white" >
@@ -111,10 +110,7 @@
   <ion-card [style.border-left-color]="j.type | workType" style="border-left-style: solid; border-left-width: 12px;" *ngFor="let j of jobs">
       <ion-grid>
         <div (click)="presentJobDetailModal(j)">
-          <!-- Company name& avatar, plus post time -->
-          <!-- <ion-row class="ion-justify-content-center">
-            <ion-label style="color:  rgb(142, 171, 224);">{{job.publishDateTime}}</ion-label>
-          </ion-row> -->
+          <!-- Company name& avatar -->
           <ion-row class="ion-justify-content-center">
             <ion-col size=2>
               <ion-thumbnail style="width: 72px;height: 72px;">
@@ -128,14 +124,12 @@
               <!-- Job's characteristics -->
               <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">|</span>{{tag}}</ion-label><br>
               <ion-label style="font-size: 14px; margin-right: 5px; color: #FF3366; background-color:#FFFFCC;" *ngFor="let tag of j.tags">{{tag}}</ion-label>
-              <!-- <ion-chip style="font-size: 2px;" *ngFor="let tag of j.tags">{{tag}}</ion-chip> -->
             </ion-col>
             <ion-col size=2.5>
               <span style="color:goldenrod; font-size: 8; ">{{j.salary}}$/hr</span>
             </ion-col>
           </ion-row>
           </div>
-        <!-- <ion-button *ngIf="isLogged" [id]="j.jid" expand="block" (click)="changeFavJob($event.target)"><ion-spinner style="display: none;"></ion-spinner><ion-icon [name]="j.favIconName"></ion-icon></ion-button> -->
 
       </ion-grid>
   </ion-card>  

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-mine',
@@ -8,67 +8,23 @@ import { Observable } from 'rxjs';
 })
 export class MinePage implements OnInit {
 
-  // The subscription of the user auth state
-  authSubscription;
+  // The subscription of the current user
+  currentUserSubscription;
+  // The subscription of the current user display name
+  displayNameSubscription;
 
-  isLogged;
   curUser;
+  curDisplayName;
+  curAvatarUrl;
   curUserDoc = {
     mobile: "",
     wechat: ""
   };
-  curDisplayName;
-  curAvatarUrl;
-
-  displayNameSubscription;
-
-
 
   constructor(@Inject('loginService') public loginService,
               @Inject('commDbService') public commDbService,
-              @Inject('shareDataService') public shareDataService) { }
-
-  async initialize(){
-    var authState: Observable<any> = this.loginService.curAuthState;
-    await new Promise((resolve, reject) => {
-      //Monitor user authstate changes
-      if(this.authSubscription) return "Auth subscription existed";
-      this.authSubscription = authState.subscribe(
-        async value => {
-          if(value){
-            // if(this.displayNameSubscription) this.displayNameSubscription.unsubscribe();
-            this.displayNameSubscription = this.shareDataService.currentUserMetadata.subscribe(
-              msg => {
-                this.curDisplayName = msg.displayName;
-                this.curAvatarUrl = msg.avatarUrl;
-              }
-            );
-            //If authstate become logged
-            this.isLogged = true;
-            this.curUser = value;
-            if(value.displayName != "" && value.photoURL != "") {
-              this.curDisplayName = value.displayName;
-              this.curAvatarUrl = value.photoURL;
-            }
-            await this.commDbService.fetchUserDoc(value.uid).then(
-              res => {
-                console.log(res.data());
-                this.curUserDoc = res.data();
-              }
-            );
-            resolve(value);
-          }else{
-            if(this.displayNameSubscription) this.displayNameSubscription.unsubscribe();
-            this.isLogged = false;
-            this.curUser = null;
-            this.curDisplayName = "请先登录";
-            this.curAvatarUrl = "../assets/icon/user.svg";
-            reject(null);
-          }
-        }
-      )
-    });
-  }
+              @Inject('shareDataService') public shareDataService,
+              private loadingController: LoadingController) { }
 
   logout(){
     this.loginService.userLogout().then(
@@ -77,7 +33,33 @@ export class MinePage implements OnInit {
     );
   }
 
+  async initialize(){
+    this.displayNameSubscription = this.shareDataService.currentUserMetadata.subscribe(
+      data => {
+        this.curDisplayName = data.displayName;
+        this.curAvatarUrl = data.avatarUrl;
+      }
+    );
+
+    this.currentUserSubscription = this.loginService.currentUser.subscribe(
+      user => {
+        this.curUser = user;
+        console.log("mine.page got current user:", this.curUser);
+        if(user){
+          // Fetch curuser's userdoc
+          this.commDbService.fetchUserDoc(user.uid).then(
+            res => {
+              this.curUserDoc = res.data();
+              console.log("mine.page got current userdoc:", this.curUserDoc);
+            }
+          );
+        }
+      }
+    );
+  }
+
   ngOnInit() {
+    // Set current user subscription to real-time change elements on the page
     this.initialize();
   }
 

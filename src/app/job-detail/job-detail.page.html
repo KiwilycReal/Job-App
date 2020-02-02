@@ -125,13 +125,15 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-row>
-      <ion-col size=3>
-        <ion-button (click)="changeFavBtn($event.target)" expand="block" [color]="isFavoured ? 'medium' : 'light'"><ion-icon [name]="isFavoured ? 'heart' : 'heart-empty'"></ion-icon><span [hidden]="!isFavoured">取消</span>收藏</ion-button>
-      </ion-col>
-      <ion-col size=9>
-        <ion-button (click)="changeApplyBtn($event.target)" expand="block" [color]="isApplied ? 'medium' : 'primary'"><span [innerHTML]="isApplied ? '撤销' : '立即'"></span>申请</ion-button>
-      </ion-col>
-    </ion-row>
+    <div [hidden]="!uid">
+      <ion-row>
+        <ion-col size=3>
+          <ion-button (click)="changeFavBtn($event.target)" expand="block" [color]="isFavoured ? 'medium' : 'light'"><ion-icon [name]="isFavoured ? 'heart' : 'heart-empty'"></ion-icon><span [hidden]="!isFavoured">取消</span>收藏</ion-button>
+        </ion-col>
+        <ion-col size=9>
+          <ion-button (click)="changeApplyBtn($event.target)" expand="block" [color]="isApplied ? 'medium' : 'primary'"><span [innerHTML]="isApplied ? '撤销' : '立即'"></span>申请</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-toolbar>
 </ion-footer>

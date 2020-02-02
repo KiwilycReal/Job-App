@@ -3,7 +3,6 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-// import { PersonalInfoComponent } from './personal-info/personal-info.component';
 
 @Component({
   selector: 'app-root',
@@ -15,8 +14,13 @@ export class AppComponent implements OnInit{
   unreadMsgCountSubscription;
   unreadMsgCount;
 
+  currentUserSubscription;
+  isLogged;
+  curUser;
+
   constructor(
     @Inject('shareDataService') public shareDataService,
+    @Inject('loginService') public loginService,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
@@ -35,11 +39,30 @@ export class AppComponent implements OnInit{
   }
   
   ngOnInit() {
-    this.unreadMsgCountSubscription = this.shareDataService.currentUnreadMsgCount.subscribe(
-      msg => {
-        console.log(msg);
-        this.unreadMsgCount = msg;
+    this.currentUserSubscription = this.loginService.currentUser.subscribe(
+      user => {
+        this.curUser = user;
+        console.log("app.component got current user:", this.curUser);
+        if(user){
+          this.isLogged = true;
+          this.shareDataService.changeUserMetadata({
+            displayName: user.displayName,
+            avatarUrl: user.photoURL
+          });
+        }else{
+          this.isLogged = false;
+          this.shareDataService.changeUserMetadata({
+            displayName: "请先登录",
+            avatarUrl: "../assets/icon/user.svg"
+          });
+        }
       }
-    )
+    );
+    this.unreadMsgCountSubscription = this.shareDataService.currentUnreadMsgCount.subscribe(
+      msgCount => {
+        console.log("app.component got current unread msg count:", msgCount);
+        this.unreadMsgCount = msgCount;
+      }
+    );
   }
 }

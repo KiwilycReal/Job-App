@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-basic-info-edit',
@@ -30,9 +31,12 @@ export class BasicInfoEditPage implements OnInit {
   editPreferSalary;
   editWorkYear;
 
+  tempImgUrl = "../assets/icon/user.svg";
+
   constructor(
     public modalController: ModalController,
     public loadingController: LoadingController,
+    private sanitizer: DomSanitizer,
     @Inject('commDbService') public commDbService) { }
 
   selfDismiss(){
@@ -79,6 +83,8 @@ export class BasicInfoEditPage implements OnInit {
 
   getCurrentFile(f){
     this.file = f;
+    console.log(f);
+    this.tempImgUrl = this.sanitizer.bypassSecurityTrustUrl(window.URL.createObjectURL(f));
   }
 
   async updateAvatar(){

@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,9 @@ export class LoginService implements OnDestroy {
   }
 
   unsubscribeAuth: firebase.Unsubscribe;
+
+  private userSource = new BehaviorSubject(null);
+  currentUser = this.userSource.asObservable();
 
   curAuthState;
   private displayNameElem: HTMLElement = undefined;
@@ -53,12 +57,12 @@ export class LoginService implements OnDestroy {
   userAuthState(self){
     self.unsubscribeAuth = this.fa.auth.onAuthStateChanged(
       user => {
+        console.log("login.service got current user:", user);
         if(user){
           self.curUser = user;
-          console.log("Current user is "+user.email+"////"+user.displayName);
-
+          this.userSource.next(user);
         }else{
-          console.log("No one is logged in");
+          this.userSource.next(user);
         }
       });
   }
@@ -74,7 +78,6 @@ export class LoginService implements OnDestroy {
     return this.fa.auth.signOut()
   }
   constructor(private fs: AngularFirestore, public fa: AngularFireAuth) {
-    console.log("Service created!");
     this.userAuthState(this);
     this.fa.auth.setPersistence(firebase.auth.Auth.Persistence.SESSION);
     this.curAuthState = this.fa.authState;

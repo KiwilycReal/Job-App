@@ -35,8 +35,10 @@ const routes: Routes = [
       animation: true,
       animationDuration: 300,
       showImage: true,
-      imageHeight: 40,
-      imageWidth: 40
+      imageHeight: 35,
+      imageWidth: 35,
+      showBackground: true,
+      class: "circle-progress"
     })
   ],
   declarations: [UploadPersonInfoPage, ResumePipe]

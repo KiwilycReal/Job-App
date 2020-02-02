@@ -86,6 +86,10 @@ export class JobDetailPage implements OnInit {
 
 
   async ngOnInit() {
+    if(!this.uid){
+      console.log("No one is logged, only showing content");
+      return;
+    }
     const loading = await this.loadingController.create({
       message: '请稍后...',
       duration: 20000

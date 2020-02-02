@@ -19,7 +19,7 @@ export class ShareDataService {
     this.unreadMsgCountSource.next(count);
   }
 
-  changeUserMetadata(metadata: string){
+  changeUserMetadata(metadata: any){
     this.userMetadataSource.next(metadata);
   }
 }

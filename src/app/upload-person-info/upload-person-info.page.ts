@@ -11,6 +11,9 @@ import { BasicInfoEditPage } from '../basic-info-edit/basic-info-edit.page';
   styleUrls: ['./upload-person-info.page.scss'],
 })
 export class UploadPersonInfoPage implements OnInit {
+  // Subscription of the current logged user and its meta data
+  currentUserSubscription;
+  currentUserMetaDataSubscription;
 
   sliderOpts = {
     zoom: false,
@@ -34,7 +37,6 @@ export class UploadPersonInfoPage implements OnInit {
     files : [],
     description : []
   };
-  isLogged = false;
 
   pValue;
   pValueStr;
@@ -83,17 +85,16 @@ export class UploadPersonInfoPage implements OnInit {
     });
     await modal.present();
     const { data } = await modal.onWillDismiss();
-    await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-      res => {this.curUserDoc = res.data()}
-    );
-    console.log(data);
-    this.curDisplayName = data.displayName;
-    this.curAvatarUrl = data.avatarUrl;
     this.shareDataService.changeUserMetadata({
-      displayName: this.curDisplayName,
-      avatarUrl: this.curAvatarUrl
+      displayName: data.displayName,
+      avatarUrl: data.avatarUrl
     });
-    this.setProgressBar();
+    await this.commDbService.fetchUserDoc(this.curUser.uid).then(
+      res => {
+        this.curUserDoc = res.data();
+        this.setProgressBar();
+      }
+    );
   }
 
   async presentInfoEditModal(link){
@@ -116,9 +117,9 @@ export class UploadPersonInfoPage implements OnInit {
     await this.commDbService.fetchUserDoc(this.curUser.uid).then(
       res => {
         this.curUserDoc = res.data();
+        this.setProgressBar();
       }
     );
-    this.setProgressBar();
   }
 
   setProgressBar(){
@@ -131,19 +132,6 @@ export class UploadPersonInfoPage implements OnInit {
 
     this.pValue = (weight * counter).toFixed(2);
     this.pValueStr = (this.pValue*100).toFixed(0);
-
-    // Used to set the color of the deperacted progress bar
-    // if (this.pValue <= 0.2) {
-    //   this.pColor = 'medium';
-    // } else if (this.pValue <= 0.4) {
-    //   this.pColor = 'secondary';
-    // } else if (this.pValue <= 0.6) {
-    //   this.pColor = 'primary';
-    // } else if (this.pValue <= 0.8) {
-    //   this.pColor = 'tertiary';
-    // } else if (this.pValue === 1) {
-    //   this.pColor = 'success';
-    // }
   }
 
   refresh(e){
@@ -152,16 +140,12 @@ export class UploadPersonInfoPage implements OnInit {
       e.target.complete();
       return;
     }
-    setTimeout(async () => {
-      await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-        res => {
-          this.curUserDoc = res.data();
-          this.curAvatarUrl = this.curUser.photoURL;
-        }
-      );
-      this.setProgressBar();
-      e.target.complete();
-    });
+    this.commDbService.fetchUserDoc(this.curUser.uid).then(
+      res => {
+        this.setProgressBar();
+        e.target.complete();
+      }
+    );
   }
 
   slidesDidLoad(slides: IonSlides) {
@@ -174,28 +158,33 @@ export class UploadPersonInfoPage implements OnInit {
       duration: 10000
     });
     await loading.present();
-    var authState: Observable<any> = this.loginService.curAuthState;
-    await new Promise((resolve, reject) => {
-      authState.subscribe(
-        async value => {
-          if(value){
-            this.isLogged = true;
-            this.curUser = value;
-            this.curDisplayName = value.displayName;
-            this.curAvatarUrl = value.photoURL;
-            await this.commDbService.fetchUserDoc(this.curUser.uid).then(
-              res => this.curUserDoc = res.data()
-            )
-            this.setProgressBar();
-            this.loadingController.dismiss().catch(err => console.log("Find loadingCtrl err: ", err));
-            console.log(this.curUserDoc);
-          }else{
-            this.isLogged = false;
-            console.log("No one is logged in!");
-            this.loadingController.dismiss().catch(err => console.log("Find loadingCtrl err: ", err));
-          }
-      });
-    });
+
+    this.currentUserSubscription = this.loginService.currentUser.subscribe(
+      user => {
+        this.curUser = user;
+        console.log("upi.page got current user:", this.curUser);
+        if(user){
+          this.commDbService.fetchUserDoc(user.uid).then(
+              res => {
+                this.curUserDoc = res.data();
+                this.setProgressBar();
+                this.loadingController.dismiss().catch(err=>console.warn(err));
+                console.log("upi.page got current userdoc:", this.curUserDoc);
+              }
+            );
+        }else{
+          // TODO: Clean up function to end the lifecycle of the page
+          //this.cleanUp();
+          this.loadingController.dismiss().catch(err=>console.warn(err));
+        }
+      }
+    );
+    this.currentUserMetaDataSubscription = this.shareDataService.currentUserMetadata.subscribe(
+      data => {
+        this.curDisplayName = data.displayName;
+        this.curAvatarUrl = data.avatarUrl;
+      }
+    );
   }
 
   async ngOnInit() {

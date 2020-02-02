@@ -24,15 +24,15 @@
       </ion-row>
     </div>
 
-    <div class="ion-text-center" *ngIf="!isLogged">
+    <div class="ion-text-center" *ngIf="!curUser">
       <ion-button color="secondary" style="width: 25vw; margin-top: 1vh; margin-bottom: 2vh;" [routerLink]="['/login']">
         登录
       </ion-button>
     </div>
 
     <!-- Show logged user's name and medals -->
-    <div class="ion-text-center" *ngIf="isLogged">
-      <ion-label *ngIf="isLogged">{{curDisplayName}}</ion-label><br>
+    <div class="ion-text-center" *ngIf="curUser">
+      <ion-label>{{curDisplayName}}</ion-label><br>
       <ion-icon name="medal"></ion-icon>
       <ion-icon name="medal"></ion-icon>
       <ion-icon name="medal"></ion-icon>
@@ -42,7 +42,7 @@
   </div>
   
 <!-- settings -->
-  <div [hidden]="!isLogged" style="border-bottom: solid 5px #EEEEEE; margin-top: 2vh;">
+  <div *ngIf="curUser" style="border-bottom: solid 5px #EEEEEE; margin-top: 2vh;">
     <ion-list lines="none">
 
       <ion-item class="settings" [routerLink]="['/fav-jobs']">
@@ -86,6 +86,6 @@
     </ion-item>
   </ion-list>
   
-  <ion-button *ngIf="isLogged" expand="block" color="danger" (click)="logout()">退出当前账户</ion-button>
+  <ion-button *ngIf="curUser" expand="block" color="danger" (click)="logout()">退出当前账户</ion-button>
   
 </ion-content>

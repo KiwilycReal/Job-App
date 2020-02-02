@@ -1,25 +1,4 @@
 <ion-app>
-
-<!-- <ion-header>
-  <ion-toolbar>
-      <ion-title style="text-align: center">什么招聘</ion-title>
-      <ion-buttons #loginIcon slot='end' style="position:absolute;right:0">
-          <ion-button [routerLink]="['/login']">
-              <ion-icon name="body"></ion-icon>
-          </ion-button>
-      </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
-<!-- <ion-header>
-  <ion-toolbar style="height: 6vh;">
-      <ion-title class="headerlabel">什么招聘</ion-title>
-      <ion-buttons slot='end' style="position:absolute;right:1vw">
-          <ion-button [routerLink]="['/login']">
-              <ion-icon style="zoom: 0.8; margin-top: -3vh;" src="../assets/icon/login.svg"></ion-icon>
-          </ion-button>
-      </ion-buttons>
-  </ion-toolbar>
-</ion-header> -->
   
 <ion-content><ion-router-outlet></ion-router-outlet></ion-content>
 
@@ -35,12 +14,12 @@
       <ion-label>搜索</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button [routerLink]="['/fav-jobs']">
+    <ion-tab-button [routerLink]="isLogged?['/fav-jobs']:['/login']">
       <ion-icon name="flame" class="footer_button"></ion-icon>
       <ion-label>推荐</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button [routerLink]="['/message']">
+    <ion-tab-button [routerLink]="isLogged?['/message']:['/login']">
       <ion-icon name="chatboxes" class="footer_button"></ion-icon>
       <ion-label>消息</ion-label>
       <ion-badge *ngIf="unreadMsgCount > 0">{{unreadMsgCount}}</ion-badge>
