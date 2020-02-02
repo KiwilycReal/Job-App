@@ -31,7 +31,7 @@ export class BasicInfoEditPage implements OnInit {
   editPreferSalary;
   editWorkYear;
 
-  tempImgUrl = "../assets/icon/user.svg";
+  tempImgUrl;
 
   constructor(
     public modalController: ModalController,
