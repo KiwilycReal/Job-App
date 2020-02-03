@@ -13,7 +13,7 @@
     </ion-infinite-scroll-content>
   </ion-infinite-scroll> -->
   <!-- <div #container style="overflow: scroll; height: xyz;"> -->
-    <ion-list>
+    <ion-list #logList>
       <div *ngFor="let log of logs">
         <ion-item *ngIf="log.from==targetUid" lines="none">
           <ion-avatar slot="start">

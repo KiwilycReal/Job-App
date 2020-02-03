@@ -51,26 +51,21 @@ export class MessagePage implements OnInit, OnDestroy {
     // this.chatListeners[listenerIndex].unsubscribe();
     await modal.present();
     const { data } = await modal.onWillDismiss();
+    // Update current chat's unread msg count
     this.chats[chatID].unreadCount = 0;
     this.chats[chatID].lastReadMsg = data.lastMid;
     this.shareDataService.changeUnreadMsgCount(this.calculateTotalUnreadMsgCount());
   }
 
-  testSegment(event: any){
-    // console.log(event);
-    this.curSegment = event.detail.value;
-  }
+  // testSegment(event: any){
+  //   this.curSegment = event.detail.value;
+  // }
 
   startNewChat(uid){
     this.chatService.createChat(this.curUser.uid, uid);
   }
 
   calculateTotalUnreadMsgCount(){
-    // return Object.values(this.chats).reduce(
-    //   (prevChat: any, curChat: any) => {
-    //     return prevChat.unreadCount + curChat.unreadCount;
-    //   }
-    // )
     return Object.values(this.chats).map(
       (chat: any) => {
         return chat.unreadCount;
@@ -174,8 +169,8 @@ export class MessagePage implements OnInit, OnDestroy {
                     if(!tempChats[cid]){
                       tempChats[cid] = {
                         latestTime: null,
-                        latestMsg: "Click to start...",
-                        targetAvatarUrl: "https://gravatar.com/avatar",
+                        latestMsg: "Click to start chat...",
+                        targetAvatarUrl: "../assets/icon/user.svg",
                         targetName: null,
                         targetUid: null,
                         lastReadMsg: chatList[cid],
