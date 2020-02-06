@@ -26,6 +26,8 @@ export class SearchPage implements OnInit, OnDestroy{
 
   curUser;
   isLogged = true;
+
+  searchTerm;
   
   jobs =[];
   allList = [];
@@ -130,7 +132,9 @@ export class SearchPage implements OnInit, OnDestroy{
   //   )
   // }
 
-  // cancelSearch(){}
+  cancelSearch(){
+    this.searchTerm = undefined;
+  }
 
   selectChange(ev){
     if(ev.detail.value == null) return;

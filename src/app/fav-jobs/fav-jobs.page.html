@@ -6,94 +6,96 @@
 
 <ion-content>
 <!-- work type radio -->
-<ion-radio-group allowEmptySelection=true (ionChange)="radioChange($event)">
- <ion-row class="work-type-checkboxes-outer">
+  <ion-radio-group allowEmptySelection=true (ionChange)="radioChange($event)">
+    <ion-row class="work-type-checkboxes-outer">
 
-    <ion-col style="text-align: center;" class="work-type-checkboxes-inner-full">
-      <ion-row>
-        <ion-col size="0.5">
-          <ion-radio value="full"></ion-radio>
-        </ion-col>
+      <ion-col style="text-align: center;" class="work-type-checkboxes-inner-full">
+        <ion-row>
+          <ion-col size="0.5">
+            <ion-radio value="full"></ion-radio>
+          </ion-col>
 
-        <ion-col>
-          <ion-label style="color: #5D82E2;">全职</ion-label>
-        </ion-col>
-      </ion-row>
-    </ion-col>
+          <ion-col>
+            <ion-label style="color: #5D82E2;">全职</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
 
-    <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
-      <ion-row>
-        <ion-col size="0.5">
-          <ion-radio value="part"></ion-radio>
-        </ion-col>
+      <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
+        <ion-row>
+          <ion-col size="0.5">
+            <ion-radio value="part"></ion-radio>
+          </ion-col>
 
-        <ion-col>
-          <ion-label style="color: #B1C78E;">兼职</ion-label>
-        </ion-col>
-      </ion-row>
-    </ion-col>
+          <ion-col>
+            <ion-label style="color: #B1C78E;">兼职</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
 
-    <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
-      <ion-row>
-        <ion-col size="0.5">
-          <ion-radio value="intern"></ion-radio>
-        </ion-col>
+      <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
+        <ion-row>
+          <ion-col size="0.5">
+            <ion-radio value="intern"></ion-radio>
+          </ion-col>
 
-        <ion-col>
-          <ion-label style="color: #A982DE;">实习</ion-label>
-        </ion-col>
-      </ion-row>
-    </ion-col>
+          <ion-col>
+            <ion-label style="color: #A982DE;">实习</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
 
-    <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
-      <ion-row>
-        <ion-col size="0.5">
-          <ion-radio value="fast"></ion-radio>
-        </ion-col>
+      <ion-col style="text-align: center;" class="work-type-checkboxes-inner-partial">
+        <ion-row>
+          <ion-col size="0.5">
+            <ion-radio value="fast"></ion-radio>
+          </ion-col>
 
-        <ion-col>
-          <ion-label style="color: #CC7F7C;">快聘</ion-label>
-        </ion-col>
-      </ion-row>
-    </ion-col>
-  </ion-row>
-</ion-radio-group>
+          <ion-col>
+            <ion-label style="color: #CC7F7C;">快聘</ion-label>
+          </ion-col>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+  </ion-radio-group>
 
 
 
-<ion-refresher (ionRefresh)="refresh($event)" slot="fixed" pullMin=120>
-  <ion-refresher-content></ion-refresher-content>
-</ion-refresher>
-<div *ngIf="!isLogged" style="height: 100%;width: 100%;z-index: 1;">暂无数据，请先登录</div>
-
-<ion-card [style.border-left-color]="j.type | workType" style="border-left-style: solid; border-left-width: 12px;" *ngFor="let j of jobs">
-  <ion-grid>
-    <div (click)="presentJobDetailModal(j)">
-      <!-- Company name& avatar -->
-      <ion-row class="ion-justify-content-center">
-        <ion-col size=2>
-          <ion-thumbnail style="width: 72px;height: 72px;">
-            <!-- <img [src]='job.imageUrl[0]'> -->
-            <img src="../../assets/cxk.jpg">
-          </ion-thumbnail> 
-        </ion-col>
-        <ion-col size=6 offset=1>
-          <ion-label style="margin: 0; font-size: 17px; color: black;"><b>{{j.position}}</b></ion-label><br>
-          <ion-label style="margin: 0; font-size: 10px; color: black;">{{j.title}}</ion-label><br>
-          <!-- Job's characteristics -->
-          <!-- <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">  &nbsp;|&nbsp;</span>{{tag}}</ion-label><br>
-          <ion-chip style="height: 2.5vh; font-size: 3px; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags">{{tag}}</ion-chip> -->
-          
-          <ion-label style="font-size: 10px;">截止日期: &nbsp; 12/1/2020</ion-label>
-        </ion-col>
-        <ion-col size=2.5>
-          <span style="color:#DE6964; font-size: 5; "><b>${{j.salary}}/hr</b></span>
-        </ion-col>
-      </ion-row>
+  <ion-refresher (ionRefresh)="refresh($event)" slot="fixed" pullMin=120>
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="!isLogged" style="height: 100%;text-align:center; width: 100%;z-index: 1;">暂无数据，请先登录</div>
+  <div style="text-align: center;">
+    <ion-label style="margin:auto; font-size: 5; color: blueviolet;"><b>如列表未实时更新，请手动下拉刷新即可</b></ion-label>
+  </div>
+  <ion-card [style.border-left-color]="j.type | workType" style="border-left-style: solid; border-left-width: 12px;" *ngFor="let j of jobs">
+    <ion-grid>
+      <div (click)="presentJobDetailModal(j)">
+        <!-- Company name& avatar -->
+        <ion-row class="ion-justify-content-center">
+          <ion-col size=2>
+            <ion-thumbnail style="width: 72px;height: 72px;">
+              <!-- <img [src]='job.imageUrl[0]'> -->
+              <img src="../../assets/cxk.jpg">
+            </ion-thumbnail> 
+          </ion-col>
+          <ion-col size=6 offset=1>
+            <ion-label style="margin: 0; font-size: 17px; color: black;"><b>{{j.position}}</b></ion-label><br>
+            <ion-label style="margin: 0; font-size: 10px; color: black;">{{j.title}}</ion-label><br>
+            <!-- Job's characteristics -->
+            <!-- <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">  &nbsp;|&nbsp;</span>{{tag}}</ion-label><br>
+            <ion-chip style="height: 2.5vh; font-size: 3px; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags">{{tag}}</ion-chip> -->
+            
+            <ion-label style="font-size: 10px;">截止日期: &nbsp; 12/1/2020</ion-label>
+          </ion-col>
+          <ion-col size=2.5>
+            <span style="color:#DE6964; font-size: 5; "><b>${{j.salary}}/hr</b></span>
+          </ion-col>
+        </ion-row>
       </div>
 
-  </ion-grid>
-</ion-card> 
+    </ion-grid>
+  </ion-card> 
 <!-- <ion-item-sliding *ngFor="let j of jobs">
   <ion-item-options side="end">
     <ion-item-option color="danger" expandable (click)=deleteJobCard(j.jid)>
