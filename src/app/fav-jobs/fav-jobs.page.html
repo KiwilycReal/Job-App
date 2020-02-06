@@ -16,7 +16,7 @@
         </ion-col>
 
         <ion-col>
-          <ion-label style="color: #000099;">全职</ion-label>
+          <ion-label style="color: #5D82E2;">全职</ion-label>
         </ion-col>
       </ion-row>
     </ion-col>
@@ -28,7 +28,7 @@
         </ion-col>
 
         <ion-col>
-          <ion-label style="color: #66CC66;">兼职</ion-label>
+          <ion-label style="color: #B1C78E;">兼职</ion-label>
         </ion-col>
       </ion-row>
     </ion-col>
@@ -40,7 +40,7 @@
         </ion-col>
 
         <ion-col>
-          <ion-label style="color: #6633CC;">实习</ion-label>
+          <ion-label style="color: #A982DE;">实习</ion-label>
         </ion-col>
       </ion-row>
     </ion-col>
@@ -52,7 +52,7 @@
         </ion-col>
 
         <ion-col>
-          <ion-label style="color: #FF0066;">快聘</ion-label>
+          <ion-label style="color: #CC7F7C;">快聘</ion-label>
         </ion-col>
       </ion-row>
     </ion-col>
@@ -65,7 +65,36 @@
   <ion-refresher-content></ion-refresher-content>
 </ion-refresher>
 <div *ngIf="!isLogged" style="height: 100%;width: 100%;z-index: 1;">暂无数据，请先登录</div>
-<ion-item-sliding *ngFor="let j of jobs">
+
+<ion-card [style.border-left-color]="j.type | workType" style="border-left-style: solid; border-left-width: 12px;" *ngFor="let j of jobs">
+  <ion-grid>
+    <div (click)="presentJobDetailModal(j)">
+      <!-- Company name& avatar -->
+      <ion-row class="ion-justify-content-center">
+        <ion-col size=2>
+          <ion-thumbnail style="width: 72px;height: 72px;">
+            <!-- <img [src]='job.imageUrl[0]'> -->
+            <img src="../../assets/cxk.jpg">
+          </ion-thumbnail> 
+        </ion-col>
+        <ion-col size=6 offset=1>
+          <ion-label style="margin: 0; font-size: 17px; color: black;"><b>{{j.position}}</b></ion-label><br>
+          <ion-label style="margin: 0; font-size: 10px; color: black;">{{j.title}}</ion-label><br>
+          <!-- Job's characteristics -->
+          <!-- <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">  &nbsp;|&nbsp;</span>{{tag}}</ion-label><br>
+          <ion-chip style="height: 2.5vh; font-size: 3px; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags">{{tag}}</ion-chip> -->
+          
+          <ion-label style="font-size: 10px;">截止日期: &nbsp; 12/1/2020</ion-label>
+        </ion-col>
+        <ion-col size=2.5>
+          <span style="color:#DE6964; font-size: 5; "><b>${{j.salary}}/hr</b></span>
+        </ion-col>
+      </ion-row>
+      </div>
+
+  </ion-grid>
+</ion-card> 
+<!-- <ion-item-sliding *ngFor="let j of jobs">
   <ion-item-options side="end">
     <ion-item-option color="danger" expandable (click)=deleteJobCard(j.jid)>
       删除
@@ -73,34 +102,34 @@
   </ion-item-options>
   <ion-item lines="full" [style.border-left-color]="j.type | workType" style="border-left-style: solid; border-left-width: 12px;">
     <ion-grid>
-      <div (click)="presentJobDetailModal(j)">
+      <div (click)="presentJobDetailModal(j)"> -->
         <!-- Company name& avatar, plus post time -->
         <!-- <ion-row class="ion-justify-content-center">
           <ion-label style="color:  rgb(142, 171, 224);">{{job.publishDateTime}}</ion-label>
         </ion-row> -->
-        <ion-row class="ion-justify-content-center">
+        <!-- <ion-row class="ion-justify-content-center">
           <ion-col size=2>
-            <ion-thumbnail style="width: 72px;height: 72px;">
+            <ion-thumbnail style="width: 72px;height: 72px;"> -->
               <!-- <img [src]='job.imageUrl[0]'> -->
-              <img src="../../assets/cxk.jpg">
+              <!-- <img src="../../assets/cxk.jpg">
             </ion-thumbnail> 
           </ion-col>
           <ion-col size=6 offset=1>
             <ion-label style="margin: 0; font-size: 20px;"><b>{{j.position}}</b></ion-label>
-            <ion-label style="margin: 0; font-size: 17px;">{{j.title}}</ion-label>
+            <ion-label style="margin: 0; font-size: 17px;">{{j.title}}</ion-label> -->
             <!-- Job's characteristics -->
-            <span style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">|</span>{{tag}}</span><br>
-            <span style="font-size: 14px; margin-right: 5px; color: #FF3366; background-color:#FFFFCC;" *ngFor="let tag of j.tags">{{tag}}</span>
+            <!-- <span style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">|</span>{{tag}}</span><br>
+            <span style="font-size: 14px; margin-right: 5px; color: #FF3366; background-color:#FFFFCC;" *ngFor="let tag of j.tags">{{tag}}</span> -->
             <!-- <ion-chip style="font-size: 2px;" *ngFor="let tag of j.tags">{{tag}}</ion-chip> -->
-          </ion-col>
+          <!-- </ion-col>
           <ion-col size=2.5>
             <span style="color:goldenrod; font-size: 8; ">{{j.salary}}$/hr</span>
           </ion-col>
         </ion-row>
-        </div>
+        </div> -->
       <!-- <ion-button *ngIf="isLogged" [id]="j.jid" expand="block" (click)="changeFavJob($event.target)"><ion-spinner style="display: none;"></ion-spinner><ion-icon [name]="j.favIconName"></ion-icon></ion-button> -->
 
-    </ion-grid>
+    <!-- </ion-grid>
   </ion-item>
-</ion-item-sliding>
+</ion-item-sliding> -->
 </ion-content>

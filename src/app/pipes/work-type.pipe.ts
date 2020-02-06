@@ -10,13 +10,13 @@ export class WorkTypePipe implements PipeTransform {
 
     switch(value){
       case "fast":
-        return "#FF0066";
+        return "#CC7F7C";
       case "full":
-        return "#000099";
+        return "#5D82E2";
       case "part":
-        return "#66CC66";
+        return "#B1C78E";
       case "intern":
-        return "#6633CC";
+        return "#A982DE";
     }
   }
 

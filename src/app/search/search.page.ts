@@ -40,7 +40,7 @@ export class SearchPage implements OnInit, OnDestroy{
   jobTypeSelect;
   salarySelect;
   workTypeOpts = [
-    {value: null,
+    {value: "all",
      display: "ALL"},
     {value: "fulltime",
      display: "Full Time"},
@@ -58,7 +58,7 @@ export class SearchPage implements OnInit, OnDestroy{
      display: "中国Intern"},
   ];
   jobTypeOpts = [
-    {value: null,
+    {value: "all",
      display: "ALL"},
     {value: "black",
      display: "Black Job"},
@@ -66,7 +66,7 @@ export class SearchPage implements OnInit, OnDestroy{
      display: "White Job"}
   ];
   salaryOpts = [
-    {value: null,
+    {value: {lower:0,upper:Number.MAX_SAFE_INTEGER},
      display: "ALL"},
     {value: {lower:50,upper:100},
      display: "50-100"},
@@ -142,7 +142,7 @@ export class SearchPage implements OnInit, OnDestroy{
     }
     var candidates = this.allList;
     var lower = 0;
-    var upper = 10000000;
+    var upper = Number.MAX_SAFE_INTEGER;
     this.clearSelectBtnElem.el.style.display = "";
     
     if(this.salarySelect){
@@ -152,14 +152,14 @@ export class SearchPage implements OnInit, OnDestroy{
     if(this.workTypeSelect){
       candidates = candidates.filter(
         job => {
-          return job.tags.includes(this.workTypeSelect)
+          return job.tags.includes(this.workTypeSelect) || this.workTypeSelect == "all"
         }
       )
     }
     if(this.jobTypeSelect){
       candidates = candidates.filter(
         job => {
-          return job.tags.includes(this.jobTypeSelect)
+          return job.tags.includes(this.jobTypeSelect) || this.jobTypeSelect == "all"
         }
       )
     }
