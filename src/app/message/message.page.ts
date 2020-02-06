@@ -124,8 +124,9 @@ export class MessagePage implements OnInit, OnDestroy {
       );
       var latestMsgObj = res[0].payload.doc.data({serverTimestamps: 'estimate'});
       try{
-        var dateObj = latestMsgObj.timestamp.toDate();
-        this.chats[cid].latestTime = dateObj.toLocaleString();
+        // var dateObj = latestMsgObj.timestamp.toDate();
+        // this.chats[cid].latestTime = dateObj.toLocaleString();
+        this.chats[cid].latestTime = latestMsgObj.timestamp.toDate();
         this.chats[cid].latestMsg = latestMsgObj.msg;
         // In case of the other user changed their avatar or display name
         // this.chats[cid].avatar = "https://gravatar.com/avatar";
@@ -174,6 +175,7 @@ export class MessagePage implements OnInit, OnDestroy {
                         targetName: null,
                         targetUid: null,
                         lastReadMsg: chatList[cid],
+                        extraTag: "A Tag",
                         unreadCount: 0
                       };
                       self.createChatListener(cid);

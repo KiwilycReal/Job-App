@@ -14,24 +14,26 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content style="--ion-background-color:#F5F5F5;">
   <!-- Segments header -->
-  <ion-grid>
-    <ion-row>
-      <ion-col size=4 style=" text-align: center;" [routerLink]="['/applied-jobs']">
-        <ion-icon name="filing" class="segement-icon" style="background-color:darkcyan;"></ion-icon><br>
-        <ion-label style="font-size: 16px;">申请纪录</ion-label>
-      </ion-col>
-      <ion-col style=" text-align: center;">
-        <ion-icon name="megaphone" class="segement-icon" style="background-color:darkturquoise;"></ion-icon><br>
-        <ion-label style="font-size: 16px;">系统通知</ion-label>
-      </ion-col>
-      <ion-col style=" text-align: center;">
-        <ion-icon name="text" class="segement-icon" style="background-color:indianred;"></ion-icon><br>
-        <ion-label style="font-size: 16px;">聊天消息</ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div style="background-color:white;">
+    <ion-grid>
+      <ion-row>
+        <ion-col size=4 style=" text-align: center;" [routerLink]="['/applied-jobs']">
+          <ion-icon name="filing" class="segement-icon" style="background-color:darkcyan;"></ion-icon><br>
+          <ion-label style="font-size: 16px;">申请纪录</ion-label>
+        </ion-col>
+        <ion-col style=" text-align: center;">
+          <ion-icon name="megaphone" class="segement-icon" style="background-color:darkturquoise;"></ion-icon><br>
+          <ion-label style="font-size: 16px;">系统通知</ion-label>
+        </ion-col>
+        <ion-col style=" text-align: center;">
+          <ion-icon name="text" class="segement-icon" style="background-color:indianred;"></ion-icon><br>
+          <ion-label style="font-size: 16px;">聊天消息</ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
   <ion-select okText="Chat!" placeholder="请选择聊天对象:)" (ionChange)="startNewChat($event.detail.value)" style="border-style: double; border-color: grey;">
     <ion-select-option *ngFor="let user of userList" [value]=user.uid>{{user.username}}</ion-select-option>
   </ion-select>
@@ -41,7 +43,7 @@
   <!-- <ion-button expand="block" (click)="testFunc()">
     time
   </ion-button> -->
-  <ion-list>
+  <!-- <ion-list>
     <ion-list>
       <div *ngFor="let chat of chats | keyvalue" (click)="showChatModal(chat.key, chat.value)">
         <ion-item lines="full">
@@ -53,6 +55,33 @@
             <p>{{chat.value.latestTime}}</p>
             <h3><span *ngIf="chat.value.unreadCount>0" style="color: indianred;">[{{chat.value.unreadCount}}条未读消息]</span>{{chat.value.latestMsg}}</h3>
           </ion-label>
+        </ion-item>
+      </div>
+    </ion-list>
+  </ion-list> -->
+  <ion-list>
+    <ion-list>
+      <div *ngFor="let chat of chats | keyvalue" (click)="showChatModal(chat.key, chat.value)">
+        <ion-item lines="none" style="--ion-background-color:white; margin-bottom: 1vh; 
+                                      width: 95vw; margin-left: 2.5vw; border-radius: 20px;">
+          <ion-avatar slot="start">
+            <img [src]="chat.value.targetAvatarUrl">
+          </ion-avatar>
+
+          <ion-row style="width: 80vw;">
+            <ion-col size=9>
+              <ion-label>
+                <h3>{{chat.value.targetName}} <p style="color: grey; display: inline; font-size: 10px;">{{chat.value.extraTag}}</p> </h3>
+                <p><span *ngIf="chat.value.unreadCount>0" style="color: indianred;">[{{chat.value.unreadCount}}条未读消息]</span>{{chat.value.latestMsg}}</p>
+              </ion-label>
+            </ion-col>
+
+            <ion-col style="text-align: right;" size=3>
+              <p style="font-size: 10px; margin-top: 0;">{{chat.value.latestTime | date :'M月d日'}}</p>
+            </ion-col>
+
+          </ion-row>
+
         </ion-item>
       </div>
     </ion-list>

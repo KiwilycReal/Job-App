@@ -7,14 +7,17 @@ import { RouterModule } from '@angular/router';
 import { HomePage } from './home.page';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 // import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
-import { AdvDetailPageModule } from '../adv-detail/adv-detail.module';
+// import { AdvDetailPageModule } from '../adv-detail/adv-detail.module';
+
+import { JobDetailPageModule } from '../job-detail/job-detail.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AdvDetailPageModule,
+    JobDetailPageModule,
+    // AdvDetailPageModule,
     // InAppBrowser,
     RouterModule.forChild([
       {

@@ -93,7 +93,45 @@
   <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <ion-list style="margin-top: 3px;">
+  <ion-slides  *ngFor="let j of jobs">
+    <ion-grid style="border-bottom: solid 1px #AAAAAA; height: 15vh;">
+    <!-- <ion-grid style="border-bottom: solid 1px #AAAAAA;"> -->
+      <div (click)="presentJobDetailModal(j)">
+        <ion-row class="ion-justify-content-center">
+          <!-- Avatar -->
+          <ion-col size=2>
+            <ion-thumbnail style="width: 12vh;height: 12vh;margin-left: -1.25vh;">
+              <!-- <img [src]='job.imageUrl[0]'> -->
+              <img src="../../assets/cxk.jpg">
+            </ion-thumbnail> 
+          </ion-col>
+          <!-- Other Info -->
+          <ion-col size=9 offset=1>
+            <!-- Company name, job title and salary -->
+            <ion-row>
+              <ion-col size=9>
+                <ion-label style="margin: 0; font-size: 18px; color: black;"><b>{{j.position}}</b></ion-label><br>
+                <ion-label style="margin: 0; font-size: 12px; color: black;">{{j.title}}</ion-label><br>
+              </ion-col>
+              <ion-col size=3>
+                <ion-label style="color:#DE6964; font-size: 13px;"><b>${{j.salary}}/hr</b></ion-label>
+              </ion-col>
+            </ion-row>
+            <!-- Labels -->
+            <ion-row style="padding-left: 5px;">
+              <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">  &nbsp;|&nbsp;</span>{{tag}}</ion-label><br>
+            </ion-row>
+            <!-- Chips -->
+            <ion-row style="margin-top: -0.5vh; margin-left: 0.5vh;">
+              <ion-chip style="height: 2.5vh; font-size: 2; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags.slice(0,3)">{{tag}}</ion-chip>
+            </ion-row>
+          </ion-col>
+        </ion-row>
+      </div>
+    </ion-grid>
+  </ion-slides >
+  <!-- Previous adv cards -->
+  <!-- <ion-list style="margin-top: 3px;">
     <ion-card *ngFor="let adv of advList" (click)="presentAdvModal(adv)">
       <ion-card-header>
         <ion-card-subtitle style="font-size: 14px; color: cornflowerblue;">{{adv.company}}</ion-card-subtitle>
@@ -103,5 +141,5 @@
         <ion-label class="adv-card-bottom-text">{{adv.detail | slice:0:60}}....</ion-label>
       </ion-card-header>
     </ion-card>
-  </ion-list>
+  </ion-list> -->
 </ion-content>
