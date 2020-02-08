@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, AfterViewChecked, AfterContentInit } from '@angular/core';
 import { ModalController, LoadingController } from '@ionic/angular';
 import { JobDetailPage } from '../job-detail/job-detail.page';
 import { Subscription, Observable } from 'rxjs';
@@ -9,10 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './fav-jobs.page.html',
   styleUrls: ['./fav-jobs.page.scss'],
 })
-export class FavJobsPage implements OnInit, OnDestroy {
-  ngOnDestroy(): void {
-    console.log("fav destroyed");
-  }
+export class FavJobsPage implements OnInit {
 
   pageTitle;
 
@@ -148,7 +145,13 @@ export class FavJobsPage implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.activatedRoute.data.subscribe((data)=>{console.log(data);this.type = data.msg})
+    this.activatedRoute.data.subscribe(
+      data => {
+        console.log(data);
+        this.type = data.msg;
+        if(this.curUser) this.updateFavJobList();
+      }
+    );
     if(this.type=="history"){
       this.pageTitle = "历史记录";
     }else if(this.type=="favourite"){

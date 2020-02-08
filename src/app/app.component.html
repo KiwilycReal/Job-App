@@ -3,30 +3,30 @@
 <ion-content><ion-router-outlet></ion-router-outlet></ion-content>
 
 <ion-tabs #footer>
-  <ion-tab-bar slot="bottom" style="height: 10vh;">
+  <ion-tab-bar slot="bottom" style="height: 8vh;">
     <ion-tab-button [routerLink]="['/home']">
-      <ion-icon name="home" class="footer_button" ></ion-icon>
+      <ion-icon src="../assets/bottom-button/home.svg" class="footer_button" ></ion-icon>
       <ion-label>首页</ion-label>
     </ion-tab-button>
 
     <ion-tab-button [routerLink]="['/search']">
-      <ion-icon name="search" class="footer_button"></ion-icon>
+      <ion-icon name="search" class="footer_button" style="color: #999999;"></ion-icon>
       <ion-label>搜索</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button [routerLink]="isLogged?['/fav-jobs']:['/login']">
-      <ion-icon name="flame" class="footer_button"></ion-icon>
+    <ion-tab-button [routerLink]="['/recommend']">
+      <ion-icon src="../assets/bottom-button/rec.svg" class="footer_button"></ion-icon>
       <ion-label>推荐</ion-label>
     </ion-tab-button>
 
     <ion-tab-button [routerLink]="isLogged?['/message']:['/login']">
-      <ion-icon name="chatboxes" class="footer_button"></ion-icon>
+      <ion-icon src="../assets/bottom-button/message.svg" class="footer_button"></ion-icon>
       <ion-label>消息</ion-label>
       <ion-badge *ngIf="unreadMsgCount > 0">{{unreadMsgCount}}</ion-badge>
     </ion-tab-button>
 
     <ion-tab-button [routerLink]="['/mine']">
-      <ion-icon name="person" class="footer_button"></ion-icon>
+      <ion-icon src="../assets/bottom-button/mine.svg" class="footer_button"></ion-icon>
       <ion-label>个人</ion-label>
     </ion-tab-button>
 

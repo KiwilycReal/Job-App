@@ -1,0 +1,129 @@
+<ion-header style="margin: auto; height: 6vh;">
+  <ion-row class="test" style="margin-top: -0.5vh;">
+    <!-- location selector -->
+    <ion-col class="test" size=2.2 style="margin-left: -1vw;">
+      <ion-tab-button #locate_selector >
+        <ion-icon src="../assets/global/place.svg" style="zoom: 0.9;" [routerLink]="['/front-page']"></ion-icon>
+        <ion-label class="button-text">墨尔本</ion-label>
+      </ion-tab-button>
+    </ion-col>
+
+    <!-- search bar -->
+    <ion-col class="test" size=7.6 style="text-align: center; ">
+      <!-- <ion-searchbar #home_search_bar></ion-searchbar> -->
+      <input type="search" placeholder=" 输入关键字搜索" class="textinput">
+    </ion-col>
+
+    <!-- wechat helper -->
+    <ion-col class="test" size=2.2 style="margin-left: +1vw;">
+      <ion-tab-button #wechat_helper>
+        <ion-icon src="../assets/global/wechat.svg" style="zoom: 0.9;"></ion-icon>
+        <ion-label class="button-text">小助手</ion-label>
+      </ion-tab-button>
+    </ion-col>
+
+  </ion-row>
+</ion-header>
+
+
+<ion-content>
+  <div style="margin:auto; height: 9vh;">
+    <ion-row class="test" style="margin-top: 0.5vh;">
+   <!-- 校招 -->
+   <ion-col class="test">
+     <button #locate_selector (click)="openPage()" style="height: 7.5vh; text-align: center; 
+                                                          border-radius: 2vh; background-color: #E2EECE;">
+       <ion-row>
+
+         <ion-col size=3>
+           <ion-icon src="../assets/recommend/recent.svg" style="zoom:2.5;"></ion-icon>
+         </ion-col>
+
+         <ion-col size=9>
+           <div style="margin-top: 1.2vh; margin-left: 2.5vw;">
+             <ion-label >校招入口</ion-label>
+           </div>
+            
+         </ion-col>
+       </ion-row>
+     </button>
+   </ion-col>
+
+   <!-- 测试 -->
+   <ion-col class="test">
+    <button #locate_selector (click)="openPage()" style="height: 7.5vh; text-align: center; 
+                                                          border-radius: 2vh; background-color: #EBA4A1;">
+       <ion-row>
+
+         <ion-col size=3>
+           <ion-icon src="../assets/recommend/skill.svg" style="zoom:2.5;"></ion-icon>
+         </ion-col>
+
+         <ion-col size=9>
+           <div style="margin-top: 1.2vh; margin-left: 2.5vw;">
+             <ion-label >校招入口</ion-label>
+           </div>
+            
+         </ion-col>
+       </ion-row>
+     </button>
+   </ion-col>
+
+   <!-- 志愿者 -->
+   <ion-col class="test">
+    <button #locate_selector (click)="openPage()" style="height: 7.5vh; text-align: center; 
+                                                          border-radius: 2vh; background-color: #97E2E2;">
+       <ion-row>
+
+         <ion-col size=3>
+           <ion-icon src="../assets/recommend/know.svg" style="zoom:2.5;"></ion-icon>
+         </ion-col>
+
+         <ion-col size=9>
+           <div style="margin-top: 1.2vh; margin-left: 2.5vw;">
+             <ion-label >校招入口</ion-label>
+           </div>
+            
+         </ion-col>
+       </ion-row>
+     </button>
+   </ion-col>
+ </ion-row>
+
+</div>
+
+
+<div>
+  <ion-card style="height: 30vh;">
+    <img src="../assets/backP.png"> 
+    <ion-card-header style="padding-bottom: 0; padding-top: 1vh;">
+      <ion-card-title>2月22号蔡徐坤招聘</ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="padding-top: 0.7vh;">
+      CXK公司招聘啦，大家快去看
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card style="height: 30vh;">
+    <img src="../assets/backP.png"> 
+    <ion-card-header style="padding-bottom: 0; padding-top: 1vh;">
+      <ion-card-title>2月22号蔡徐坤招聘</ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="padding-top: 0.7vh;">
+      CXK公司招聘啦，大家快去看
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card style="height: 30vh;">
+    <img src="../assets/backP.png"> 
+    <ion-card-header style="padding-bottom: 0; padding-top: 1vh;">
+      <ion-card-title>2月22号蔡徐坤招聘</ion-card-title>
+    </ion-card-header>
+    <ion-card-content style="padding-top: 0.7vh;">
+      CXK公司招聘啦，大家快去看
+    </ion-card-content>
+  </ion-card>
+ 
+
+</div>
+</ion-content>

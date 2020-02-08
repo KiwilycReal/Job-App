@@ -38,7 +38,11 @@ const routes: Routes = [
     path: 'mine',
     loadChildren: () => import('./mine/mine.module').then( m => m.MinePageModule)
   },
-  { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)}
+  { path: 'home', loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)},
+  {
+    path: 'recommend',
+    loadChildren: () => import('./recommend/recommend.module').then( m => m.RecommendPageModule)
+  }
 
   // { path: 'search/:id', loadChildren: './job-detail/job-detail.module#JobDetailPageModule' }
 ];

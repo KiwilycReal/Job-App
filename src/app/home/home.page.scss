@@ -1,10 +1,11 @@
 .button-text {
-    font-size: x-small;
+    font-size: xx-small;
+    color: grey;
 }
 
 .fbutton{
-    height: 15vw;
-    width: 15vw;
+    height: 5vh;
+    width: 5vh;
 }
 
 .adv-card-bottom-text {
@@ -17,4 +18,14 @@
     font-size: medium;
     color: #000066;
     font-weight: bold;
+}
+
+.textinput {
+    height: 4vh; 
+    border-radius: 2vh; 
+    border: 1px solid #AAAAAA; 
+    width: 65vw; 
+    margin-left: -2.5vw;
+    margin-top: 0.5vh;
+    font-size: small;
 }
