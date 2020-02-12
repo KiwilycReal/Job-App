@@ -14,6 +14,10 @@ export class BasicInfoEditPage implements OnInit {
 
   // The chosen avatar file
   file;
+  // The file event
+  fileEvent;
+  // The cropped img base64 code
+  croppedImg;
   // The download url for uploaded avatar
   avatarUrl;
 
@@ -84,7 +88,12 @@ export class BasicInfoEditPage implements OnInit {
     )
   }
 
-  getCurrentFile(f){
+  imageCropped(ev){
+    this.croppedImg = ev.base64;
+  }
+
+  getCurrentFile(f, ev){
+    this.fileEvent = ev;
     this.disableBtn = false;
     this.file = f;
     console.log(f);
@@ -97,7 +106,7 @@ export class BasicInfoEditPage implements OnInit {
       duration: 20000
     });
     await loading.present();
-    await this.commDbService.uploadFile(this.file, this.curUser.uid).then(
+      await this.commDbService.uploadBase64Img(this.croppedImg, this.curUser.uid).then(
       res => {
         this.avatarUrl = res;
         this.curUser.updateProfile({
@@ -106,6 +115,8 @@ export class BasicInfoEditPage implements OnInit {
         this.commDbService.updateUserDoc(this.curUser.uid, {avatarUrl: res});
       }
     );
+    // Used to hide the crop layer
+    this.file = null;
     this.loadingController.dismiss();
   }
 

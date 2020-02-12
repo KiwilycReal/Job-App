@@ -31,7 +31,7 @@ export class SearchPage implements OnInit, OnDestroy{
   
   jobs =[];
   allList = [];
-  searchList = [];
+  tempFilterList = [];
 
   // The work type radio group
   typeRadioGroup;
@@ -40,10 +40,13 @@ export class SearchPage implements OnInit, OnDestroy{
 
   workTypeSelect;
   jobTypeSelect;
-  salarySelect;
+  salaryRange = {
+    lower: 25,
+    upper: 100
+  };
   workTypeOpts = [
-    {value: "all",
-     display: "ALL"},
+    // {value: "all",
+    //  display: "ALL"},
     {value: "fulltime",
      display: "Full Time"},
     {value: "parttime",
@@ -60,16 +63,16 @@ export class SearchPage implements OnInit, OnDestroy{
      display: "中国Intern"},
   ];
   jobTypeOpts = [
-    {value: "all",
-     display: "ALL"},
+    // {value: "all",
+    //  display: "ALL"},
     {value: "black",
      display: "Black Job"},
     {value: "white",
      display: "White Job"}
   ];
   salaryOpts = [
-    {value: {lower:0,upper:Number.MAX_SAFE_INTEGER},
-     display: "ALL"},
+    // {value: {lower:0,upper:Number.MAX_SAFE_INTEGER},
+    //  display: "ALL"},
     {value: {lower:50,upper:100},
      display: "50-100"},
     {value: {lower:100,upper:150},
@@ -136,40 +139,61 @@ export class SearchPage implements OnInit, OnDestroy{
     this.searchTerm = undefined;
   }
 
+  // TODO: 或者判断每次变更select是增加条件还是减少条件，来取(以新变更条件筛选过的alllist)和(先前的tempfilterlist)的交/并集
   selectChange(ev){
-    if(ev.detail.value == null) return;
-    if(this.workTypeSelect == null &&
-       this.jobTypeSelect == null &&
-       this.salarySelect == null){
+    console.log(this.workTypeSelect, this.jobTypeSelect);
+    if(this.workTypeSelect.length == 0 &&
+       this.jobTypeSelect.length == 0){
+      this.jobs = this.allList;
       this.clearSelectBtnElem.el.style.display = "none";
       return;
     }
     var candidates = this.allList;
-    var lower = 0;
-    var upper = Number.MAX_SAFE_INTEGER;
     this.clearSelectBtnElem.el.style.display = "";
-    
-    if(this.salarySelect){
-      lower = this.salarySelect.lower;
-      upper = this.salarySelect.upper;
-    }
-    if(this.workTypeSelect){
+
+    if(this.workTypeSelect.length > 0){
       candidates = candidates.filter(
         job => {
-          return job.tags.includes(this.workTypeSelect) || this.workTypeSelect == "all"
+          return job.tags.some(tag=>this.workTypeSelect.includes(tag));
         }
-      )
+      );
     }
-    if(this.jobTypeSelect){
+    if(this.jobTypeSelect.length > 0){
       candidates = candidates.filter(
         job => {
-          return job.tags.includes(this.jobTypeSelect) || this.jobTypeSelect == "all"
+          return job.tags.some(tag=>this.jobTypeSelect.includes(tag));
         }
-      )
+      );
     }
-    this.jobs = candidates.filter(
+
+    candidates = candidates.filter(
       job => {
-        return job.salary >= lower && job.salary < upper;
+        return job.salary >= this.salaryRange.lower && job.salary <= this.salaryRange.upper;
+      }
+    ).sort(
+      (j1, j2) => {
+        return j2.salary - j1.salary;
+      }
+    );
+
+    this.tempFilterList = candidates;
+    this.jobs = candidates;
+    // this.jobs = candidates.filter(
+    //   job => {
+    //     return job.salary >= lower && job.salary < upper;
+    //   }
+    // ).sort(
+    //   (j1, j2) => {
+    //     return j2.salary - j1.salary;
+    //   }
+    // );
+  }
+
+  salaryChange(){
+    if(this.salaryRange.lower == 20 && this.salaryRange.upper == 200) return;
+    this.jobs = this.tempFilterList.filter(
+      job => {
+        return job.salary >= this.salaryRange.lower && job.salary <= this.salaryRange.upper;
       }
     ).sort(
       (j1, j2) => {
@@ -179,11 +203,12 @@ export class SearchPage implements OnInit, OnDestroy{
   }
 
   clearSelect(){
-    this.workTypeSelect = null;
-    this.jobTypeSelect = null;
-    this.salarySelect = null;
+    this.workTypeSelect = [];
+    this.jobTypeSelect = [];
+    this.salaryRange = {lower: 20, upper: 200};
 
     this.jobs = this.allList;
+    // this.tempFilterList = this.allList;
   }
 
   radioChange(ev){
@@ -252,6 +277,7 @@ export class SearchPage implements OnInit, OnDestroy{
     return this.fetchRequiredJobList().then(
       res => {
         this.jobs = res;
+        this.tempFilterList = res;
         this.allList = res;
     });
   }

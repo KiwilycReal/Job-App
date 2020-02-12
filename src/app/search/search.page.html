@@ -10,11 +10,11 @@
       </ion-col>
   
       <!-- search bar -->
-      <ion-col class="test" size=7>
-        <input type="search" placeholder=" 输入关键字搜索" class="textinput">
+      <ion-col class="search-bar" size=7>
+        <input type="search" [(ngModel)]="searchTerm" placeholder=" 输入关键字搜索" class="textinput">
         <!-- <ion-searchbar [(ngModel)]="searchTerm" showCancelButton="focus" placeholder="输入关键字"></ion-searchbar> -->
       </ion-col>
-      <ion-col *ngIf="searchTerm" size=2.5 class="ion-align-self-center" style="text-align: center;">
+      <ion-col *ngIf="searchTerm" size=2 class="ion-align-self-center" style="text-align: center; padding-right: 0;">
         <ion-label (click)="cancelSearch()" style="color: cornflowerblue;">Cancel</ion-label>
       </ion-col>
     </ion-row>
@@ -72,29 +72,25 @@
       </ion-row>
     </ion-radio-group> -->
     <!-- search drop down -->
-    <ion-row style="background: white; text-align: center;">
-        <ion-col>
-          <div>
-            <ion-select [(ngModel)]="workTypeSelect" placeholder="工作种类" name="work_type" interface="popover" (ionChange)="selectChange($event)">
-                <ion-select-option [value]="opt.value" *ngFor="let opt of workTypeOpts">{{opt.display}}</ion-select-option>
-            </ion-select>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div>
-            <ion-select [(ngModel)]="jobTypeSelect" placeholder="职业种类" name="job_cat" interface="popover" (ionChange)="selectChange($event)">
-                <ion-select-option [value]="opt.value" *ngFor="let opt of jobTypeOpts">{{opt.display}}</ion-select-option>
-            </ion-select>
-          </div>
-        </ion-col>
-        <ion-col>
-          <div>
-            <ion-select [(ngModel)]="salarySelect" placeholder="时薪" name="salary" interface="popover" (ionChange)="selectChange($event)">
-                <ion-select-option [value]="opt.value" *ngFor="let opt of salaryOpts">{{opt.display}}</ion-select-option>
-            </ion-select>
-          </div>
-        </ion-col>
+    <ion-row style="background: white; text-align: center; border-top-style: double;">
+      <ion-select style="width: 100%;" multiple="true" [(ngModel)]="workTypeSelect" placeholder="工作种类" (ionChange)="selectChange($event)">
+          <ion-select-option [value]="opt.value" *ngFor="let opt of workTypeOpts">{{opt.display}}</ion-select-option>
+      </ion-select>
     </ion-row>
+    <ion-row style="background: white; text-align: center;">
+      <ion-select style="width: 100%;" multiple="true" [(ngModel)]="jobTypeSelect" placeholder="职业种类" (ionChange)="selectChange($event)">
+          <ion-select-option [value]="opt.value" *ngFor="let opt of jobTypeOpts">{{opt.display}}</ion-select-option>
+      </ion-select>
+    </ion-row>
+    <ion-row style="background: white; text-align: center;">
+      <ion-range style="padding-top: 0;" [(ngModel)]="salaryRange" min=20 max=200 debounce=1400 dual-knobs="true" pin="true" (ionChange)="salaryChange()">
+        <!-- <ion-icon name="wallet" size="small" slot="start"></ion-icon>
+        <ion-icon name="wallet" size="large" slot="end"></ion-icon> -->
+      <ion-label slot="start">20$/hr</ion-label>
+      <ion-label slot="end">200$/hr</ion-label>
+      </ion-range>
+    </ion-row>
+
     <ion-button expand="full" #clearSelectBtn style="display:none" color="danger" (click)="clearSelect()">
       <label>清除搜索结果</label>
     </ion-button>

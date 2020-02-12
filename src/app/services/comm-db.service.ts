@@ -172,6 +172,19 @@ export class CommDbService {
     );
   }
 
+  async uploadBase64Img(fileStr: string, uid: string){
+    var ref = this.afstorage.storage.ref("/").child(uid).child(uid+"_avatar.png");
+    return ref.putString(fileStr, "data_url").then(
+      res => {
+        return ref.getDownloadURL();
+      }
+    ).then(
+      res => {
+        return res;
+      }
+    );
+  }
+
   /**
    * Get an array of one user's uploaded file paths
    * @param uid the user id

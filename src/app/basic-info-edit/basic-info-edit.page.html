@@ -11,9 +11,17 @@
       <ion-card-title>更改头像</ion-card-title>
     </ion-card-header>
     <ion-avatar style="width: 19vw; height: 9vh; margin: auto;">
-      <img [src]="tempImgUrl?tempImgUrl:'../assets/icon/user.svg'">
+      <!-- <img [src]="tempImgUrl?tempImgUrl:'../assets/icon/user.svg'"> -->
+      <img [src]="croppedImg?croppedImg:'../assets/icon/user.svg'">
     </ion-avatar>
-    <ion-input accept="image/*" clearOnEdit="true" (change)="getCurrentFile($event.target.files[0])" type="file"></ion-input>
+    <image-cropper [hidden]="!file"
+      [imageChangedEvent]="fileEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="4 / 3"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+    ></image-cropper>
+    <ion-input accept="image/*" clearOnEdit="true" (change)="getCurrentFile($event.target.files[0], $event)" type="file"></ion-input>
     <ion-button [disabled]="disableBtn" expand="block" (click)="updateAvatar()"><ion-icon name="cloud-upload"></ion-icon></ion-button>
   </ion-card>
 
