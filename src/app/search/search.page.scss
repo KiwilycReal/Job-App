@@ -21,12 +21,12 @@
 }
 
 .textinput {
-    height: 4vh; 
-    border-radius: 2vh; 
+    height: 9vw; 
+    border-radius: 10vw; 
     border: 1px solid #AAAAAA; 
     width: 65vw; 
-    margin-left: -2.5vw;
-    margin-top: 0.5vh;
+    margin-left: -4vw;
+    margin-top: 1vw;
     font-size: small;
 }
 
@@ -35,6 +35,14 @@
     color: grey;
 }
 
+.location-picker-col {
+    padding: 0;
+}
+
 .search-bar {
     margin-right: 4.1vw;
+}
+
+.scroll-content {
+    padding-bottom: 0 !important;
 }

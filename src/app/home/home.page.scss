@@ -21,11 +21,15 @@
 }
 
 .textinput {
-    height: 4vh; 
-    border-radius: 2vh; 
+    height: 9vw; 
+    border-radius: 10vw; 
     border: 1px solid #AAAAAA; 
     width: 65vw; 
-    margin-left: -2.5vw;
-    margin-top: 0.5vh;
+    margin-left: -4vw;
+    margin-top: 1vw;
     font-size: small;
+}
+
+.location-picker-col {
+    padding: 0;
 }

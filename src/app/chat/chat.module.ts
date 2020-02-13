@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ChatComponent } from './chat.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
+import { ImgZoomPageModule } from '../img-zoom/img-zoom.module'
 
 
 
@@ -11,7 +12,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     IonicModule,
-    FormsModule
+    FormsModule,
+    ImgZoomPageModule
   ],
   entryComponents: [ChatComponent]
 })

@@ -1,8 +1,8 @@
 <ion-header style="margin: auto;">
   <div class="searchbox">
-    <ion-row class="test" style="margin-top: 0vh;">
+    <ion-row class="test" style="margin-top: 0vh; height: 13vw">
       <!-- location selector -->
-      <ion-col class="test" size=2.5>
+      <ion-col class="location-picker-col" size=2.5>
         <ion-tab-button #locate_selector>
           <ion-icon src="../assets/global/place.svg" style="zoom: 0.9;" [routerLink]="['/front-page']"></ion-icon>
           <ion-label class="button-text" style="color: grey;">墨尔本</ion-label>
@@ -72,7 +72,7 @@
       </ion-row>
     </ion-radio-group> -->
     <!-- search drop down -->
-    <ion-row style="background: white; text-align: center; border-top-style: double;">
+    <ion-row style="background: white; text-align: center; border-top-style: solid;">
       <ion-select style="width: 100%;" multiple="true" [(ngModel)]="workTypeSelect" placeholder="工作种类" (ionChange)="selectChange($event)">
           <ion-select-option [value]="opt.value" *ngFor="let opt of workTypeOpts">{{opt.display}}</ion-select-option>
       </ion-select>
@@ -134,13 +134,13 @@
       </ion-grid> -->
   <!-- </ion-card>   -->
   <ion-slides  *ngFor="let j of jobs">
-    <ion-grid style="border-bottom: solid 1px #AAAAAA; height: 17vh;">
+    <ion-grid style="border-bottom: solid 1px #AAAAAA; height: 35vw;">
     <!-- <ion-grid style="border-bottom: solid 1px #AAAAAA;"> -->
       <div (click)="presentJobDetailModal(j)">
         <ion-row class="ion-justify-content-center">
           <!-- Avatar -->
           <ion-col size=4>
-            <ion-thumbnail style="width: 15vh;height: 15vh;margin-left: 0vh;">
+            <ion-thumbnail style="width: 30vw;height: 30vw;margin-left: 0vh;">
               <!-- <img [src]='job.imageUrl[0]'> -->
               <img src="../../assets/cxk.jpg">
             </ion-thumbnail> 
@@ -165,8 +165,8 @@
             <!-- <div style="height: 2vh;"></div> -->
 
             <!-- Chips -->
-            <ion-row style="margin-top: -0.5vh; margin-left: 0.5vh;">
-              <ion-chip style="height: 2.5vh; font-size: 10; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags.slice(0,3)">{{tag}}</ion-chip>
+            <ion-row style="margin-top: -1vw; margin-left: 1vw;">
+              <ion-chip style="height: 2.5vw; font-size: 10; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags.slice(0,3)">{{tag}}</ion-chip>
             </ion-row>
           </ion-col>
         </ion-row>

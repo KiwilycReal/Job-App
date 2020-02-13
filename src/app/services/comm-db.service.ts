@@ -172,8 +172,8 @@ export class CommDbService {
     );
   }
 
-  async uploadBase64Img(fileStr: string, uid: string){
-    var ref = this.afstorage.storage.ref("/").child(uid).child(uid+"_avatar.png");
+  async uploadBase64Img(fileStr: string, uid: string, path = uid+"_localtime_"+Date.now()+".png"){
+    var ref = this.afstorage.storage.ref("/").child(uid).child(path);
     return ref.putString(fileStr, "data_url").then(
       res => {
         return ref.getDownloadURL();

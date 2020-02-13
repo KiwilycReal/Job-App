@@ -25,6 +25,7 @@ import { ChatService } from './services/chat.service';
 import { ShareDataService } from './services/share-data.service';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { Camera } from '@ionic-native/camera/ngx'
 
 @NgModule({
   declarations: [AppComponent],
@@ -40,6 +41,7 @@ import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
     StatusBar,
     InAppBrowser,
     SplashScreen,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: 'loginService', useClass: LoginService },
     { provide: 'commDbService', useClass: CommDbService },

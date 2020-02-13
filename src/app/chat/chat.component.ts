@@ -1,5 +1,7 @@
 import { Component, OnInit, Inject, OnDestroy, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ModalController, IonContent, LoadingController } from '@ionic/angular';
+import { ImgZoomPage } from '../img-zoom/img-zoom.page'
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
 @Component({
   selector: 'app-chat',
@@ -48,12 +50,30 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // The array that store all the logs of the current chat
   logs = [];
+  // The flag that determine whether the extra func panel is displayed
+  showExtra = false;
 
   // Mutation observer to handle scroll down event
   mutatioinObserver: MutationObserver;
+
+  takePhotoOptions: CameraOptions = {
+    quality: 40,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    mediaType: this.camera.MediaType.PICTURE,
+    sourceType: this.camera.PictureSourceType.CAMERA,
+    encodingType: this.camera.EncodingType.PNG
+  };
+  libraryPhotoOptions: CameraOptions = {
+    quality: 50,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    mediaType: this.camera.MediaType.PICTURE,
+    sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+    encodingType: this.camera.EncodingType.PNG
+  };
   
   constructor(private modalController: ModalController,
               private loadingController: LoadingController,
+              private camera: Camera,
               @Inject('commDbService') public commDbService,
               @Inject('chatService') public chatService) { }
 
@@ -63,19 +83,50 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
     // Update current user's last read msg in this chat
     var obj = {}
     obj['chats.'+this.cid] = this.logs[this.logs.length-1].mid;
-    this.commDbService.updateUserDoc(this.myUid, obj).then(
-      res => {
-        this.modalController.dismiss({
-          dismissed: true,
-          lastMid: this.logs[this.logs.length-1].mid
-        });
-      }
-    );
+    this.commDbService.updateUserDoc(this.myUid, obj);
+    this.modalController.dismiss({
+      dismissed: true,
+      lastMid: this.logs[this.logs.length-1].mid
+    });
+  }
+
+  showExtraPanel(){
+    this.showExtra = !this.showExtra;
+    setTimeout(() => {
+      this.scrollContainer.scrollToBottom();
+    }, 50);
   }
 
   sendMsg(){
-    this.chatService.addMsgToChat(this.cid, this.myUid, this.targetUid, this.msg);
+    this.chatService.addMsgToChat(this.cid, this.myUid, this.targetUid, this.msg, false);
     this.msg = null;
+  }
+
+  async sendImg(isCamera: boolean){
+    var options = isCamera?this.takePhotoOptions:this.libraryPhotoOptions;
+    const loading = await this.loadingController.create({
+      message: "处理中...",
+      duration: 10000
+    })
+    this.camera.getPicture(options).then(
+      async res => {
+        await loading.present();
+        return this.commDbService.uploadBase64Img('data:image/png;base64,'+res, this.myUid);
+      }
+    ).then(
+      res => {
+        return this.chatService.addMsgToChat(this.cid, this.myUid, this.targetUid, "[图片]", true, res);
+      }
+    ).then(
+      res => {
+        this.loadingController.dismiss().catch(err=>console.warn(err));
+      }
+    )
+
+  }
+
+  async zoomImg(){
+
   }
 
   async ngOnInit() {

@@ -52,12 +52,16 @@ export class ChatService {
     }).get().toPromise();
   }
 
-  addMsgToChat(cid, uidFrom, uidTo, msg){
-    return this.afs.collection("Chats").doc(cid).collection("Logs").add({
+  addMsgToChat(cid, uidFrom, uidTo, msg, hasImg, imgUrl=null){
+    var msgObj = {
       from: uidFrom,
       to: uidTo,
-      msg: msg
-    }).then(
+      msg: msg,
+      hasImg: hasImg,
+      imgUrl: imgUrl
+    };
+
+    return this.afs.collection("Chats").doc(cid).collection("Logs").add(msgObj).then(
       res => {
         res.update({
           timestamp: firebase.firestore.FieldValue.serverTimestamp()

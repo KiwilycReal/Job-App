@@ -42,7 +42,11 @@ const routes: Routes = [
   {
     path: 'recommend',
     loadChildren: () => import('./recommend/recommend.module').then( m => m.RecommendPageModule)
-  }
+  },
+  // {
+  //   path: 'img-zoom',
+  //   loadChildren: () => import('./img-zoom/img-zoom.module').then( m => m.ImgZoomPageModule)
+  // }
 
   // { path: 'search/:id', loadChildren: './job-detail/job-detail.module#JobDetailPageModule' }
 ];
