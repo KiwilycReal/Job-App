@@ -144,7 +144,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
           }
         );
         this.logs = tempLogs;
-        console.log(this.logs);
+        this.loadingController.dismiss().catch(err=>console.warn(err));
       }
     );
   }
