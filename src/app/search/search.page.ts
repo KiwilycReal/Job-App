@@ -45,41 +45,43 @@ export class SearchPage implements OnInit, OnDestroy{
     upper: 100
   };
   workTypeOpts = [
-    // {value: "all",
-    //  display: "ALL"},
-    {value: "fulltime",
-     display: "Full Time"},
-    {value: "parttime",
-     display: "Part Time"},
+    {value: "full",
+     display: "全职"},
+    {value: "part",
+     display: "兼职"},
     {value: "intern",
-     display: "Intern"},
-    {value: "volunteer",
-     display: "Volunteer"},
-    {value: "spring",
-     display: "春招"},
-    {value: "autumn",
-     display: "秋招"},
-    {value: "chinaintern",
-     display: "中国Intern"},
+     display: "实习"},
+    {value: "fast",
+     display: "快聘"},
+    // {value: "spring",
+    //  display: "春招"},
+    // {value: "autumn",
+    //  display: "秋招"},
+    // {value: "chinaintern",
+    //  display: "中国Intern"},
   ];
   jobTypeOpts = [
-    // {value: "all",
-    //  display: "ALL"},
-    {value: "black",
-     display: "Black Job"},
-    {value: "white",
-     display: "White Job"}
+    {value: "cashier",
+     display: "收银员"},
+    {value: "customerService",
+    display: "客服"},
+    {value: "teller",
+    display: "柜员"},
+    {value: "bank",
+    display: "银行"},
+    {value: "telecom",
+    display: "通讯公司"},
+    {value: "retail",
+    display: "零售业"}
   ];
-  salaryOpts = [
-    // {value: {lower:0,upper:Number.MAX_SAFE_INTEGER},
-    //  display: "ALL"},
-    {value: {lower:50,upper:100},
-     display: "50-100"},
-    {value: {lower:100,upper:150},
-     display: "100-150"},
-    {value: {lower:150,upper:10000},
-     display: "150+"}
-  ];
+  // salaryOpts = [
+  //   {value: {lower:50,upper:100},
+  //    display: "50-100"},
+  //   {value: {lower:100,upper:150},
+  //    display: "100-150"},
+  //   {value: {lower:150,upper:10000},
+  //    display: "150+"}
+  // ];
 
   // tst(e){
   //   console.log(e);
@@ -135,13 +137,8 @@ export class SearchPage implements OnInit, OnDestroy{
   //   )
   // }
 
-  cancelSearch(){
-    this.searchTerm = undefined;
-  }
-
   // TODO: 或者判断每次变更select是增加条件还是减少条件，来取(以新变更条件筛选过的alllist)和(先前的tempfilterlist)的交/并集
   selectChange(ev){
-    console.log(this.workTypeSelect, this.jobTypeSelect);
     if(this.workTypeSelect.length == 0 &&
        this.jobTypeSelect.length == 0){
       this.jobs = this.allList;
@@ -154,14 +151,15 @@ export class SearchPage implements OnInit, OnDestroy{
     if(this.workTypeSelect.length > 0){
       candidates = candidates.filter(
         job => {
-          return job.tags.some(tag=>this.workTypeSelect.includes(tag));
+          // return job.tags.some(tag=>this.workTypeSelect.includes(tag));
+          return this.workTypeSelect.includes(job.type);
         }
       );
     }
     if(this.jobTypeSelect.length > 0){
       candidates = candidates.filter(
         job => {
-          return job.tags.some(tag=>this.jobTypeSelect.includes(tag));
+          return job.jobCat.some(tag=>this.jobTypeSelect.includes(tag));
         }
       );
     }

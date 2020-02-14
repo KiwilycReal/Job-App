@@ -4,7 +4,7 @@ import { DomSanitizer} from '@angular/platform-browser';
 import { JobDetailPage } from '../job-detail/job-detail.page';
 // import { AdvDetailPage } from '../adv-detail/adv-detail.page';
 
-import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
+import { InAppBrowser, InAppBrowserOptions } from '@ionic-native/in-app-browser/ngx';
 
 
 @Component({
@@ -105,7 +105,12 @@ export class HomePage implements OnInit{
   // }
 
   openPage(link="https://www.baidu.com"){
-    this.iab.create(link);
+    const options: InAppBrowserOptions = {
+      "location": "yes",
+      "hideurlbar": "yes",
+      "toolbar": "no"
+    }
+    this.iab.create(link,'_self', options);
   }
 
   // auto play slides

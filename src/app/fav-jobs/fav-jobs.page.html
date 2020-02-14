@@ -76,8 +76,7 @@
         <ion-row class="ion-justify-content-center">
           <ion-col size=3.5>
             <ion-thumbnail style="width: 12vh; height: 12vh; margin-left: -2vw; margin-top: -0.5vh;">
-              <!-- <img [src]='job.imageUrl[0]'> -->
-              <img src="../../assets/cxk.jpg">
+              <img [src]='j.imageUrl[0]'>
             </ion-thumbnail> 
           </ion-col>
           <ion-col size=6>
@@ -88,7 +87,7 @@
             <!-- <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">  &nbsp;|&nbsp;</span>{{tag}}</ion-label><br>
             <ion-chip style="height: 2.5vh; font-size: 3px; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags">{{tag}}</ion-chip> -->
             <div style="height: 1vh;"></div>
-            <ion-label style="font-size: 12px;">截止日期: &nbsp; 12/1/2020</ion-label>
+            <ion-label style="font-size: 12px;">截止日期: &nbsp; {{j.lastEditDateTime}}</ion-label>
           </ion-col>
           <ion-col size=2>
             <div style="height: 1vh;"></div>

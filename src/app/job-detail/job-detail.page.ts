@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { ModalController, LoadingController } from '@ionic/angular';
+import { ModalController, LoadingController, IonSlides } from '@ionic/angular';
 
 @Component({
   selector: 'app-job-detail',
@@ -40,6 +40,11 @@ export class JobDetailPage implements OnInit {
     this.modalController.dismiss({
       dismissed: true
     })
+  }
+
+  // auto play slides
+  slidesDidLoad(slides: IonSlides) {
+    slides.startAutoplay();
   }
 
   segmentChanged(ev){

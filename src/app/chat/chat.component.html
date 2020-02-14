@@ -47,7 +47,7 @@
   <ion-grid style="border-top-style: groove; --ion-grid-padding: 0;">
     <ion-row class="ion-align-items-start">
       <ion-col offset=1 size=8 style="max-height: 46px;">
-        <ion-input [(ngModel)]="msg" (keyup.enter)="sendMsg()"></ion-input>
+        <ion-input [(ngModel)]="msg" clear-input="true" (ionFocus)="showExtra=false" (keyup.enter)="sendMsg()"></ion-input>
       </ion-col>
       <ion-col size=1.5>
         <ion-icon (click)="showExtraPanel()" name="add" size="large"></ion-icon>

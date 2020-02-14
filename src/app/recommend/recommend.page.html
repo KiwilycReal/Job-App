@@ -10,7 +10,7 @@
 
     <!-- search bar -->
     <ion-col class="search-bar" size=7>
-      <input type="search" [(ngModel)]="searchTerm" placeholder=" 输入关键字搜索" class="textinput">
+      <ion-input clear-input="true" type="search" [(ngModel)]="searchTerm" placeholder=" 输入关键字搜索" class="textinput"></ion-input>
       <!-- <ion-searchbar [(ngModel)]="searchTerm" showCancelButton="focus" placeholder="输入关键字"></ion-searchbar> -->
     </ion-col>
 
@@ -94,36 +94,17 @@
 
 
 <div>
-  <ion-card style="height: 60vw;">
-    <img src="../assets/backP.png"> 
-    <ion-card-header style="padding-bottom: 0; padding-top: 2vw;">
-      <ion-card-title>2月22号蔡徐坤招聘</ion-card-title>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <ion-card style="height: 60vw;" *ngFor="let adv of advs" (click)="presentAdvDetailModal(adv)">
+    <img [src]="adv.images[0]" style="height: 45vw;"> 
+    <ion-card-header style="padding-bottom: 0; padding-top: 1.6vw;">
+      <ion-card-title>{{adv.title}}</ion-card-title>
     </ion-card-header>
-    <ion-card-content style="padding-top: 1.4vw;">
-      CXK公司招聘啦，大家快去看
+    <ion-card-content style="padding-top: 1.2vw;">
+      {{adv.detail | slice:0:16}}....
     </ion-card-content>
   </ion-card>
-
-  <ion-card style="height: 60vw;">
-    <img src="../assets/backP.png"> 
-    <ion-card-header style="padding-bottom: 0; padding-top: 2vw;">
-      <ion-card-title>2月22号蔡徐坤招聘</ion-card-title>
-    </ion-card-header>
-    <ion-card-content style="padding-top: 1.4vw;">
-      CXK公司招聘啦，大家快去看
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card style="height: 60vw;">
-    <img src="../assets/backP.png"> 
-    <ion-card-header style="padding-bottom: 0; padding-top: 2vw;">
-      <ion-card-title>2月22号蔡徐坤招聘</ion-card-title>
-    </ion-card-header>
-    <ion-card-content style="padding-top: 1.4vw;">
-      CXK公司招聘啦，大家快去看
-    </ion-card-content>
-  </ion-card>
- 
-
 </div>
 </ion-content>

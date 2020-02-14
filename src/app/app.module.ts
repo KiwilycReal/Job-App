@@ -26,6 +26,7 @@ import { ShareDataService } from './services/share-data.service';
 
 import { InAppBrowser } from '@ionic-native/in-app-browser/ngx';
 import { Camera } from '@ionic-native/camera/ngx'
+import { Keyboard } from '@ionic-native/keyboard/ngx'
 
 @NgModule({
   declarations: [AppComponent],
@@ -42,6 +43,7 @@ import { Camera } from '@ionic-native/camera/ngx'
     InAppBrowser,
     SplashScreen,
     Camera,
+    Keyboard,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: 'loginService', useClass: LoginService },
     { provide: 'commDbService', useClass: CommDbService },

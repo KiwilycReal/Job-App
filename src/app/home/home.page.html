@@ -10,7 +10,7 @@
 
     <!-- search bar -->
     <ion-col class="search-bar" size=7>
-      <input type="search" [(ngModel)]="searchTerm" placeholder=" 输入关键字搜索" class="textinput">
+      <ion-input clear-input="true" type="search" [(ngModel)]="searchTerm" placeholder=" 输入关键字搜索" class="textinput"></ion-input>
       <!-- <ion-searchbar [(ngModel)]="searchTerm" showCancelButton="focus" placeholder="输入关键字"></ion-searchbar> -->
     </ion-col>
 
@@ -102,8 +102,7 @@
           <!-- Avatar -->
           <ion-col size=4>
             <ion-thumbnail style="width: 30vw;height: 30vw;margin-left: 0vh;">
-              <!-- <img [src]='job.imageUrl[0]'> -->
-              <img src="../../assets/cxk.jpg">
+              <img [src]='j.imageUrl[0]'>
             </ion-thumbnail> 
           </ion-col>
           <!-- Other Info -->
@@ -120,14 +119,14 @@
             </ion-row>
             <!-- Labels -->
             <ion-row style="padding-left: 5px;">
-              <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags; let i = index"><span *ngIf="i!=0">  &nbsp;|&nbsp;</span>{{tag}}</ion-label><br>
+              <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of j.tags.slice(0,3); let i = index"><span *ngIf="i!=0">  &nbsp;|&nbsp;</span>{{tag}}</ion-label><br>
             </ion-row>
 
             <!-- <div style="height: 2vh;"></div> -->
 
             <!-- Chips -->
             <ion-row style="margin-top: -1vw; margin-left: 1vw;">
-              <ion-chip style="height: 2.5vw; font-size: 10; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags.slice(0,3)">{{tag}}</ion-chip>
+              <ion-chip style="height: 2.5vw; font-size: 10; margin-left: -1vw; margin-right: 3vw; color: #FF3366; background-color:#F8F1D6; border-radius: 5px;" *ngFor="let tag of j.tags.slice(0,2)">{{tag}}</ion-chip>
             </ion-row>
           </ion-col>
         </ion-row>

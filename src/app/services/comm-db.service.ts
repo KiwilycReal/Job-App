@@ -41,7 +41,7 @@ export class CommDbService {
   }
 
   /**
-   * @returns a promise which will resolve all documents from the firestore collection "Jobs"
+   * @returns a promise which will resolve all documents from the firestore collection "Advs"
    */
   fetchJobList(){
     return this.afs.collection('Jobs').get().toPromise();

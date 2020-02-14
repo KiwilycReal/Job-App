@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { RecommendPageRoutingModule } from './recommend-routing.module';
 
 import { RecommendPage } from './recommend.page';
+import { AdvDetailPageModule } from '../adv-detail/adv-detail.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RecommendPageRoutingModule
+    RecommendPageRoutingModule,
+    AdvDetailPageModule
   ],
   declarations: [RecommendPage]
 })

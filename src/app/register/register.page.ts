@@ -106,7 +106,7 @@ export class RegisterPage implements OnInit {
       res => {
         console.dir("Userinfo doc created", res);
         this.presentToast("You are all set!:)");
-        this.router.navigate(['mine']);
+        this.router.navigate(['message']);
         this.loadingController.dismiss();
       }, err => {
         console.dir("Failed to create userinfo doc", err);

@@ -19,15 +19,14 @@
       <ion-row class="ion-justify-content-center">
         <ion-col size=2>
           <ion-thumbnail style="width: 72px;height: 72px;">
-            <!-- <img [src]='job.imageUrl[0]'> -->
-            <img src="../../assets/cxk.jpg">
+            <img [src]='job.imageUrl[0]'>
           </ion-thumbnail> 
         </ion-col>
         <ion-col size=6 offset=1>
           <ion-label style="margin: 0; font-size: 20px;"><b>{{job.position}}</b></ion-label><br>
           <!-- Job's characteristics -->
           <ion-label style="font-size: 14px; margin: 0;" *ngFor="let tag of job.tags; let i = index"><span *ngIf="i!=0">|</span>{{tag}}</ion-label><br>
-          <ion-label style="font-size: 13px;">截止日期: {{job.publishDateTime}}</ion-label>
+          <ion-label style="font-size: 13px;">截止日期: {{job.lastEditDateTime}}</ion-label>
         </ion-col>
         <ion-col size=2.5>
           <span style="color:goldenrod; font-size: 8; ">{{job.salary}}$/hr</span>
@@ -49,31 +48,15 @@
       </div>
     </ion-row>
     <ion-row>
-      <ion-slides [options] = "imgSliderOpts" pager="true">
-        <!-- <ion-slide style="max-height: 20vh" *ngFor="let img of images" >
-            <ion-card> 
-              <img [src]="img">
-            </ion-card>
-        </ion-slide> -->
-        <ion-slide style="max-height: 40vw;">
-          <ion-card>
-            <img src="../../assets/melbourne1.jpg">
-          </ion-card>
-        </ion-slide>
-        <ion-slide style="max-height: 40vw;">
-          <ion-card>
-            <img src="../../assets/melbourne2.jpg">
-          </ion-card>
-        </ion-slide>
-        <ion-slide style="max-height: 40vw;">
-          <ion-card>
-            <img src="../../assets/melbourne3.jpg">
-          </ion-card>
-        </ion-slide>
-      </ion-slides>
     </ion-row>
   </ion-grid>
 </ion-item>
+
+<ion-slides [options] = "imgSliderOpts" #imgSlide pager="true" (ionSlidesDidLoad)="slidesDidLoad(imgSlide)">
+  <ion-slide style="max-height: 40vw;" *ngFor="let url of job.imageUrl">
+    <img [src]="url" style="max-width: 100% !important;max-height: 100% !important;">
+  </ion-slide>
+</ion-slides>
 
 <ion-item-divider class="block-divider"></ion-item-divider>
 
@@ -93,27 +76,27 @@
     </ion-row>
     <ion-row>
       <ion-list [hidden]="curView=='contact'" style="width: 100%;">
-        <ion-item-divider color="light"><b>公司简介</b></ion-item-divider>
+        <ion-item-divider style="border-bottom: 0;"><b style="color: cornflowerblue;">公司简介</b></ion-item-divider>
         <ion-item lines="none">
           <p [innerHTML]="job.details"></p>
         </ion-item>
-        <ion-item-divider color="light"><b>职位介绍</b></ion-item-divider>
+        <ion-item-divider style="border-bottom: 0;"><b style="color: cornflowerblue;">职位介绍</b></ion-item-divider>
         <ion-item lines="none">
           <p [innerHTML]="job.details"></p>
         </ion-item>
-        <ion-item-divider color="light"><b>技能要求</b></ion-item-divider>
+        <ion-item-divider style="border-bottom: 0;"><b style="color: cornflowerblue;">技能要求</b></ion-item-divider>
         <ion-item lines="none">
           <p [innerHTML]="job.details"></p>
         </ion-item>
-        <ion-item-divider color="light"><b>薪资待遇</b></ion-item-divider>
+        <ion-item-divider style="border-bottom: 0;"><b style="color: cornflowerblue;">薪资待遇</b></ion-item-divider>
         <ion-item lines="none">
           <p [innerHTML]="job.details"></p>
         </ion-item>
-        <ion-item-divider color="light"><b>其他事项</b></ion-item-divider>
+        <ion-item-divider style="border-bottom: 0;"><b style="color: cornflowerblue;">其他事项</b></ion-item-divider>
         <ion-item lines="none">
           <p [innerHTML]="job.details"></p>
         </ion-item>
-        <ion-item-divider color="light"><b>商家可自定义栏目名字</b></ion-item-divider>
+        <ion-item-divider style="border-bottom: 0;"><b style="color: cornflowerblue;">商家可自定义栏目名字</b></ion-item-divider>
         <ion-item lines="none">
           <p [innerHTML]="job.details"></p>
         </ion-item>

@@ -2,34 +2,28 @@ import { Component, OnInit, Inject, OnDestroy, ViewChild, ElementRef, AfterViewI
 import { ModalController, IonContent, LoadingController } from '@ionic/angular';
 import { ImgZoomPage } from '../img-zoom/img-zoom.page'
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { Keyboard } from '@ionic-native/keyboard/ngx'
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ChatComponent implements OnInit, AfterViewInit {
 
   // Using mutation observer to scroll the content to bottom
   ngAfterViewInit() {
     this.mutatioinObserver = new MutationObserver(mutations => {
       // Dismiss the loading layer when scroll event finished
+      var obj = {};
+      obj['chats.'+this.cid] = this.logs[this.logs.length-1].mid;
+      this.commDbService.updateUserDoc(this.myUid, obj);
       this.scrollContainer.scrollToBottom(200).then(res=>this.loadingController.dismiss().catch(err=>console.warn(err)));
     });
 
     this.mutatioinObserver.observe(this.logList.nativeElement,{
       childList: true
     })
-  }
-
-  ngOnDestroy(){
-    this.mutatioinObserver.disconnect();
-    this.chatListener.unsubscribe();
-    // Update current user's last read msg in this chat
-    var obj = {}
-    obj['chats.'+this.cid] = this.logs[this.logs.length-1].mid;
-    this.commDbService.updateUserDoc(this.myUid, obj);
-    console.log("chatdestroy");
   }
 
   @ViewChild('container', {read: IonContent,static: false}) scrollContainer: IonContent;
@@ -74,6 +68,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(private modalController: ModalController,
               private loadingController: LoadingController,
               private camera: Camera,
+              private keyboard: Keyboard,
               @Inject('commDbService') public commDbService,
               @Inject('chatService') public chatService) { }
 
@@ -92,6 +87,7 @@ export class ChatComponent implements OnInit, OnDestroy, AfterViewInit {
 
   showExtraPanel(){
     this.showExtra = !this.showExtra;
+    this.keyboard.hide();
     setTimeout(() => {
       this.scrollContainer.scrollToBottom();
     }, 50);
