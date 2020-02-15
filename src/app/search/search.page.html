@@ -70,25 +70,29 @@
     </ion-radio-group> -->
     <!-- search drop down -->
     <ion-row style="background: white; text-align: center; border-top-style: solid;">
-      <ion-col style="max-width: 50%;">
+      <ion-col style="max-width: 33%;">
         <ion-select style="width: 100%;" multiple="true" [(ngModel)]="workTypeSelect" placeholder="工作种类" (ionChange)="selectChange($event)">
             <ion-select-option [value]="opt.value" *ngFor="let opt of workTypeOpts">{{opt.display}}</ion-select-option>
         </ion-select>
       </ion-col>
-      <ion-col style="max-width: 50%;">
+      <ion-col style="max-width: 33%;">
         <ion-select style="width: 100%;" multiple="true" [(ngModel)]="jobTypeSelect" placeholder="职业种类" (ionChange)="selectChange($event)">
             <ion-select-option [value]="opt.value" *ngFor="let opt of jobTypeOpts">{{opt.display}}</ion-select-option>
         </ion-select>
       </ion-col>
+      <ion-col style="max-width: 33%;">
+        <ion-select style="width: 100%;" multiple="true" [(ngModel)]="salarySelect" placeholder="时薪范围" (ionChange)="selectChange($event)">
+            <ion-select-option [value]="opt.value" *ngFor="let opt of salaryOpts">{{opt.display}}</ion-select-option>
+        </ion-select>
+      </ion-col>
     </ion-row>
-    <ion-row style="background: white; text-align: center;">
+    <!-- Salary select range element -->
+    <!-- <ion-row style="background: white; text-align: center;">
       <ion-range style="padding-top: 0;" [(ngModel)]="salaryRange" min=20 max=200 debounce=1400 dual-knobs="true" pin="true" (ionChange)="salaryChange()">
-        <!-- <ion-icon name="wallet" size="small" slot="start"></ion-icon>
-        <ion-icon name="wallet" size="large" slot="end"></ion-icon> -->
       <ion-label slot="start">20$/hr</ion-label>
       <ion-label slot="end">200$/hr</ion-label>
       </ion-range>
-    </ion-row>
+    </ion-row> -->
 
     <ion-button expand="full" #clearSelectBtn style="display:none" color="danger" (click)="clearSelect()">
       <label>清除搜索结果</label>

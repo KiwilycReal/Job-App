@@ -40,10 +40,12 @@ export class SearchPage implements OnInit, OnDestroy{
 
   workTypeSelect;
   jobTypeSelect;
-  salaryRange = {
-    lower: 25,
-    upper: 100
-  };
+  salarySelect;
+  // Opts for the range element
+  // salaryRange = {
+  //   lower: 25,
+  //   upper: 100
+  // };
   workTypeOpts = [
     {value: "full",
      display: "全职"},
@@ -52,13 +54,7 @@ export class SearchPage implements OnInit, OnDestroy{
     {value: "intern",
      display: "实习"},
     {value: "fast",
-     display: "快聘"},
-    // {value: "spring",
-    //  display: "春招"},
-    // {value: "autumn",
-    //  display: "秋招"},
-    // {value: "chinaintern",
-    //  display: "中国Intern"},
+     display: "快聘"}
   ];
   jobTypeOpts = [
     {value: "cashier",
@@ -74,14 +70,16 @@ export class SearchPage implements OnInit, OnDestroy{
     {value: "retail",
     display: "零售业"}
   ];
-  // salaryOpts = [
-  //   {value: {lower:50,upper:100},
-  //    display: "50-100"},
-  //   {value: {lower:100,upper:150},
-  //    display: "100-150"},
-  //   {value: {lower:150,upper:10000},
-  //    display: "150+"}
-  // ];
+  salaryOpts = [
+    {value: {lower:25,upper:30},
+     display: "25-30"},
+    {value: {lower:30,upper:45},
+     display: "30-45"},
+    {value: {lower:45,upper:60},
+     display: "45-60"},
+    {value: {lower:60,upper:Number.MAX_SAFE_INTEGER},
+     display: "60+"}
+  ];
 
   // tst(e){
   //   console.log(e);
@@ -140,7 +138,8 @@ export class SearchPage implements OnInit, OnDestroy{
   // TODO: 或者判断每次变更select是增加条件还是减少条件，来取(以新变更条件筛选过的alllist)和(先前的tempfilterlist)的交/并集
   selectChange(ev){
     if(this.workTypeSelect.length == 0 &&
-       this.jobTypeSelect.length == 0){
+       this.jobTypeSelect.length == 0 &&
+       this.salarySelect.length == 0){
       this.jobs = this.allList;
       this.clearSelectBtnElem.el.style.display = "none";
       return;
@@ -163,19 +162,26 @@ export class SearchPage implements OnInit, OnDestroy{
         }
       );
     }
-
-    candidates = candidates.filter(
-      job => {
-        return job.salary >= this.salaryRange.lower && job.salary <= this.salaryRange.upper;
-      }
-    ).sort(
-      (j1, j2) => {
-        return j2.salary - j1.salary;
-      }
-    );
+    if(this.salarySelect.length > 0){
+      candidates = candidates.filter(
+        job => {
+          var temp = job.salary;
+          return this.salarySelect.some(
+            condition => {
+              return temp >= condition.lower && temp <= condition.upper;
+            }
+          )
+        }
+      ).sort(
+        (j1, j2) => {
+          return j2.salary - j1.salary;
+        }
+      );
+    }
 
     this.tempFilterList = candidates;
     this.jobs = candidates;
+    // this.jobs = candidates;
     // this.jobs = candidates.filter(
     //   job => {
     //     return job.salary >= lower && job.salary < upper;
@@ -187,23 +193,24 @@ export class SearchPage implements OnInit, OnDestroy{
     // );
   }
 
-  salaryChange(){
-    if(this.salaryRange.lower == 20 && this.salaryRange.upper == 200) return;
-    this.jobs = this.tempFilterList.filter(
-      job => {
-        return job.salary >= this.salaryRange.lower && job.salary <= this.salaryRange.upper;
-      }
-    ).sort(
-      (j1, j2) => {
-        return j2.salary - j1.salary;
-      }
-    );
-  }
+  // salaryChange(){
+  //   if(this.salaryRange.lower == 20 && this.salaryRange.upper == 200) return;
+  //   this.jobs = this.tempFilterList.filter(
+  //     job => {
+  //       return job.salary >= this.salaryRange.lower && job.salary <= this.salaryRange.upper;
+  //     }
+  //   ).sort(
+  //     (j1, j2) => {
+  //       return j2.salary - j1.salary;
+  //     }
+  //   );
+  // }
 
   clearSelect(){
     this.workTypeSelect = [];
     this.jobTypeSelect = [];
-    this.salaryRange = {lower: 20, upper: 200};
+    this.salarySelect = [];
+    // this.salaryRange = {lower: 20, upper: 200};
 
     this.jobs = this.allList;
     // this.tempFilterList = this.allList;

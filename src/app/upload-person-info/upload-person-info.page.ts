@@ -40,7 +40,7 @@ export class UploadPersonInfoPage implements OnInit {
 
   pValue;
   pValueStr;
-  pColor: string;
+  pColor;
 
 
   title;
@@ -132,6 +132,18 @@ export class UploadPersonInfoPage implements OnInit {
 
     this.pValue = (weight * counter).toFixed(2);
     this.pValueStr = (this.pValue*100).toFixed(0);
+
+    if (this.pValueStr <= 20) {
+      this.pColor = '#AAAAAA';
+    } else if ( this.pValueStr <= 40) {
+      this.pColor = '#b7d5ac';
+    } else if ( this.pValueStr <= 60) {
+      this.pColor = '#93bf85';
+    } else if ( this.pValueStr <= 80) {
+      this.pColor = '#6eaa5e';
+    } else if ( this.pValueStr <= 100) {
+      this.pColor = '#469536';
+    }
   }
 
   refresh(e){

@@ -106,7 +106,8 @@ export class InfoEditModalPage implements OnInit {
         baseExp['title'] = this.title;
         break;
     }
-    let data = baseExp;
+    var data = baseExp;
+    // console.log(data);
     await this.commDbService.updateUserDocArray(this.uid, this.infoType, data, true).then(res => {
       console.log("Added new ",this.infoType," for "+this.uid, res);
     }, err => reject(err));
