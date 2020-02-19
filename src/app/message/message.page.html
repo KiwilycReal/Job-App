@@ -75,36 +75,67 @@
     </ion-list>
   </ion-list> -->
   <ion-list>
-    <ion-list>
-      <div *ngFor="let chat of chats | keyvalue" (click)="showChatModal(chat.key, chat.value)">
-        <div style="background-color:white; height: 11vh; width: 95vw;
-                     margin-left: 2.5vw; margin-bottom: 1vh; border-radius: 3vh;">
-          <ion-row>
-            <ion-col size= 2.5>
-              <img [src]="chat.value.targetAvatarUrl" style="height: 8vh; width: 8vh; border-radius: 50%; margin-top: 1vh;">
-            </ion-col>
+    <!-- 猫耳朵 -->
+    <!-- <div (click)="showChatModal()">
+      <div style="background-color:white; height: 11vh; width: 95vw;
+                    margin-left: 2.5vw; margin-bottom: 1vh; border-radius: 3vh;">
+        <ion-row>
+          <ion-col size= 2.5>
+            <img src="../../assets/wechat.png" style="height: 8vh; width: 8vh; border-radius: 50%; margin-top: 1vh;">
+          </ion-col>
 
-            <ion-col>
-              <ion-row>
-                <ion-col size=9>
-                  <ion-label>
-                    <h3 style="font-size: 16px;">{{chat.value.targetName}} <p style="color: grey; display: inline; font-size: 10px;">{{chat.value.extraTag}}</p> </h3>
-                    <div style="height: 1vh;"></div>
-                    <p style="font-size: 14px;"><span *ngIf="chat.value.unreadCount>0" style="color: indianred;">[{{chat.value.unreadCount}}条未读消息]</span>{{chat.value.latestMsg}}</p>
-                  </ion-label>
-                </ion-col>
-    
-                <ion-col style="text-align: right;" size=3>
-                  <p style="font-size: 14px; margin-top: 0.5vh;">{{chat.value.latestTime | date :'M月d日'}}</p>
-                </ion-col>
-    
-              </ion-row>
-            </ion-col>
+          <ion-col>
+            <ion-row>
+              <ion-col size=9>
+                <ion-label>
+                  <h3 style="font-size: 16px;">猫耳朵小助手</h3>
+                  <div style="height: 1vh;"></div>
+                  <p style="font-size: 14px;"><span *ngIf="chat.value.unreadCount>0" style="color: indianred;">[{{chat.value.unreadCount}}条未读消息]</span>{{chat.value.latestMsg}}</p>
+                </ion-label>
+              </ion-col>
+  
+              <ion-col style="text-align: right;" size=3>
+                <p style="font-size: 14px; margin-top: 0.5vh;">{{chat.value.latestTime | date :'M月d日'}}</p>
+              </ion-col>
+  
+            </ion-row>
+          </ion-col>
 
-          </ion-row>
-        </div>
-
+        </ion-row>
       </div>
-    </ion-list>
+
+    </div> -->
+    <!-- Normal user chats -->
+    <div *ngFor="let chat of chats | keyvalue" (click)="showChatModal(chat.key, chat.value)">
+      <div style="background-color:white; height: 11vh; width: 95vw;
+                    margin-left: 2.5vw; margin-bottom: 1vh; border-radius: 3vh;">
+        <ion-row>
+          <ion-col size= 2.5>
+            <img [src]="chat.value.targetAvatarUrl" style="height: 8vh; width: 8vh; border-radius: 50%; margin-top: 1vh;">
+          </ion-col>
+
+          <ion-col>
+            <ion-row>
+              <ion-col size=9>
+                <ion-label style="font-size: 16px;">
+                  {{chat.value.targetName}} <span style="color: grey; display: inline; font-size: 6px;">{{chat.value.extraTag}}</span>
+                </ion-label>
+                <div style="height: 1vh;"></div>
+                <ion-label style="font-size: 12px;">
+                  <span *ngIf="chat.value.unreadCount>0" style="color: indianred;">[{{chat.value.unreadCount}}条未读消息]</span>{{chat.value.latestMsg}}
+                </ion-label>
+              </ion-col>
+  
+              <ion-col style="text-align: right;" size=3>
+                <p style="font-size: 10px; margin-top: 0.5vh;">{{chat.value.latestTime | date :'M月d日'}}</p>
+              </ion-col>
+  
+            </ion-row>
+          </ion-col>
+
+        </ion-row>
+      </div>
+
+    </div>
   </ion-list>
 </ion-content>

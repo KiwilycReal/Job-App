@@ -33,6 +33,7 @@ export class RegisterPage implements OnInit {
               @Inject('commDbService') public commDbService,
               @Inject('loginService') public loginService,
               @Inject('shareDataService') public shareDataService,
+              @Inject('chatService') public chatService,
               public loadingController: LoadingController,
               public toastController: ToastController,
               private formBuilder: FormBuilder) {}
@@ -106,6 +107,7 @@ export class RegisterPage implements OnInit {
       res => {
         console.dir("Userinfo doc created", res);
         this.presentToast("You are all set!:)");
+        this.chatService.createHelperChat(this.curUser.uid);
         this.router.navigate(['message']);
         this.loadingController.dismiss();
       }, err => {

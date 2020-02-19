@@ -15,26 +15,16 @@
   <!-- <div #container style="overflow: scroll; height: xyz;"> -->
     <ion-list #logList>
       <div *ngFor="let log of logs">
-        <ion-item *ngIf="log.from==targetUid" lines="none">
-          <ion-avatar slot="start">
-            <img [src]="targetAvatarUrl">
+        <ion-item lines="none">
+          <ion-avatar [slot]="log.from==myUid?'end':'start'">
+            <img [src]="log.from==myUid?myAvatarUrl:targetAvatarUrl">
           </ion-avatar>
-          <ion-label>
-            <h2>{{targetName}}</h2>
-            <p>{{log.timestamp}}</p>
-            <h3 [hidden]="log.hasImg" class="ion-text-wrap">{{log.msg}}</h3>
-            <img *ngIf="log.hasImg" [src]="log.imgUrl">
-          </ion-label>
-        </ion-item>
-        <ion-item *ngIf="log.from==myUid" lines="none">
-          <ion-avatar slot="end">
-            <img [src]="myAvatarUrl">
-          </ion-avatar>
-          <ion-label class="ion-text-end">
+          <ion-label [class]="log.from==myUid?'ion-text-end':''">
             <!-- <h2>{{myName}}</h2> -->
-            <h2>我</h2>
+            <h2 [innerHTML]="log.from==myUid?'我':targetName"></h2>
             <p>{{log.timestamp}}</p>
-            <h3 [hidden]="log.hasImg" class="ion-text-wrap">{{log.msg}}</h3>
+            <h3 [hidden]="log.hasImg || isHelper" class="ion-text-wrap">{{log.msg}}</h3>
+            <h3 *ngIf="isHelper" [innerHTML]="log.msg" class="ion-text-wrap"></h3>
             <img *ngIf="log.hasImg" [src]="log.imgUrl">
           </ion-label>
         </ion-item>
@@ -50,7 +40,7 @@
         <ion-input [(ngModel)]="msg" clear-input="true" (ionFocus)="showExtra=false" (keyup.enter)="sendMsg()"></ion-input>
       </ion-col>
       <ion-col size=1.5>
-        <ion-icon (click)="showExtraPanel()" name="add" size="large"></ion-icon>
+        <ion-icon [hidden]="isHelper" (click)="showExtraPanel()" name="add" size="large"></ion-icon>
       </ion-col>
       <ion-col size=1.5>
         <ion-icon (click)="sendMsg()" name="send" size="large"></ion-icon>

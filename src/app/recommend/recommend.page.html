@@ -27,6 +27,9 @@
 
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div style="margin:auto; height: 18vw;">
     <ion-row class="test" style="margin-top: 1vw;">
    <!-- 校招 -->
@@ -94,11 +97,8 @@
 
 
 <div>
-  <ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
   <ion-card style="height: 60vw;" *ngFor="let adv of advs" (click)="presentAdvDetailModal(adv)">
-    <img [src]="adv.images[0]" style="height: 45vw;"> 
+    <div style="max-height: 45vw; overflow: hidden;"><img [src]="adv.images[0]" style="height: 100%;"> </div>
     <ion-card-header style="padding-bottom: 0; padding-top: 1.6vw;">
       <ion-card-title>{{adv.title}}</ion-card-title>
     </ion-card-header>

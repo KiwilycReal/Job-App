@@ -44,7 +44,8 @@ export class MessagePage implements OnInit, OnDestroy {
         targetUid: chatDoc.targetUid,
         targetName: chatDoc.targetName,
         targetAvatarUrl: chatDoc.targetAvatarUrl,
-        cid: chatID
+        cid: chatID,
+        isHelper: chatDoc.targetUid=="猫耳朵"
       }
     });
     // Detach this chat's listener in message page, reopen it at the chat page
@@ -92,42 +93,44 @@ export class MessagePage implements OnInit, OnDestroy {
         this.chats[cid].unreadCount = msgList.indexOf(lastReadMsg);
       }
       this.shareDataService.changeUnreadMsgCount(this.calculateTotalUnreadMsgCount());
-      // Get the other user's username
-      await new Promise((resolve, reject) => {
-        // First fetch the chat document to get the other user's uid
-        this.chatService.fetchChat(cid).then(
-          res => {
-            var users = res.data().users;
-            console.log(users);
-            if(users[0]==this.curUser.uid) resolve(users[1]);
-            resolve(users[0]);
-          },
-          err => {
-            console.log(err);
-          }
-      // After get the uid, query the db and get the username
-      )}).then(
-        res => {
-          this.chats[cid].targetUid = res;
-          console.log(res);
-          return this.commDbService.fetchUserDoc(res).then(
-            res => {
-              var userDoc = res.data();
-              console.log(userDoc);
-              return userDoc.title+userDoc.firstName+" "+userDoc.lastName;
-            }
-          );
-        }
-      // Set the target username of the chat
-      ).then(
-        res => this.chats[cid].targetName = res
-      );
+      // Get the other user's username if thhe chat is not from helper
+      // await new Promise((resolve, reject) => {
+      //   // First fetch the chat document to get the other user's uid
+      //   this.chatService.fetchChat(cid).then(
+      //     res => {
+      //       var users = res.data().users;
+      //       console.log(users);
+      //       if(users[0]==this.curUser.uid) resolve(users[1]);
+      //       resolve(users[0]);
+      //     },
+      //     err => {
+      //       console.log(err);
+      //     }
+      // // After get the uid, query the db and get the username
+      // )}).then(
+      //   res => {
+      //     this.chats[cid].targetUid = res;
+      //     console.log(res);
+      //     return this.commDbService.fetchUserDoc(res).then(
+      //       res => {
+      //         var userDoc = res.data();
+      //         console.log(userDoc);
+      //         return userDoc.title+userDoc.firstName+" "+userDoc.lastName;
+      //       }
+      //     );
+      //   }
+      // // Set the target username of the chat
+      // ).then(
+      //   res => this.chats[cid].targetName = res
+      // );
       var latestMsgObj = res[0].payload.doc.data({serverTimestamps: 'estimate'});
       try{
         // var dateObj = latestMsgObj.timestamp.toDate();
         // this.chats[cid].latestTime = dateObj.toLocaleString();
         this.chats[cid].latestTime = latestMsgObj.timestamp.toDate();
-        this.chats[cid].latestMsg = latestMsgObj.msg;
+        var tempStr = latestMsgObj.msg.slice(0,6);
+        if(latestMsgObj.msg.length > 13) tempStr += "...";
+        this.chats[cid].latestMsg = tempStr;
         // In case of the other user changed their avatar or display name
         // this.chats[cid].avatar = "https://gravatar.com/avatar";
         console.log(this.chats);
@@ -191,14 +194,23 @@ export class MessagePage implements OnInit, OnDestroy {
                             targetUid = users[0];
                           }
                           tempChats[cid]["targetUid"] = targetUid;
-                          return (targetUid);
+                          return targetUid;
                         },
                         err => console.log("Fetch chat error", err)
                       ).then(
-                        res => {return this.commDbService.fetchUserDoc(res)}
+                        // Fetch target user info
+                        res => {
+                          if(res=="猫耳朵") return {helper: "helper"}
+                          return this.commDbService.fetchUserDoc(res);
+                        }
                       ).then(
                         // Update targetName
                         res => {
+                          if(!res.data){
+                            tempChats[cid]["targetName"] = "猫耳朵小助手";
+                            tempChats[cid]["targetAvatarUrl"] = "../../assets/wechat.png";
+                            return null;
+                          }
                           var userDoc = res.data();
                           tempChats[cid]["targetName"] = userDoc.displayName;
                           tempChats[cid]["targetAvatarUrl"] = userDoc.avatarUrl;

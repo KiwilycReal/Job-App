@@ -31,6 +31,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   /* Will be automatically initialized by the parent page
   when this modal showing */
+  isHelper;
   myUid;
   myAvatarUrl;
   targetUid;
@@ -41,6 +42,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   msg;
   // The listener of the current chat
   chatListener;
+  // The questions and answers of the faq
+  faqs = [];
 
   // The array that store all the logs of the current chat
   logs = [];
@@ -95,6 +98,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   sendMsg(){
     this.chatService.addMsgToChat(this.cid, this.myUid, this.targetUid, this.msg, false);
+    if(this.isHelper) this.autoReply(Number.parseInt(this.msg));
     this.msg = null;
   }
 
@@ -119,6 +123,25 @@ export class ChatComponent implements OnInit, AfterViewInit {
       }
     )
 
+  }
+
+  getFAQs(){
+    if(!this.isHelper) return;
+    this.chatService.fetchFAQs().then(
+      res => {
+        res.docs.forEach(
+          doc => {
+            this.faqs.push(doc.data());
+          }
+        );
+      }
+    )
+  }
+
+  autoReply(index: number){
+    if(!this.isHelper) return;
+    var autoMsg = (index && index<=this.faqs.length)?this.faqs[index-1].content:"请回复相应问题编号！如 1, 2, 3...";
+    this.chatService.addMsgToChat(this.cid, "猫耳朵", this.myUid, autoMsg, false);
   }
 
   async zoomImg(){
@@ -147,6 +170,9 @@ export class ChatComponent implements OnInit, AfterViewInit {
         this.loadingController.dismiss().catch(err=>console.warn(err));
       }
     );
+    
+    // Fetch faqs
+    this.getFAQs();
   }
 
 }
